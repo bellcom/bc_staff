@@ -36,7 +36,7 @@ final class StaffController extends ControllerBase {
       $status_field = $account->get('field_bc_staff_status');
       $status_key = $status_field->value;
       $choices = $status_field->getFieldDefinition()->getSetting('allowed_values');
-      $name = $is_demo && $account->hasField('field_bc_staff_display_name')
+      $name = $account->hasField('field_bc_staff_display_name')
         ? ($account->get('field_bc_staff_display_name')->value ?: $account->getDisplayName())
         : $account->getDisplayName();
       $department = '';
