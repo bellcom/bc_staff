@@ -11,4 +11,4 @@ bc_staff.employees:
   title: 'BC Staff medarbejdere'
   description: 'Opret og vedligehold medarbejdere'
   route_name: bc_staff.employee_list
-  parent: system.admin_people
+  menu_name: main
