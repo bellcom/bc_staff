@@ -1,0 +1,20 @@
+<?php
+
+/**
+ * @file
+ * BC Staff database updates.
+ */
+
+/**
+ * Create manageable staff locations.
+ */
+function bc_staff_update_11001(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary');
+  if (!$storage->load('bc_staff_location')) {
+    $storage->create([
+      'vid' => 'bc_staff_location',
+      'name' => 'BC Staff lokationer',
+      'description' => 'Lokationer som kan vælges i medarbejdernes statusregistrering.',
+    ])->save();
+  }
+}
