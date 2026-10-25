@@ -1,0 +1,5 @@
+bc_staff_demo.admin:
+  title: 'BC Staff – testdata'
+  description: 'Opret fiktive medarbejdere og afdelinger'
+  route_name: bc_staff_demo.admin
+  parent: system.admin_config_development
