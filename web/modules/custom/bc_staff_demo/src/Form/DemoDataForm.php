@@ -104,6 +104,9 @@ final class DemoDataForm extends ConfirmFormBase {
         $updated++;
       }
       $account->set('status', 0);
+      if ($account->isActive()) {
+        $account->addRole('bc_staff_employee');
+      }
       $account->set('field_bc_staff_demo', 1);
       $account->set('field_bc_staff_display_name', $name);
       $account->set('field_bc_staff_status', $status);
