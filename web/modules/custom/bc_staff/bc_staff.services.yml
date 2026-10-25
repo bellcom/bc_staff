@@ -1,0 +1,6 @@
+services:
+  bc_staff.mobile_login_redirect:
+    class: Drupal\bc_staff\EventSubscriber\MobileLoginRedirectSubscriber
+    arguments: ['@current_user']
+    tags:
+      - { name: event_subscriber }
