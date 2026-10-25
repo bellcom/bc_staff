@@ -1,7 +1,7 @@
-langcode: da
+langcode: en
 status: true
 dependencies: {  }
-name: Afdelinger
+name: Departments
 vid: bc_staff_department
-description: 'Afdelinger i BC Staff'
+description: 'Departments in BC Staff'
 weight: 0
