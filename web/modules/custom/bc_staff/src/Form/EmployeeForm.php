@@ -38,10 +38,32 @@ final class EmployeeForm extends FormBase {
     $form_state->set('bc_staff_manager_department', $manager ? $leader_department : NULL);
     $form_state->set('bc_staff_uid', $account?->id());
     $value = static fn(string $field) => $account && $account->hasField($field) ? ($account->get($field)->value ?? '') : '';
-    $form['name'] = ['#type' => 'textfield', '#title' => $this->t('Loginbrugernavn'), '#required' => TRUE, '#default_value' => $account?->getAccountName() ?? '', '#maxlength' => 60];
-    $form['mail'] = ['#type' => 'email', '#title' => $this->t('E-mail'), '#required' => TRUE, '#default_value' => $account?->getEmail() ?? ''];
-    $form['display_name'] = ['#type' => 'textfield', '#title' => $this->t('Medarbejdernavn'), '#required' => TRUE, '#default_value' => $value('field_bc_staff_display_name'), '#maxlength' => 128];
-    $form['department'] = ['#type' => 'select', '#title' => $this->t('Afdeling'), '#options' => ['' => $this->t('Ingen afdeling')], '#default_value' => $account && $account->hasField('field_bc_staff_department') ? ($account->get('field_bc_staff_department')->target_id ?? '') : ''];
+    $form['name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Loginbrugernavn'),
+      '#required' => TRUE,
+      '#default_value' => $account?->getAccountName() ?? '',
+      '#maxlength' => 60,
+    ];
+    $form['mail'] = [
+      '#type' => 'email',
+      '#title' => $this->t('E-mail'),
+      '#required' => TRUE,
+      '#default_value' => $account?->getEmail() ?? '',
+    ];
+    $form['display_name'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Medarbejdernavn'),
+      '#required' => TRUE,
+      '#default_value' => $value('field_bc_staff_display_name'),
+      '#maxlength' => 128,
+    ];
+    $form['department'] = [
+      '#type' => 'select',
+      '#title' => $this->t('Afdeling'),
+      '#options' => ['' => $this->t('Ingen afdeling')],
+      '#default_value' => $account && $account->hasField('field_bc_staff_department') ? ($account->get('field_bc_staff_department')->target_id ?? '') : '',
+    ];
     if (\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->load('bc_staff_department')) {
       foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_department') as $term) {
         $form['department']['#options'][$term->tid] = $term->name;
@@ -52,17 +74,39 @@ final class EmployeeForm extends FormBase {
       $form['department']['#default_value'] = $leader_department;
       $form['department']['#disabled'] = TRUE;
     }
-    $form['location'] = ['#type' => 'textfield', '#title' => $this->t('Aktuel lokation'), '#default_value' => $value('field_bc_staff_location'), '#maxlength' => 128];
-    $form['enabled'] = ['#type' => 'checkbox', '#title' => $this->t('Aktiv konto (kan logge ind)'), '#default_value' => $account ? (int) $account->isActive() : 1];
-    $form['employee_role'] = ['#type' => 'checkbox', '#title' => $this->t('BC Staff Medarbejder'), '#default_value' => $account ? (int) $account->hasRole('bc_staff_employee') : 1];
-    $form['password'] = ['#type' => 'password', '#title' => $account ? $this->t('Ny adgangskode (valgfrit)') : $this->t('Adgangskode'), '#required' => !$account, '#description' => $this->t('Ved redigering ændres adgangskoden kun, hvis feltet udfyldes.')];
+    $form['location'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Aktuel lokation'),
+      '#default_value' => $value('field_bc_staff_location'),
+      '#maxlength' => 128,
+    ];
+    $form['enabled'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Aktiv konto (kan logge ind)'),
+      '#default_value' => $account ? (int) $account->isActive() : 1,
+    ];
+    $form['employee_role'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('BC Staff Medarbejder'),
+      '#default_value' => $account ? (int) $account->hasRole('bc_staff_employee') : 1,
+    ];
+    $form['password'] = [
+      '#type' => 'password',
+      '#title' => $account ? $this->t('Ny adgangskode (valgfrit)') : $this->t('Adgangskode'),
+      '#required' => !$account,
+      '#description' => $this->t('Ved redigering ændres adgangskoden kun, hvis feltet udfyldes.'),
+    ];
     if ($account) {
       $form['photo'] = [
         '#type' => 'item', '#title' => $this->t('Profilfoto'),
         '#markup' => $this->t('Rediger profilfoto via Drupals brugerformular.'),
         '#description' => $this->t('Brugerløsningen anvender Drupal-kontoens eksisterende profilfoto.'),
       ];
-      $form['photo_link'] = ['#type' => 'link', '#title' => $this->t('Administrer foto og øvrige kontoindstillinger'), '#url' => Url::fromRoute('entity.user.edit_form', ['user' => $account->id()])];
+      $form['photo_link'] = [
+        '#type' => 'link',
+        '#title' => $this->t('Administrer foto og øvrige kontoindstillinger'),
+        '#url' => Url::fromRoute('entity.user.edit_form', ['user' => $account->id()]),
+      ];
     }
     $form['actions']['submit'] = ['#type' => 'submit', '#value' => $this->t('Gem medarbejder')];
     return $form;
