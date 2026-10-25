@@ -12,3 +12,10 @@ bc_staff.my_status:
     _title: 'Min status'
   requirements:
     _permission: 'update own bc staff status'
+bc_staff.mobile:
+  path: '/staff/mobil'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\MyStatusForm'
+    _title: 'Min status – mobil'
+  requirements:
+    _permission: 'update own bc staff status'
