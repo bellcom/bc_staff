@@ -40,15 +40,15 @@ final class EmployeeAdminController extends ControllerBase {
       $rows[] = [
         'data' => [
           $name, $user->getAccountName(), $department,
-          $user->isActive() ? $this->t('Aktiv') : $this->t('Blokeret'),
+          $user->isActive() ? $this->t('Active') : $this->t('Blocked'),
           ['data' => ['#type' => 'link', '#title' => $this->t('Rediger'), '#url' => Url::fromRoute('bc_staff.employee_edit', ['user' => $user->id()])]],
         ],
       ];
     }
     return [
-      'description' => ['#markup' => '<p>Medarbejdere anvender eksisterende Drupal-brugerkonti. Login og medarbejderoplysninger redigeres samlet.</p>'],
-      'add' => ['#type' => 'link', '#title' => $this->t('Opret medarbejder'), '#url' => Url::fromRoute('bc_staff.employee_add'), '#attributes' => ['class' => ['button', 'button--primary']]],
-      'table' => ['#type' => 'table', '#header' => [$this->t('Medarbejder'), $this->t('Login'), $this->t('Afdeling'), $this->t('Konto'), $this->t('Handling')], '#rows' => $rows, '#empty' => $this->t('Ingen medarbejdere.')],
+      'description' => ['#markup' => '<p>Employeee anvender eksisterende Drupal-brugerkonti. Login og medarbejderoplysninger redigeres samlet.</p>'],
+      'add' => ['#type' => 'link', '#title' => $this->t('Add employee'), '#url' => Url::fromRoute('bc_staff.employee_add'), '#attributes' => ['class' => ['button', 'button--primary']]],
+      'table' => ['#type' => 'table', '#header' => [$this->t('Employee'), $this->t('Login'), $this->t('Department'), $this->t('Account'), $this->t('Action')], '#rows' => $rows, '#empty' => $this->t('No employees.')],
       '#cache' => ['max-age' => 0],
     ];
   }
