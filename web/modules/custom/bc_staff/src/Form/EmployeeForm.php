@@ -2,10 +2,14 @@
 
 namespace Drupal\bc_staff\Form;
 
+use Drupal\bc_staff\Access\EmployeeAccess;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\user\Entity\User;
+use Drupal\Core\Routing\CurrentRouteMatch;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Manage a Drupal account and its BC Staff attributes together.
@@ -13,31 +17,51 @@ use Drupal\user\Entity\User;
 final class EmployeeForm extends FormBase {
 
   /**
-   * Returns the form ID.
+   * Constructs the employee form.
+   */
+  public function __construct(
+    private readonly EntityTypeManagerInterface $staffEntityTypeManager,
+    private readonly CurrentRouteMatch $staffRouteMatch,
+  ) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('current_route_match'),
+    );
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getFormId(): string {
     return 'bc_staff_employee_form';
   }
 
   /**
-   * Builds the form.
+   * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    $id = \Drupal::routeMatch()->getParameter('user');
-    $account = $id ? User::load(is_object($id) ? $id->id() : $id) : NULL;
+    $id = $this->staffRouteMatch->getParameter('user');
+    $account = $id ? $this->staffEntityTypeManager->getStorage('user')->load(is_object($id) ? $id->id() : $id) : NULL;
     if ($id && (!$account || (int) $account->id() === 1 || $account->hasRole('administrator'))) {
-      return ['notice' => ['#markup' => $this->t('This account cannot be edited here.')]];
+      throw new AccessDeniedHttpException();
     }
     $manager = $this->currentUser()->hasPermission('manage own bc staff department')
       && !$this->currentUser()->hasPermission('administer bc staff employees');
-    $leader = $manager ? User::load($this->currentUser()->id()) : NULL;
-    $leader_department = \Drupal\bc_staff\Access\EmployeeAccess::departmentId($leader);
-    if ($manager && (!$leader_department || ($account && !\Drupal\bc_staff\Access\EmployeeAccess::canManage($leader, $account)))) {
-      throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+    $leader = $manager ? $this->staffEntityTypeManager->getStorage('user')->load($this->currentUser()->id()) : NULL;
+    $leader_department = EmployeeAccess::departmentId($leader);
+    if ($manager && (!$leader_department || ($account && !EmployeeAccess::canManage($leader, $account)))) {
+      throw new AccessDeniedHttpException();
     }
     $form_state->set('bc_staff_manager_department', $manager ? $leader_department : NULL);
     $form_state->set('bc_staff_uid', $account?->id());
-    $value = static fn(string $field) => $account && $account->hasField($field) ? ($account->get($field)->value ?? '') : '';
+    $value = static fn (string $field) => $account && $account->hasField($field)
+      ? ($account->get($field)->value ?? '')
+      : '';
     $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Login username'),
@@ -62,15 +86,20 @@ final class EmployeeForm extends FormBase {
       '#type' => 'select',
       '#title' => $this->t('Department'),
       '#options' => ['' => $this->t('No department')],
-      '#default_value' => $account && $account->hasField('field_bc_staff_department') ? ($account->get('field_bc_staff_department')->target_id ?? '') : '',
+      '#default_value' => $account && $account->hasField('field_bc_staff_department')
+        ? ($account->get('field_bc_staff_department')->target_id ?? '')
+        : '',
     ];
-    if (\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->load('bc_staff_department')) {
-      foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_department') as $term) {
+    if ($this->staffEntityTypeManager->getStorage('taxonomy_vocabulary')->load('bc_staff_department')) {
+      foreach ($this->staffEntityTypeManager->getStorage('taxonomy_term')->loadTree('bc_staff_department') as $term) {
         $form['department']['#options'][$term->tid] = $term->name;
       }
     }
     if ($manager) {
-      $form['department']['#options'] = [$leader_department => $form['department']['#options'][$leader_department] ?? $this->t('Own department')];
+      $form['department']['#options'] = [
+        $leader_department => $form['department']['#options'][$leader_department]
+          ?? $this->t('Own department'),
+      ];
       $form['department']['#default_value'] = $leader_department;
       $form['department']['#disabled'] = TRUE;
     }
@@ -98,7 +127,8 @@ final class EmployeeForm extends FormBase {
     ];
     if ($account) {
       $form['photo'] = [
-        '#type' => 'item', '#title' => $this->t('Profile photo'),
+        '#type' => 'item',
+        '#title' => $this->t('Profile photo'),
         '#markup' => $this->t('Edit the profile photo through the Drupal user form.'),
         '#description' => $this->t('BC Staff uses the existing account profile photo.'),
       ];
@@ -113,10 +143,10 @@ final class EmployeeForm extends FormBase {
   }
 
   /**
-   * Validates submitted values.
+   * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state): void {
-    $storage = \Drupal::entityTypeManager()->getStorage('user');
+    $storage = $this->staffEntityTypeManager->getStorage('user');
     $uid = $form_state->get('bc_staff_uid');
     foreach (['name' => 'name', 'mail' => 'mail'] as $key => $property) {
       $matching = $storage->loadByProperties([$property => $form_state->getValue($key)]);
@@ -128,27 +158,32 @@ final class EmployeeForm extends FormBase {
       }
     }
     $department = $form_state->get('bc_staff_manager_department') ?: $form_state->getValue('department');
-    $term = $department ? \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($department) : NULL;
+    $term = $department ? $this->staffEntityTypeManager->getStorage('taxonomy_term')->load($department) : NULL;
     if ($department && (!$term || $term->bundle() !== 'bc_staff_department')) {
       $form_state->setErrorByName('department', $this->t('Invalid department.'));
     }
   }
 
   /**
-   * Saves submitted values.
+   * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $uid = $form_state->get('bc_staff_uid');
-    $user = $uid ? User::load($uid) : User::create();
+    $user = $uid ? $this->staffEntityTypeManager->getStorage('user')->load($uid) : $this->staffEntityTypeManager->getStorage('user')->create();
     $manager_department = $form_state->get('bc_staff_manager_department');
     if ($manager_department) {
-      $leader = User::load($this->currentUser()->id());
-      if (!\Drupal\bc_staff\Access\EmployeeAccess::departmentId($leader)
-        || ($uid && !\Drupal\bc_staff\Access\EmployeeAccess::canManage($leader, $user))) {
-        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+      $leader = $this->staffEntityTypeManager->getStorage('user')->load($this->currentUser()->id());
+      if (!EmployeeAccess::departmentId($leader)
+        || ($uid && !EmployeeAccess::canManage($leader, $user))) {
+        throw new AccessDeniedHttpException();
       }
     }
-    if (!$user || ($uid && ((int) $uid === 1 || $user->hasRole('administrator') || $user->hasRole('bc_staff_admin') || $user->hasRole('bc_staff_manager')))) {
+    if (!$user || ($uid && (
+      (int) $uid === 1
+      || $user->hasRole('administrator')
+      || $user->hasRole('bc_staff_admin')
+      || $user->hasRole('bc_staff_manager')
+    ))) {
       $this->messenger()->addError($this->t('The employee could not be saved.'));
       return;
     }
