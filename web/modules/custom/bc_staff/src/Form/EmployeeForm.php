@@ -98,7 +98,7 @@ final class EmployeeForm extends FormBase {
     if ($manager) {
       $form['department']['#options'] = [
         $leader_department => $form['department']['#options'][$leader_department]
-          ?? $this->t('Own department'),
+        ?? $this->t('Own department'),
       ];
       $form['department']['#default_value'] = $leader_department;
       $form['department']['#disabled'] = TRUE;
