@@ -11,6 +11,9 @@ use Drupal\user\Entity\User;
  */
 final class EmployeeAdminController extends ControllerBase {
 
+  /**
+   * Handles listing.
+   */
   public function listing(): array {
     $rows = [];
     $ids = $this->entityTypeManager()->getStorage('user')->getQuery()
