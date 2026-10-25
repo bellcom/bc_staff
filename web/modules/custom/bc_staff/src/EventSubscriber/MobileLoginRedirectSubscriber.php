@@ -34,7 +34,7 @@ final class MobileLoginRedirectSubscriber implements EventSubscriberInterface {
       return;
     }
 
-    $login = Url::fromRoute('user.login', [], [
+    $login = Url::fromRoute('bc_staff.login', [], [
       'query' => ['destination' => '/staff/mobil'],
       'absolute' => FALSE,
     ]);
