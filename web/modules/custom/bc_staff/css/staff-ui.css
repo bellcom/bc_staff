@@ -1,0 +1,44 @@
+/* Shared front-end appearance for BC Staff routes. */
+.path-staff .region-content,
+.path-staff-medarbejdere .region-content {
+  max-width: 1440px;
+  margin-inline: auto;
+}
+.bc-staff-login,
+.bc-staff-mobile,
+.bc-staff {
+  color: #16283e;
+}
+.bc-staff-login a,
+.bc-staff-mobile a,
+.bc-staff a {
+  text-underline-offset: 3px;
+}
+.bc-staff-login :focus-visible,
+.bc-staff-mobile :focus-visible,
+.bc-staff :focus-visible {
+  outline: 3px solid #2465b4;
+  outline-offset: 3px;
+}
+.bc-staff-login button,
+.bc-staff-mobile button,
+.bc-staff button,
+.bc-staff-login input[type="submit"],
+.bc-staff-mobile input[type="submit"] {
+  min-height: 44px;
+}
+.bc-staff__actions {
+  flex-wrap: wrap;
+}
+@media (max-width: 640px) {
+  .bc-staff__header {
+    align-items: stretch;
+  }
+  .bc-staff__actions {
+    width: 100%;
+  }
+  .bc-staff__action {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+}
