@@ -22,6 +22,14 @@ final class EmployeeForm extends FormBase {
     if ($id && (!$account || (int) $account->id() === 1 || $account->hasRole('administrator'))) {
       return ['notice' => ['#markup' => $this->t('Denne konto kan ikke redigeres her.')]];
     }
+    $manager = $this->currentUser()->hasPermission('manage own bc staff department')
+      && !$this->currentUser()->hasPermission('administer bc staff employees');
+    $leader = $manager ? User::load($this->currentUser()->id()) : NULL;
+    $leader_department = \Drupal\bc_staff\Access\EmployeeAccess::departmentId($leader);
+    if ($manager && (!$leader_department || ($account && !\Drupal\bc_staff\Access\EmployeeAccess::canManage($leader, $account)))) {
+      throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+    }
+    $form_state->set('bc_staff_manager_department', $manager ? $leader_department : NULL);
     $form_state->set('bc_staff_uid', $account?->id());
     $value = static fn(string $field) => $account && $account->hasField($field) ? ($account->get($field)->value ?? '') : '';
     $form['name'] = ['#type' => 'textfield', '#title' => $this->t('Loginbrugernavn'), '#required' => TRUE, '#default_value' => $account?->getAccountName() ?? '', '#maxlength' => 60];
@@ -32,6 +40,11 @@ final class EmployeeForm extends FormBase {
       foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_department') as $term) {
         $form['department']['#options'][$term->tid] = $term->name;
       }
+    }
+    if ($manager) {
+      $form['department']['#options'] = [$leader_department => $form['department']['#options'][$leader_department] ?? $this->t('Egen afdeling')];
+      $form['department']['#default_value'] = $leader_department;
+      $form['department']['#disabled'] = TRUE;
     }
     $form['location'] = ['#type' => 'textfield', '#title' => $this->t('Aktuel lokation'), '#default_value' => $value('field_bc_staff_location'), '#maxlength' => 128];
     $form['enabled'] = ['#type' => 'checkbox', '#title' => $this->t('Aktiv konto (kan logge ind)'), '#default_value' => $account ? (int) $account->isActive() : 1];
@@ -61,7 +74,7 @@ final class EmployeeForm extends FormBase {
         }
       }
     }
-    $department = $form_state->getValue('department');
+    $department = $form_state->get('bc_staff_manager_department') ?: $form_state->getValue('department');
     if ($department && !\Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($department)) {
       $form_state->setErrorByName('department', $this->t('Ugyldig afdeling.'));
     }
@@ -70,7 +83,15 @@ final class EmployeeForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $uid = $form_state->get('bc_staff_uid');
     $user = $uid ? User::load($uid) : User::create();
-    if (!$user || ($uid && ((int) $uid === 1 || $user->hasRole('administrator')))) {
+    $manager_department = $form_state->get('bc_staff_manager_department');
+    if ($manager_department) {
+      $leader = User::load($this->currentUser()->id());
+      if (!\Drupal\bc_staff\Access\EmployeeAccess::departmentId($leader)
+        || ($uid && !\Drupal\bc_staff\Access\EmployeeAccess::canManage($leader, $user))) {
+        throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+      }
+    }
+    if (!$user || ($uid && ((int) $uid === 1 || $user->hasRole('administrator') || $user->hasRole('bc_staff_admin') || $user->hasRole('bc_staff_manager')))) {
       $this->messenger()->addError($this->t('Medarbejderen kunne ikke gemmes.'));
       return;
     }
@@ -95,7 +116,7 @@ final class EmployeeForm extends FormBase {
       }
     }
     if ($user->hasField('field_bc_staff_department')) {
-      $user->set('field_bc_staff_department', $form_state->getValue('department') ?: NULL);
+      $user->set('field_bc_staff_department', ($manager_department ?: $form_state->getValue('department')) ?: NULL);
     }
     if (!$uid && $user->hasField('field_bc_staff_status')) {
       $user->set('field_bc_staff_status', 'absent');
