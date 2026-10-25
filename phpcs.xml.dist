@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<ruleset name="BC Staff Drupal standards">
+  <description>Drupal and DrupalPractice coding standards for BC Staff custom code.</description>
+  <file>web/modules/custom</file>
+  <arg name="extensions" value="php,module,inc,install,profile,theme"/>
+  <arg name="colors"/>
+  <arg name="parallel" value="2"/>
+  <rule ref="Drupal"/>
+  <rule ref="DrupalPractice"/>
+</ruleset>
