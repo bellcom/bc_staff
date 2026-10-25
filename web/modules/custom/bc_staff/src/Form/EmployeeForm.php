@@ -75,7 +75,8 @@ final class EmployeeForm extends FormBase {
       }
     }
     $department = $form_state->get('bc_staff_manager_department') ?: $form_state->getValue('department');
-    if ($department && !\Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($department)) {
+    $term = $department ? \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($department) : NULL;
+    if ($department && (!$term || $term->bundle() !== 'bc_staff_department')) {
       $form_state->setErrorByName('department', $this->t('Ugyldig afdeling.'));
     }
   }
