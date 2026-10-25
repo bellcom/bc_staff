@@ -5,3 +5,4 @@ package: BC Staff
 core_version_requirement: ^11
 dependencies:
   - drupal:user
+  - drupal:taxonomy
