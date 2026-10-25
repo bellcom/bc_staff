@@ -36,7 +36,7 @@ final class DemoDataForm extends ConfirmFormBase {
       'Roskilde – Administration',
       'Roskilde – Team Syd',
     ];
-    $term_storage = $this->entityTypeManager()->getStorage('taxonomy_term');
+    $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     $departments = [];
     foreach ($names as $name) {
       $existing = $term_storage->loadByProperties(['vid' => 'bc_staff_department', 'name' => $name]);
@@ -63,7 +63,7 @@ final class DemoDataForm extends ConfirmFormBase {
       ['Noah Christensen', 'remote', 'Roskilde – Team Syd', 'Hjemme'],
     ];
 
-    $storage = $this->entityTypeManager()->getStorage('user');
+    $storage = \Drupal::entityTypeManager()->getStorage('user');
     $created = 0;
     $updated = 0;
     foreach ($people as $i => [$name, $status, $department, $location]) {
