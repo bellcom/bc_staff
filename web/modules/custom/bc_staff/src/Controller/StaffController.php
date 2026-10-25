@@ -67,6 +67,7 @@ final class StaffController extends ControllerBase {
       '#my_profile_url' => $this->currentUser()->isAuthenticated() ? Url::fromRoute('entity.user.canonical', ['user' => $this->currentUser()->id()])->toString() : '',
       '#status_url' => $this->currentUser()->hasPermission('update own bc staff status')
         ? Url::fromRoute('bc_staff.my_status')->toString() : '',
+      '#employees_url' => ($this->currentUser()->hasPermission('administer bc staff employees') || $this->currentUser()->hasPermission('manage own bc staff department')) ? Url::fromRoute('bc_staff.employee_list')->toString() : '',
       '#demo_url' => $demo_enabled && $this->currentUser()->hasPermission('administer users')
         ? Url::fromRoute('bc_staff_demo.admin')->toString() : '',
       '#attached' => ['library' => ['bc_staff/dashboard']],
