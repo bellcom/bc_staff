@@ -1,0 +1,9 @@
+name: 'BC Staff Demo'
+type: module
+description: 'Fiktive medarbejdere, afdelinger og lokationer til BC Staff-udvikling.'
+package: 'BC Staff'
+core_version_requirement: ^11
+dependencies:
+  - bc_staff:bc_staff
+  - drupal:taxonomy
+  - drupal:user
