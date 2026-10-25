@@ -1,14 +1,14 @@
 bc_staff.overview:
   title: 'BC Staff'
-  description: 'Medarbejderoverblik'
+  description: 'Staff overview'
   route_name: bc_staff.overview
   menu_name: main
 bc_staff.my_status:
-  title: 'Min status'
+  title: 'My status'
   route_name: bc_staff.my_status
   menu_name: main
 bc_staff.employees:
-  title: 'BC Staff medarbejdere'
-  description: 'Opret og vedligehold medarbejdere'
+  title: 'BC Staff employees'
+  description: 'Create and manage employees'
   route_name: bc_staff.employee_list
   menu_name: main
