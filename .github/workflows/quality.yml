@@ -38,7 +38,9 @@ jobs:
             xargs -0 -r -n1 php -l
 
       - name: Drupal and DrupalPractice PHPCS
+        if: always()
         run: vendor/bin/phpcs --standard=phpcs.xml.dist
 
       - name: Source-language check
+        if: always()
         run: python3 scripts/check-source-language.py
