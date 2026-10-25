@@ -1,0 +1,7 @@
+langcode: da
+status: true
+dependencies: {  }
+name: 'BC Staff lokationer'
+vid: bc_staff_location
+description: 'Lokationer der kan vælges ved statusregistrering.'
+weight: 0
