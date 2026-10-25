@@ -3,7 +3,7 @@
 namespace Drupal\bc_staff\Theme;
 
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Theme\ThemeHandlerInterface;
+use Drupal\Core\Extension\ThemeHandlerInterface;
 use Drupal\Core\Theme\ThemeNegotiatorInterface;
 
 /**
