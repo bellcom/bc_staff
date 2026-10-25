@@ -1,0 +1,155 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BC Staff\n"
+"Language: da\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Employee overview"
+msgstr "Medarbejderoverblik"
+
+msgid "Current status and location. The overview refreshes every 30 seconds."
+msgstr "Aktuel status og placering. Oversigten opdateres hvert 30. sekund."
+
+msgid "Signed in as"
+msgstr "Logget ind som"
+
+msgid "My status"
+msgstr "Min status"
+
+msgid "Employees"
+msgstr "Medarbejdere"
+
+msgid "Demo data"
+msgstr "Testdata"
+
+msgid "Department"
+msgstr "Afdeling"
+
+msgid "All departments"
+msgstr "Alle afdelinger"
+
+msgid "you"
+msgstr "dig"
+
+msgid "No department"
+msgstr "Ingen afdeling"
+
+msgid "Not specified"
+msgstr "Ikke angivet"
+
+msgid "No employees are available in the overview."
+msgstr "Ingen medarbejdere er tilgængelige i overblikket."
+
+msgid "No employees in the selected department."
+msgstr "Ingen medarbejdere i den valgte afdeling."
+
+msgid "Staff overview"
+msgstr "Medarbejderoverblik"
+
+msgid "Welcome to BC Staff"
+msgstr "Velkommen til BC Staff"
+
+msgid "Sign in with your employee account."
+msgstr "Log ind med din medarbejderkonto."
+
+msgid "You are already signed in to BC Staff."
+msgstr "Du er allerede logget ind i BC Staff."
+
+msgid "My status – mobile"
+msgstr "Min status – mobil"
+
+msgid "Current status: @status"
+msgstr "Aktuel status: @status"
+
+msgid "Current location: @location"
+msgstr "Aktuel lokation: @location"
+
+msgid "Select a status to save it immediately. Use the save button below to update your location."
+msgstr "Vælg en status for at gemme den med det samme. Brug knappen nedenfor til at opdatere din lokation."
+
+msgid "My location"
+msgstr "Min lokation"
+
+msgid "Select a location"
+msgstr "Vælg lokation"
+
+msgid "Save my status"
+msgstr "Gem min status"
+
+msgid "Your status has been updated."
+msgstr "Din status er opdateret."
+
+msgid "Invalid status."
+msgstr "Ugyldig status."
+
+msgid "Invalid location."
+msgstr "Ugyldig lokation."
+
+msgid "Add employee"
+msgstr "Opret medarbejder"
+
+msgid "Edit employee"
+msgstr "Rediger medarbejder"
+
+msgid "Save employee"
+msgstr "Gem medarbejder"
+
+msgid "Employee name"
+msgstr "Medarbejdernavn"
+
+msgid "Login username"
+msgstr "Loginbrugernavn"
+
+msgid "Manage BC Staff employees"
+msgstr "Administrer BC Staff-medarbejdere"
+
+msgid "Manage employees in own department"
+msgstr "Administrer medarbejdere i egen afdeling"
+
+msgid "View BC Staff overview"
+msgstr "Se BC Staff-medarbejderoverblik"
+
+msgid "Update own BC Staff status"
+msgstr "Opdater egen BC Staff-status"
+
+msgid "Working remotely"
+msgstr "Hjemmearbejde"
+
+msgid "Present"
+msgstr "Til stede"
+
+msgid "In a meeting"
+msgstr "I møde"
+
+msgid "On break"
+msgstr "Pause"
+
+msgid "Out of office"
+msgstr "Ude af huset"
+
+msgid "Absent"
+msgstr "Ikke til stede"
+
+msgid "No employees."
+msgstr "Ingen medarbejdere."
+
+msgid "Active"
+msgstr "Aktiv"
+
+msgid "Blocked"
+msgstr "Blokeret"
+
+msgid "Action"
+msgstr "Handling"
+
+msgid "Status: @status"
+msgstr "Status: @status"
+
+msgid "Location: @location"
+msgstr "Lokation: @location"
+
+msgid "Update my BC Staff status"
+msgstr "Ændr min status i BC Staff"
+
