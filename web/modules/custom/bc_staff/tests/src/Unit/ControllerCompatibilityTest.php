@@ -3,6 +3,11 @@
 namespace Drupal\Tests\bc_staff\Unit;
 
 use Drupal\Tests\UnitTestCase;
+use Drupal\bc_staff\Controller\StaffController;
+use Drupal\bc_staff\Controller\StaffLoginController;
+use Drupal\bc_staff\Controller\EmployeeAdminController;
+use Drupal\bc_staff\Form\EmployeeForm;
+use Drupal\bc_staff\Form\MyStatusForm;
 
 /**
  * Ensures BC Staff classes remain compatible with Drupal core inheritance.
@@ -16,11 +21,11 @@ final class ControllerCompatibilityTest extends UnitTestCase {
    */
   public function testClassesLoad(): void {
     foreach ([
-      \Drupal\bc_staff\Controller\StaffController::class,
-      \Drupal\bc_staff\Controller\StaffLoginController::class,
-      \Drupal\bc_staff\Controller\EmployeeAdminController::class,
-      \Drupal\bc_staff\Form\EmployeeForm::class,
-      \Drupal\bc_staff\Form\MyStatusForm::class,
+      StaffController::class,
+      StaffLoginController::class,
+      EmployeeAdminController::class,
+      EmployeeForm::class,
+      MyStatusForm::class,
     ] as $class) {
       $this->assertTrue(class_exists($class), sprintf('%s must be loadable.', $class));
     }
