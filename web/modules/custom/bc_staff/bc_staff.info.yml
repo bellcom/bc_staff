@@ -1,0 +1,7 @@
+name: BC Staff
+type: module
+description: 'Medarbejderoverblik og personlig status for BC Staff.'
+package: BC Staff
+core_version_requirement: ^11
+dependencies:
+  - drupal:user
