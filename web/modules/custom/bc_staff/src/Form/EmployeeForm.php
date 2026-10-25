@@ -19,7 +19,7 @@ final class EmployeeForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $id = \Drupal::routeMatch()->getParameter('user');
     $account = $id ? User::load(is_object($id) ? $id->id() : $id) : NULL;
-    if ($id && (!$account || (int) $account->id() === 1)) {
+    if ($id && (!$account || (int) $account->id() === 1 || $account->hasRole('administrator'))) {
       return ['notice' => ['#markup' => $this->t('Denne konto kan ikke redigeres her.')]];
     }
     $form_state->set('bc_staff_uid', $account?->id());
@@ -70,7 +70,7 @@ final class EmployeeForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $uid = $form_state->get('bc_staff_uid');
     $user = $uid ? User::load($uid) : User::create();
-    if (!$user || ($uid && (int) $uid === 1)) {
+    if (!$user || ($uid && ((int) $uid === 1 || $user->hasRole('administrator')))) {
       $this->messenger()->addError($this->t('Medarbejderen kunne ikke gemmes.'));
       return;
     }
