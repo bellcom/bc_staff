@@ -17,6 +17,8 @@ function bc_staff_theme($existing, $type, $theme, $path): array {
         'avatar' => '',
         'status_url' => '',
         'demo_url' => '',
+        'my_name' => '',
+        'my_profile_url' => '',
       ],
       'template' => 'bc-staff-dashboard',
     ],
