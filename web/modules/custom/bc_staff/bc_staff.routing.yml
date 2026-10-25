@@ -19,3 +19,26 @@ bc_staff.mobile:
     _title: 'Min status – mobil'
   requirements:
     _permission: 'update own bc staff status'
+
+bc_staff.employee_list:
+  path: '/admin/bc-staff/employees'
+  defaults:
+    _controller: '\Drupal\bc_staff\Controller\EmployeeAdminController::listing'
+    _title: 'BC Staff – medarbejdere'
+  requirements:
+    _permission: 'administer bc staff employees'
+bc_staff.employee_add:
+  path: '/admin/bc-staff/employees/add'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\EmployeeForm'
+    _title: 'Opret medarbejder'
+  requirements:
+    _permission: 'administer bc staff employees'
+bc_staff.employee_edit:
+  path: '/admin/bc-staff/employees/{user}/edit'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\EmployeeForm'
+    _title: 'Rediger medarbejder'
+  requirements:
+    _permission: 'administer bc staff employees'
+    user: '\d+'
