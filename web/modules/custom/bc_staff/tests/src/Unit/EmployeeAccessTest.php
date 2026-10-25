@@ -68,7 +68,9 @@ final class EmployeeAccessTest extends UnitTestCase {
     $user->method('hasField')->willReturn(TRUE);
     $field = $this->createMock(FieldItemListInterface::class);
     $field->method('isEmpty')->willReturn($department === NULL);
-    $field->target_id = $department;
+    $field->method('__get')->willReturnCallback(
+      static fn (string $name): ?string => $name === 'target_id' ? $department : NULL,
+    );
     $user->method('get')->willReturn($field);
     return $user;
   }
