@@ -19,3 +19,9 @@ mobile:
   dependencies:
     - core/drupal
     - core/once
+
+login:
+  version: 0.4.0
+  css:
+    theme:
+      css/login.css: {}
