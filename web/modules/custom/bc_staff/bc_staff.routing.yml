@@ -21,21 +21,21 @@ bc_staff.mobile:
     _permission: 'update own bc staff status'
 
 bc_staff.employee_list:
-  path: '/admin/bc-staff/employees'
+  path: '/staff/medarbejdere'
   defaults:
     _controller: '\Drupal\bc_staff\Controller\EmployeeAdminController::listing'
     _title: 'BC Staff – medarbejdere'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
 bc_staff.employee_add:
-  path: '/admin/bc-staff/employees/add'
+  path: '/staff/medarbejdere/ny'
   defaults:
     _form: '\Drupal\bc_staff\Form\EmployeeForm'
     _title: 'Opret medarbejder'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
 bc_staff.employee_edit:
-  path: '/admin/bc-staff/employees/{user}/edit'
+  path: '/staff/medarbejdere/{user}/rediger'
   defaults:
     _form: '\Drupal\bc_staff\Form\EmployeeForm'
     _title: 'Rediger medarbejder'
