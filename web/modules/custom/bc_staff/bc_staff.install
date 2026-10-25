@@ -35,3 +35,27 @@ function bc_staff_update_11002(): void {
   $role->grantPermission('update own bc staff status');
   $role->save();
 }
+
+/**
+ * Create scoped BC Staff administration roles for existing sites.
+ */
+function bc_staff_update_11003(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('user_role');
+  $roles = [
+    'bc_staff_admin' => [
+      'label' => 'BC Staff Administrator',
+      'permissions' => ['view bc staff overview', 'update own bc staff status', 'administer bc staff employees'],
+    ],
+    'bc_staff_manager' => [
+      'label' => 'BC Staff Leder',
+      'permissions' => ['view bc staff overview', 'update own bc staff status', 'manage own bc staff department'],
+    ],
+  ];
+  foreach ($roles as $id => $settings) {
+    $role = $storage->load($id) ?: $storage->create(['id' => $id, 'label' => $settings['label']]);
+    foreach ($settings['permissions'] as $permission) {
+      $role->grantPermission($permission);
+    }
+    $role->save();
+  }
+}
