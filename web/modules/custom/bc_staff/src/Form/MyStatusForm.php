@@ -4,7 +4,6 @@ namespace Drupal\bc_staff\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
@@ -37,7 +36,6 @@ final class MyStatusForm extends FormBase {
       '#attributes' => ['class' => ['bc-staff-mobile-identity']],
       'eyebrow' => ['#markup' => '<p class="bc-staff-mobile-identity__label">Du er logget ind som</p>'],
       'name' => ['#type' => 'html_tag', '#tag' => 'strong', '#value' => $display_name],
-      'account' => ['#type' => 'html_tag', '#tag' => 'small', '#value' => $account->getAccountName()],
       'status' => ['#type' => 'html_tag', '#tag' => 'p', '#value' => 'Aktuel status: ' . ($options[$current_status] ?? 'Ikke angivet')],
       'location' => ['#type' => 'html_tag', '#tag' => 'p', '#value' => 'Aktuel lokation: ' . $current_location],
     ];
