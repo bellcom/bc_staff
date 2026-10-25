@@ -18,3 +18,20 @@ function bc_staff_update_11001(): void {
     ])->save();
   }
 }
+
+/**
+ * Ensure the BC Staff employee role exists on upgraded sites.
+ */
+function bc_staff_update_11002(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('user_role');
+  $role = $storage->load('bc_staff_employee');
+  if (!$role) {
+    $role = $storage->create([
+      'id' => 'bc_staff_employee',
+      'label' => 'BC Staff Medarbejder',
+    ]);
+  }
+  $role->grantPermission('view bc staff overview');
+  $role->grantPermission('update own bc staff status');
+  $role->save();
+}
