@@ -26,8 +26,23 @@ final class MyStatusForm extends FormBase {
     $form['#prefix'] = '<div class="bc-staff-mobile">';
     $form['#suffix'] = '</div>';
     $form['#attached']['library'][] = 'bc_staff/mobile';
+    $display_name = $account->getDisplayName();
+    if ($account->hasField('field_bc_staff_display_name') && !$account->get('field_bc_staff_display_name')->isEmpty()) {
+      $display_name = $account->get('field_bc_staff_display_name')->value;
+    }
+    $current_status = $account->get('field_bc_staff_status')->value ?: 'absent';
+    $current_location = $account->get('field_bc_staff_location')->value ?: 'Ikke angivet';
+    $form['identity'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => ['bc-staff-mobile-identity']],
+      'eyebrow' => ['#markup' => '<p class="bc-staff-mobile-identity__label">Du er logget ind som</p>'],
+      'name' => ['#type' => 'html_tag', '#tag' => 'strong', '#value' => $display_name],
+      'account' => ['#type' => 'html_tag', '#tag' => 'small', '#value' => $account->getAccountName()],
+      'status' => ['#type' => 'html_tag', '#tag' => 'p', '#value' => 'Aktuel status: ' . ($options[$current_status] ?? 'Ikke angivet')],
+      'location' => ['#type' => 'html_tag', '#tag' => 'p', '#value' => 'Aktuel lokation: ' . $current_location],
+    ];
     $form['intro'] = [
-      '#markup' => '<p class="bc-staff-mobile-note">Vælg din status og placering. Ændringer gemmes først, når du trykker Gem.</p>',
+      '#markup' => '<p class="bc-staff-mobile-note">Tryk på en status for at gemme den med det samme. Ændring af lokation gemmes med knappen nedenfor.</p>',
     ];
     $form['status'] = [
       '#type' => 'radios',
