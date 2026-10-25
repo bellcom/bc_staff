@@ -1,0 +1,38 @@
+langcode: da
+status: true
+dependencies:
+  module:
+    - options
+    - user
+id: user.field_bc_staff_status
+field_name: field_bc_staff_status
+entity_type: user
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: present
+      label: 'Til stede'
+    -
+      value: meeting
+      label: 'I møde'
+    -
+      value: break
+      label: 'Pause'
+    -
+      value: away
+      label: 'Ude af huset'
+    -
+      value: remote
+      label: 'Hjemmearbejde'
+    -
+      value: absent
+      label: 'Ikke til stede'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: false
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
