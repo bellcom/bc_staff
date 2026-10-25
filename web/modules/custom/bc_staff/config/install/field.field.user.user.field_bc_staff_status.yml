@@ -1,0 +1,21 @@
+langcode: da
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_bc_staff_status
+  module:
+    - user
+id: user.user.field_bc_staff_status
+field_name: field_bc_staff_status
+entity_type: user
+bundle: user
+label: 'BC Staff status'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: absent
+default_value_callback: ''
+settings: {  }
+field_type: list_string
