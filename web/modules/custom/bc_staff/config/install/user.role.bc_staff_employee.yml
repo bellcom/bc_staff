@@ -1,0 +1,12 @@
+langcode: da
+status: true
+dependencies:
+  module:
+    - bc_staff
+id: bc_staff_employee
+label: 'BC Staff Medarbejder'
+weight: 3
+is_admin: false
+permissions:
+  - 'view bc staff overview'
+  - 'update own bc staff status'
