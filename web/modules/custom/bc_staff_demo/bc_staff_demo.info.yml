@@ -1,6 +1,6 @@
 name: 'BC Staff Demo'
 type: module
-description: 'Fiktive medarbejdere, afdelinger og lokationer til BC Staff-udvikling.'
+description: 'Fictional employees, departments, and locations for BC Staff development.'
 package: 'BC Staff'
 core_version_requirement: ^11
 dependencies:
