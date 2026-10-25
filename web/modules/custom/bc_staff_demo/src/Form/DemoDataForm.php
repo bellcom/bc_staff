@@ -20,15 +20,24 @@ final class DemoDataForm extends ConfirmFormBase {
     return 'bc_staff_demo_data_form';
   }
 
-  /**\n   * Returns the confirmation question.\n   */\n  public function getQuestion() {
+  /**
+   * Returns the confirmation question.
+   */
+  public function getQuestion() {
     return $this->t('Opret eller opdater fiktive BC Staff-testdata?');
   }
 
-  /**\n   * Returns the confirmation description.\n   */\n  public function getDescription() {
+  /**
+   * Returns the confirmation description.
+   */
+  public function getDescription() {
     return $this->t('Opretter 4 afdelinger og 12 blokerede testkonti. Kun konti med navne, der starter med bc_demo_, ændres. Eksisterende konti med samme navn og uden demo-markering ændres ikke.');
   }
 
-  /**\n   * Returns the cancel URL.\n   */\n  public function getCancelUrl(): Url {
+  /**
+   * Returns the cancel URL.
+   */
+  public function getCancelUrl(): Url {
     return Url::fromRoute('bc_staff.overview');
   }
 
