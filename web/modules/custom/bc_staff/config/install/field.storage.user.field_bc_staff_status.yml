@@ -1,4 +1,4 @@
-langcode: da
+langcode: en
 status: true
 dependencies:
   module:
@@ -12,22 +12,22 @@ settings:
   allowed_values:
     -
       value: present
-      label: 'Til stede'
+      label: 'Present'
     -
       value: meeting
-      label: 'I møde'
+      label: 'In a meeting'
     -
       value: break
-      label: 'Pause'
+      label: 'On break'
     -
       value: away
-      label: 'Ude af huset'
+      label: 'Out of office'
     -
       value: remote
-      label: 'Hjemmearbejde'
+      label: 'Working remotely'
     -
       value: absent
-      label: 'Ikke til stede'
+      label: 'Absent'
   allowed_values_function: ''
 module: options
 locked: false

@@ -22,7 +22,7 @@
             card.hidden = !show;
             if (show) visible++;
           });
-          count.textContent = visible + ' medarbejdere';
+          count.textContent = Drupal.formatPlural(visible, '1 employee', '@count employees');
           empty.hidden = visible > 0;
           try { sessionStorage.setItem(storageKey, select.value); } catch (error) {}
         };

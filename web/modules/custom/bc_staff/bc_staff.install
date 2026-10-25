@@ -13,8 +13,8 @@ function bc_staff_update_11001(): void {
   if (!$storage->load('bc_staff_location')) {
     $storage->create([
       'vid' => 'bc_staff_location',
-      'name' => 'BC Staff lokationer',
-      'description' => 'Lokationer som kan vælges i medarbejdernes statusregistrering.',
+      'name' => 'BC Staff locations',
+      'description' => 'Locations available for employee status updates.',
     ])->save();
   }
 }
@@ -28,7 +28,7 @@ function bc_staff_update_11002(): void {
   if (!$role) {
     $role = $storage->create([
       'id' => 'bc_staff_employee',
-      'label' => 'BC Staff Medarbejder',
+      'label' => 'BC Staff Employee',
     ]);
   }
   $role->grantPermission('view bc staff overview');
@@ -47,7 +47,7 @@ function bc_staff_update_11003(): void {
       'permissions' => ['view bc staff overview', 'update own bc staff status', 'administer bc staff employees'],
     ],
     'bc_staff_manager' => [
-      'label' => 'BC Staff Leder',
+      'label' => 'BC Staff Manager',
       'permissions' => ['view bc staff overview', 'update own bc staff status', 'manage own bc staff department'],
     ],
   ];

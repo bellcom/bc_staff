@@ -1,4 +1,4 @@
-langcode: da
+langcode: en
 status: true
 dependencies:
   config:
@@ -8,7 +8,7 @@ id: user.user.field_bc_staff_department
 field_name: field_bc_staff_department
 entity_type: user
 bundle: user
-label: Afdeling
+label: Department
 description: ''
 required: false
 translatable: false

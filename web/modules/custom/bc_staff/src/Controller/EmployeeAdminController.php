@@ -4,21 +4,26 @@ namespace Drupal\bc_staff\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
-use Drupal\user\Entity\User;
+use Drupal\bc_staff\Access\EmployeeAccess;
 
 /**
  * BC Staff employee administration.
  */
 final class EmployeeAdminController extends ControllerBase {
 
+  /**
+   * Handles listing.
+   */
   public function listing(): array {
     $rows = [];
-    $ids = $this->entityTypeManager()->getStorage('user')->getQuery()
+    $storage = $this->entityTypeManager()->getStorage('user');
+    $ids = $storage->getQuery()
       ->accessCheck(FALSE)->condition('uid', 0, '>')->sort('name')->execute();
-    $manager = $this->currentUser()->hasPermission('manage own bc staff department') && !$this->currentUser()->hasPermission('administer bc staff employees');
-    $leader = $manager ? User::load($this->currentUser()->id()) : NULL;
-    foreach (User::loadMultiple($ids) as $user) {
-      if ($manager && !\Drupal\bc_staff\Access\EmployeeAccess::canManage($leader, $user)) {
+    $manager = $this->currentUser()->hasPermission('manage own bc staff department')
+      && !$this->currentUser()->hasPermission('administer bc staff employees');
+    $leader = $manager ? $storage->load($this->currentUser()->id()) : NULL;
+    foreach ($storage->loadMultiple($ids) as $user) {
+      if ($manager && !EmployeeAccess::canManage($leader, $user)) {
         continue;
       }
       if (!$manager && ((int) $user->id() === 1 || $user->hasRole('administrator'))) {
@@ -36,16 +41,44 @@ final class EmployeeAdminController extends ControllerBase {
       }
       $rows[] = [
         'data' => [
-          $name, $user->getAccountName(), $department,
-          $user->isActive() ? $this->t('Aktiv') : $this->t('Blokeret'),
-          ['data' => ['#type' => 'link', '#title' => $this->t('Rediger'), '#url' => Url::fromRoute('bc_staff.employee_edit', ['user' => $user->id()])]],
+          $name,
+          $user->getAccountName(),
+          $department,
+          $user->isActive() ? $this->t('Active') : $this->t('Blocked'),
+          [
+            'data' => [
+              '#type' => 'link',
+              '#title' => $this->t('Edit'),
+              '#url' => Url::fromRoute('bc_staff.employee_edit', [
+                'user' => $user->id(),
+              ]),
+            ],
+          ],
         ],
       ];
     }
     return [
-      'description' => ['#markup' => '<p>Medarbejdere anvender eksisterende Drupal-brugerkonti. Login og medarbejderoplysninger redigeres samlet.</p>'],
-      'add' => ['#type' => 'link', '#title' => $this->t('Opret medarbejder'), '#url' => Url::fromRoute('bc_staff.employee_add'), '#attributes' => ['class' => ['button', 'button--primary']]],
-      'table' => ['#type' => 'table', '#header' => [$this->t('Medarbejder'), $this->t('Login'), $this->t('Afdeling'), $this->t('Konto'), $this->t('Handling')], '#rows' => $rows, '#empty' => $this->t('Ingen medarbejdere.')],
+      'description' => [
+        '#markup' => '<p>' . $this->t('Employees use existing Drupal user accounts. Manage their login and staff details together.') . '</p>',
+      ],
+      'add' => [
+        '#type' => 'link',
+        '#title' => $this->t('Add employee'),
+        '#url' => Url::fromRoute('bc_staff.employee_add'),
+        '#attributes' => ['class' => ['button', 'button--primary']],
+      ],
+      'table' => [
+        '#type' => 'table',
+        '#header' => [
+          $this->t('Employee'),
+          $this->t('Login'),
+          $this->t('Department'),
+          $this->t('Account'),
+          $this->t('Action'),
+        ],
+        '#rows' => $rows,
+        '#empty' => $this->t('No employees.'),
+      ],
       '#cache' => ['max-age' => 0],
     ];
   }

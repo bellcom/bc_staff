@@ -11,6 +11,9 @@ use Drupal\user\Entity\User;
  */
 final class EmployeeAccess {
 
+  /**
+   * Checks access to employee administration routes.
+   */
   public static function access(AccountInterface $account): AccessResult {
     if ($account->id() === '1' || $account->hasPermission('administer bc staff employees')) {
       return AccessResult::allowed()->cachePerPermissions();
@@ -35,6 +38,9 @@ final class EmployeeAccess {
     return AccessResult::allowed()->cachePerUser();
   }
 
+  /**
+   * Returns the staff department ID assigned to a user.
+   */
   public static function departmentId(?User $user): ?string {
     if (!$user || !$user->hasField('field_bc_staff_department') || $user->get('field_bc_staff_department')->isEmpty()) {
       return NULL;
@@ -42,6 +48,9 @@ final class EmployeeAccess {
     return (string) $user->get('field_bc_staff_department')->target_id;
   }
 
+  /**
+   * Checks whether a manager may edit the given employee.
+   */
   public static function canManage(?User $leader, ?User $target): bool {
     if (!$leader || !$target || (int) $target->id() === 1
       || $target->hasRole('administrator') || $target->hasRole('bc_staff_admin')

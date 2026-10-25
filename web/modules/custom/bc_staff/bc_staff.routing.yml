@@ -2,21 +2,21 @@ bc_staff.overview:
   path: '/staff'
   defaults:
     _controller: '\Drupal\bc_staff\Controller\StaffController::overview'
-    _title: 'Medarbejderoverblik'
+    _title: 'Staff overview'
   requirements:
     _permission: 'view bc staff overview'
 bc_staff.my_status:
   path: '/staff/min-status'
   defaults:
     _form: '\Drupal\bc_staff\Form\MyStatusForm'
-    _title: 'Min status'
+    _title: 'My status'
   requirements:
     _permission: 'update own bc staff status'
 bc_staff.mobile:
   path: '/staff/mobil'
   defaults:
     _form: '\Drupal\bc_staff\Form\MyStatusForm'
-    _title: 'Min status – mobil'
+    _title: 'My status – mobile'
   requirements:
     _permission: 'update own bc staff status'
 
@@ -24,21 +24,21 @@ bc_staff.employee_list:
   path: '/staff/medarbejdere'
   defaults:
     _controller: '\Drupal\bc_staff\Controller\EmployeeAdminController::listing'
-    _title: 'BC Staff – medarbejdere'
+    _title: 'BC Staff employees'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
 bc_staff.employee_add:
   path: '/staff/medarbejdere/ny'
   defaults:
     _form: '\Drupal\bc_staff\Form\EmployeeForm'
-    _title: 'Opret medarbejder'
+    _title: 'Add employee'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
 bc_staff.employee_edit:
   path: '/staff/medarbejdere/{user}/rediger'
   defaults:
     _form: '\Drupal\bc_staff\Form\EmployeeForm'
-    _title: 'Rediger medarbejder'
+    _title: 'Edit employee'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
     user: '\d+'

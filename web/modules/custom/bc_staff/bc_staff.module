@@ -5,6 +5,13 @@
  * Theme registration for BC Staff.
  */
 
+use Drupal\Component\Utility\Html;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Url;
+use Drupal\user\UserInterface;
+
 /**
  * Implements hook_theme().
  */
@@ -51,7 +58,7 @@ function bc_staff_page_attachments(array &$page): void {
  *
  * Show BC Staff identity on the profile, not on the shared/public overview.
  */
-function bc_staff_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode): void {
+function bc_staff_entity_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode): void {
   if ($entity->getEntityTypeId() !== 'user') {
     return;
   }
@@ -74,30 +81,35 @@ function bc_staff_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface
     'heading' => [
       '#type' => 'html_tag',
       '#tag' => 'h2',
-      '#value' => 'BC Staff: ' . $name,
+      '#value' => Html::escape('BC Staff: ' . $name),
     ],
-    'status' => ['#plain_text' => 'Status: ' . ($options[$key] ?? 'Ikke angivet')],
-    'location' => ['#markup' => '<p>' . \Drupal\Component\Utility\Html::escape('Lokation: ' . ($entity->get('field_bc_staff_location')->value ?: 'Ikke angivet')) . '</p>'],
+    'status' => [
+      '#plain_text' => t('Status: @status', ['@status' => $options[$key] ?? t('Not specified')]),
+    ],
+    'location' => [
+      '#markup' => '<p>' . t('Location: @location', [
+        '@location' => $entity->get('field_bc_staff_location')->value ?: t('Not specified'),
+      ]) . '</p>',
+    ],
     '#cache' => ['contexts' => ['user'], 'tags' => $entity->getCacheTags()],
   ];
   if ((int) $viewer->id() === (int) $entity->id() && $viewer->hasPermission('update own bc staff status')) {
     $build['bc_staff_identity']['mobile'] = [
       '#type' => 'link',
-      '#title' => t('Ændr min status i BC Staff'),
-      '#url' => \Drupal\Core\Url::fromRoute('bc_staff.mobile'),
+      '#title' => t('Update my BC Staff status'),
+      '#url' => Url::fromRoute('bc_staff.mobile'),
     ];
   }
 }
-
 
 /**
  * Implements hook_user_format_name_alter().
  *
  * Keep the login name unchanged; use the staff name for display everywhere.
  */
-function bc_staff_user_format_name_alter(&$name, \Drupal\Core\Session\AccountInterface $account): void {
+function bc_staff_user_format_name_alter(&$name, AccountInterface $account): void {
   // The current user session is not necessarily a full user entity.
-  if (!$account instanceof \Drupal\user\UserInterface) {
+  if (!$account instanceof UserInterface) {
     return;
   }
   if (!$account->hasField('field_bc_staff_display_name')) {

@@ -19,10 +19,16 @@ final class MobileLoginRedirectSubscriber implements EventSubscriberInterface {
     private readonly AccountProxyInterface $currentUser,
   ) {}
 
+  /**
+   * Registers handled events.
+   */
   public static function getSubscribedEvents(): array {
     return [KernelEvents::EXCEPTION => ['onException', 75]];
   }
 
+  /**
+   * Handles onException.
+   */
   public function onException(ExceptionEvent $event): void {
     if (!$event->getThrowable() instanceof AccessDeniedHttpException
       || $this->currentUser->isAuthenticated()) {

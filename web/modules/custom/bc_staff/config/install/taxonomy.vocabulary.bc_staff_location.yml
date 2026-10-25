@@ -1,7 +1,7 @@
-langcode: da
+langcode: en
 status: true
 dependencies: {  }
-name: 'BC Staff lokationer'
+name: 'BC Staff locations'
 vid: bc_staff_location
-description: 'Lokationer der kan vælges ved statusregistrering.'
+description: 'Locations available during status updates.'
 weight: 0

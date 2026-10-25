@@ -2,20 +2,20 @@
   <div class="bc-staff__header">
     <div>
       <p class="bc-staff__eyebrow">BC STAFF</p>
-      <h2>Medarbejderoverblik</h2>
-      <p>Aktuel status og placering. Oversigten opdateres hvert 30. sekund.</p>
+      <h2>{{ 'Employee overview'|t }}</h2>
+      <p>{{ 'Current status and location. The overview refreshes every 30 seconds.'|t }}</p>
     </div>
     <div class="bc-staff__actions">
-      {% if my_profile_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ my_profile_url }}">Logget ind: {{ my_name }}</a>{% endif %}
-      {% if status_url %}<a class="bc-staff__action" href="{{ status_url }}">Min status</a>{% endif %}
-      {% if employees_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ employees_url }}">Medarbejdere</a>{% endif %}
-      {% if demo_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ demo_url }}">Testdata</a>{% endif %}
+      {% if my_profile_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ my_profile_url }}">{{ 'Signed in as'|t }}: {{ my_name }}</a>{% endif %}
+      {% if status_url %}<a class="bc-staff__action" href="{{ status_url }}">{{ 'My status'|t }}</a>{% endif %}
+      {% if employees_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ employees_url }}">{{ 'Employees'|t }}</a>{% endif %}
+      {% if demo_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ demo_url }}">{{ 'Demo data'|t }}</a>{% endif %}
     </div>
   </div>
   <div class="bc-staff__toolbar">
-    <label for="bc-staff-department">Afdeling</label>
+    <label for="bc-staff-department">{{ 'Department'|t }}</label>
     <select id="bc-staff-department" data-bc-staff-filter>
-      <option value="">Alle afdelinger</option>
+      <option value="">{{ 'All departments'|t }}</option>
       {% for department in departments %}
         <option value="{{ department }}">{{ department }}</option>
       {% endfor %}
@@ -28,19 +28,19 @@
         <div class="bc-staff__person">
           <img class="bc-staff__avatar" src="{{ avatar }}" alt="" width="64" height="64" loading="lazy">
           <div>
-            <h3>{% if person.profile_url %}<a href="{{ person.profile_url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if person.is_me %} <small>(dig)</small>{% endif %}</h3>
-            <p>{{ person.department ?: 'Uden afdeling' }}</p>
+            <h3>{% if person.profile_url %}<a href="{{ person.profile_url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if person.is_me %} <small>({{ 'you'|t }})</small>{% endif %}</h3>
+            <p>{{ person.department ?: 'No department'|t }}</p>
           </div>
         </div>
         <div class="bc-staff__status bc-staff__status--{{ person.status_key }}">
           <span class="bc-staff__dot" aria-hidden="true"></span>
           <span>{{ person.status }}</span>
         </div>
-        <p class="bc-staff__location"><span aria-hidden="true">⌖</span> {{ person.location ?: 'Ikke angivet' }}</p>
+        <p class="bc-staff__location"><span aria-hidden="true">⌖</span> {{ person.location ?: 'Not specified'|t }}</p>
       </article>
     {% else %}
-      <p>Ingen medarbejdere er tilgængelige i overblikket.</p>
+      <p>{{ 'No employees are available in the overview.'|t }}</p>
     {% endfor %}
   </div>
-  <p class="bc-staff__empty" data-bc-staff-empty hidden>Ingen medarbejdere i den valgte afdeling.</p>
+  <p class="bc-staff__empty" data-bc-staff-empty hidden>{{ 'No employees in the selected department.'|t }}</p>
 </div>
