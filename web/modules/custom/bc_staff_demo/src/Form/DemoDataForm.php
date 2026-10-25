@@ -2,16 +2,30 @@
 
 namespace Drupal\bc_staff_demo\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\user\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Adds or refreshes fictional, blocked demo accounts.
  */
 final class DemoDataForm extends ConfirmFormBase {
+
+  /**
+   * Constructs the demo data confirmation form.
+   */
+  public function __construct(
+    private readonly EntityTypeManagerInterface $staffEntityTypeManager,
+  ) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    return new static($container->get('entity_type.manager'));
+  }
 
   /**
    * Returns the form ID.
@@ -24,14 +38,14 @@ final class DemoDataForm extends ConfirmFormBase {
    * Returns the confirmation question.
    */
   public function getQuestion() {
-    return $this->t('Opret eller opdater fiktive BC Staff-testdata?');
+    return $this->t('Create or refresh fictional BC Staff demo data?');
   }
 
   /**
    * Returns the confirmation description.
    */
   public function getDescription() {
-    return $this->t('Opretter 4 afdelinger og 12 blokerede testkonti. Kun konti med navne, der starter med bc_demo_, ændres. Eksisterende konti med samme navn og uden demo-markering ændres ikke.');
+    return $this->t('Creates four departments and twelve blocked demo accounts. Only accounts starting with bc_demo_ are updated. Existing non-demo accounts remain unchanged.');
   }
 
   /**
@@ -47,25 +61,31 @@ final class DemoDataForm extends ConfirmFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $names = [
       'Næstved – Administration',
-      'Næstved – Team Nord',
+      'Næstved – North Team',
       'Roskilde – Administration',
-      'Roskilde – Team Syd',
+      'Roskilde – South Team',
     ];
-    $term_storage = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $term_storage = $this->staffEntityTypeManager->getStorage('taxonomy_term');
     $departments = [];
     foreach ($names as $name) {
       $existing = $term_storage->loadByProperties(['vid' => 'bc_staff_department', 'name' => $name]);
       $term = reset($existing);
       if (!$term) {
-        $term = Term::create(['vid' => 'bc_staff_department', 'name' => $name]);
+        $term = $term_storage->create(['vid' => 'bc_staff_department', 'name' => $name]);
         $term->save();
       }
       $departments[$name] = $term->id();
     }
 
     $locations = [
-      'Reception', 'Møderum 1', 'Møderum 2', 'Personalerum',
-      'Kontor 2', 'Kontor 3', 'Hjemme', 'Ude af huset',
+      'Reception',
+      'Meeting room 1',
+      'Meeting room 2',
+      'Staff room',
+      'Office 2',
+      'Office 3',
+      'Home',
+      'Out of office',
     ];
     foreach ($locations as $location_name) {
       $existing_location = $term_storage->loadByProperties([
@@ -73,7 +93,7 @@ final class DemoDataForm extends ConfirmFormBase {
         'name' => $location_name,
       ]);
       if (!$existing_location) {
-        Term::create([
+        $term_storage->create([
           'vid' => 'bc_staff_location',
           'name' => $location_name,
         ])->save();
@@ -82,20 +102,20 @@ final class DemoDataForm extends ConfirmFormBase {
 
     $people = [
       ['Anna Madsen', 'present', 'Næstved – Administration', 'Reception'],
-      ['Peter Holm', 'meeting', 'Næstved – Administration', 'Møderum 1'],
-      ['Sofie Lund', 'break', 'Næstved – Administration', 'Personalerum'],
-      ['Mikkel Andersen', 'away', 'Næstved – Team Nord', 'Ude af huset'],
-      ['Emma Nielsen', 'present', 'Næstved – Team Nord', 'Kontor 2'],
-      ['Jonas Pedersen', 'remote', 'Næstved – Team Nord', 'Hjemme'],
+      ['Peter Holm', 'meeting', 'Næstved – Administration', 'Meeting room 1'],
+      ['Sofie Lund', 'break', 'Næstved – Administration', 'Staff room'],
+      ['Mikkel Andersen', 'away', 'Næstved – North Team', 'Out of office'],
+      ['Emma Nielsen', 'present', 'Næstved – North Team', 'Office 2'],
+      ['Jonas Pedersen', 'remote', 'Næstved – North Team', 'Home'],
       ['Maria Jensen', 'present', 'Roskilde – Administration', 'Reception'],
-      ['Lars Sørensen', 'meeting', 'Roskilde – Administration', 'Møderum 2'],
+      ['Lars Sørensen', 'meeting', 'Roskilde – Administration', 'Meeting room 2'],
       ['Clara Rasmussen', 'absent', 'Roskilde – Administration', ''],
-      ['Oliver Kristensen', 'present', 'Roskilde – Team Syd', 'Kontor 3'],
-      ['Freja Mortensen', 'break', 'Roskilde – Team Syd', 'Personalerum'],
-      ['Noah Christensen', 'remote', 'Roskilde – Team Syd', 'Hjemme'],
+      ['Oliver Kristensen', 'present', 'Roskilde – South Team', 'Office 3'],
+      ['Freja Mortensen', 'break', 'Roskilde – South Team', 'Staff room'],
+      ['Noah Christensen', 'remote', 'Roskilde – South Team', 'Home'],
     ];
 
-    $storage = \Drupal::entityTypeManager()->getStorage('user');
+    $storage = $this->staffEntityTypeManager->getStorage('user');
     $created = 0;
     $updated = 0;
     foreach ($people as $i => [$name, $status, $department, $location]) {
@@ -103,11 +123,11 @@ final class DemoDataForm extends ConfirmFormBase {
       $matches = $storage->loadByProperties(['name' => $username]);
       $account = reset($matches);
       if ($account && (!$account->hasField('field_bc_staff_demo') || !$account->get('field_bc_staff_demo')->value)) {
-        $this->messenger()->addWarning($this->t('Springer over reserveret brugernavn @name.', ['@name' => $username]));
+        $this->messenger()->addWarning($this->t('Skipping reserved username @name.', ['@name' => $username]));
         continue;
       }
       if (!$account) {
-        $account = User::create([
+        $account = $storage->create([
           'name' => $username,
           'mail' => $username . '@example.invalid',
           'pass' => bin2hex(random_bytes(24)),
@@ -129,7 +149,7 @@ final class DemoDataForm extends ConfirmFormBase {
       $account->set('field_bc_staff_department', ['target_id' => $departments[$department]]);
       $account->save();
     }
-    $this->messenger()->addStatus($this->t('Testdata klar: @new nye, @updated opdaterede testmedarbejdere.', [
+    $this->messenger()->addStatus($this->t('Demo data ready: @new new employees and @updated updated employees.', [
       '@new' => $created,
       '@updated' => $updated,
     ]));
