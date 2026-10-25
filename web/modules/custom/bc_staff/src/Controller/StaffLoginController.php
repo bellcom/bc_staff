@@ -10,6 +10,9 @@ use Drupal\user\Form\UserLoginForm;
  */
 final class StaffLoginController extends ControllerBase {
 
+  /**
+   * Handles page.
+   */
   public function page(): array {
     if ($this->currentUser()->isAuthenticated()) {
       return [
