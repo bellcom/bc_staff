@@ -55,7 +55,7 @@ final class StaffLoginController extends ControllerBase {
       '#attributes' => ['class' => ['bc-staff-login']],
       'title' => [
         '#markup' => '<h2>' . $this->t('Welcome to BC Staff') . '</h2>'
-          . '<p>' . $this->t('Sign in with your employee account.') . '</p>',
+        . '<p>' . $this->t('Sign in with your employee account.') . '</p>',
       ],
       'login' => $this->staffFormBuilder->getForm(UserLoginForm::class),
       '#attached' => ['library' => ['bc_staff/login']],
