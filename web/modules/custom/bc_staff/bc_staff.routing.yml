@@ -42,3 +42,11 @@ bc_staff.employee_edit:
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
     user: '\d+'
+
+bc_staff.login:
+  path: '/staff/login'
+  defaults:
+    _controller: '\Drupal\bc_staff\Controller\StaffLoginController::page'
+    _title: 'BC Staff login'
+  requirements:
+    _access: 'TRUE'
