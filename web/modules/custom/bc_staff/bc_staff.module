@@ -87,3 +87,23 @@ function bc_staff_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface
     ];
   }
 }
+
+
+/**
+ * Implements hook_user_format_name_alter().
+ *
+ * Keep the login name unchanged; use the staff name for display everywhere.
+ */
+function bc_staff_user_format_name_alter(&$name, \Drupal\Core\Session\AccountInterface $account): void {
+  // The current user session is not necessarily a full user entity.
+  if (!$account instanceof \Drupal\user\UserInterface) {
+    return;
+  }
+  if (!$account->hasField('field_bc_staff_display_name')) {
+    return;
+  }
+  $value = trim((string) ($account->get('field_bc_staff_display_name')->value ?? ''));
+  if ($value !== '') {
+    $name = $value;
+  }
+}
