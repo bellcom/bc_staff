@@ -13,6 +13,9 @@ use Drupal\user\Entity\User;
  */
 final class DemoDataForm extends ConfirmFormBase {
 
+  /**
+   * Returns the form ID.
+   */
   public function getFormId(): string {
     return 'bc_staff_demo_data_form';
   }
@@ -29,6 +32,9 @@ final class DemoDataForm extends ConfirmFormBase {
     return Url::fromRoute('bc_staff.overview');
   }
 
+  /**
+   * Submits the form.
+   */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $names = [
       'Næstved – Administration',
