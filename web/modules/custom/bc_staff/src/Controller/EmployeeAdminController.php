@@ -15,7 +15,15 @@ final class EmployeeAdminController extends ControllerBase {
     $rows = [];
     $ids = $this->entityTypeManager()->getStorage('user')->getQuery()
       ->accessCheck(FALSE)->condition('uid', 0, '>')->sort('name')->execute();
+    $manager = $this->currentUser()->hasPermission('manage own bc staff department') && !$this->currentUser()->hasPermission('administer bc staff employees');
+    $leader = $manager ? User::load($this->currentUser()->id()) : NULL;
     foreach (User::loadMultiple($ids) as $user) {
+      if ($manager && !\Drupal\bc_staff\Access\EmployeeAccess::canManage($leader, $user)) {
+        continue;
+      }
+      if (!$manager && ((int) $user->id() === 1 || $user->hasRole('administrator'))) {
+        continue;
+      }
       if (!$user->hasField('field_bc_staff_status')) {
         continue;
       }
