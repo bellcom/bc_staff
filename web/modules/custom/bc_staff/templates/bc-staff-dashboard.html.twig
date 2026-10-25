@@ -6,6 +6,7 @@
       <p>Aktuel status og placering. Oversigten opdateres hvert 30. sekund.</p>
     </div>
     <div class="bc-staff__actions">
+      {% if my_profile_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ my_profile_url }}">Logget ind: {{ my_name }}</a>{% endif %}
       {% if status_url %}<a class="bc-staff__action" href="{{ status_url }}">Min status</a>{% endif %}
       {% if demo_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ demo_url }}">Testdata</a>{% endif %}
     </div>
@@ -26,7 +27,7 @@
         <div class="bc-staff__person">
           <img class="bc-staff__avatar" src="{{ avatar }}" alt="" width="64" height="64" loading="lazy">
           <div>
-            <h3>{{ person.name }}</h3>
+            <h3>{% if person.profile_url %}<a href="{{ person.profile_url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if person.is_me %} <small>(dig)</small>{% endif %}</h3>
             <p>{{ person.department ?: 'Uden afdeling' }}</p>
           </div>
         </div>
