@@ -1,0 +1,26 @@
+langcode: da
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_bc_staff_department
+    - taxonomy.vocabulary.bc_staff_department
+id: user.user.field_bc_staff_department
+field_name: field_bc_staff_department
+entity_type: user
+bundle: user
+label: Afdeling
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: default:taxonomy_term
+  handler_settings:
+    target_bundles:
+      bc_staff_department: bc_staff_department
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+field_type: entity_reference
