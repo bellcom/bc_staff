@@ -30,4 +30,5 @@ printf '\n// BC Staff trusted host\n%s\n' "\$settings['trusted_host_patterns'] =
 chown bcstaff:www-data "$APP/web/sites/default/settings.php"
 chmod 640 "$APP/web/sites/default/settings.php"
 echo "OK: Drupal installeret. Credentials ligger i $SECRET."
+bash "$APP/scripts/setup-drush.sh"
 echo "Næste trin: scripts/setup-web.sh"
