@@ -13,8 +13,8 @@ final class StaffController extends ControllerBase {
 
   public function overview(): array {
     $rows = [];
-    $module_path = \Drupal::service('extension.list.module')->getPath('bc_staff_demo');
     $demo_enabled = \Drupal::moduleHandler()->moduleExists('bc_staff_demo');
+    $module_path = $demo_enabled ? \Drupal::service('extension.list.module')->getPath('bc_staff_demo') : '';
     $avatar = $demo_enabled ? base_path() . $module_path . '/assets/avatar.svg' : '';
     $ids = $this->entityTypeManager()->getStorage('user')
       ->getQuery()
@@ -31,6 +31,9 @@ final class StaffController extends ControllerBase {
         continue;
       }
       if (!$account->hasField('field_bc_staff_status') || !$account->hasField('field_bc_staff_location')) {
+        continue;
+      }
+      if (!$is_demo && $account->get('field_bc_staff_status')->isEmpty()) {
         continue;
       }
       $status_field = $account->get('field_bc_staff_status');
