@@ -11,6 +11,9 @@ use Drupal\user\Entity\User;
  */
 final class StaffController extends ControllerBase {
 
+  /**
+   * Handles overview.
+   */
   public function overview(): array {
     $demo_enabled = \Drupal::moduleHandler()->moduleExists('bc_staff_demo');
     $module_path = \Drupal::service('extension.list.module')->getPath('bc_staff');
