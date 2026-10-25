@@ -1,6 +1,6 @@
 name: BC Staff
 type: module
-description: 'Medarbejderoverblik og personlig status for BC Staff.'
+description: 'Staff overview and personal status management.'
 package: BC Staff
 core_version_requirement: ^11
 dependencies:
