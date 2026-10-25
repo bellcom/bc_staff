@@ -122,7 +122,8 @@ final class DemoDataForm extends ConfirmFormBase {
       $username = sprintf('bc_demo_%02d', $i + 1);
       $matches = $storage->loadByProperties(['name' => $username]);
       $account = reset($matches);
-      if ($account && (!$account->hasField('field_bc_staff_demo') || !$account->get('field_bc_staff_demo')->value)) {
+      if ($account && (!$account->hasField('field_bc_staff_demo')
+        || !$account->get('field_bc_staff_demo')->value)) {
         $this->messenger()->addWarning($this->t('Skipping reserved username @name.', ['@name' => $username]));
         continue;
       }
