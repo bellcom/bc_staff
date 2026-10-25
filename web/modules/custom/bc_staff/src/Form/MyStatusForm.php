@@ -11,10 +11,16 @@ use Drupal\user\Entity\User;
  */
 final class MyStatusForm extends FormBase {
 
+  /**
+   * Returns the form ID.
+   */
   public function getFormId(): string {
     return 'bc_staff_my_status_form';
   }
 
+  /**
+   * Builds the form.
+   */
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $account = User::load($this->currentUser()->id());
     if (!$account || !$account->isActive() || !$account->hasField('field_bc_staff_status')) {
@@ -92,6 +98,9 @@ final class MyStatusForm extends FormBase {
     return $form;
   }
 
+  /**
+   * Submits the form.
+   */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $account = User::load($this->currentUser()->id());
     if (!$account || !$account->isActive()) {
