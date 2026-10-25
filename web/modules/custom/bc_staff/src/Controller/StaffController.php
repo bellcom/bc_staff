@@ -19,7 +19,7 @@ final class StaffController extends ControllerBase {
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $staffEntityTypeManager,
-    private readonly ModuleHandlerInterface $moduleHandler,
+    private readonly ModuleHandlerInterface $staffModuleHandler,
     private readonly ModuleExtensionList $moduleExtensionList,
   ) {}
 
@@ -38,7 +38,7 @@ final class StaffController extends ControllerBase {
    * Renders the staff overview.
    */
   public function overview(): array {
-    $demo_enabled = $this->moduleHandler->moduleExists('bc_staff_demo');
+    $demo_enabled = $this->staffModuleHandler->moduleExists('bc_staff_demo');
     $module_path = $this->moduleExtensionList->getPath('bc_staff');
     $avatar = base_path() . $module_path . '/assets/avatar.svg';
     $ids = $this->staffEntityTypeManager->getStorage('user')
