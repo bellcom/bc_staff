@@ -22,6 +22,9 @@ for path in root.rglob("*"):
     if not path.is_file() or path.suffix not in extensions:
         continue
     for number, line in enumerate(path.read_text(encoding="utf-8").splitlines(), 1):
+        # URL route paths are stable identifiers, not user-facing source text.
+        if path.name.endswith(".routing.yml") and line.lstrip().startswith("path:"):
+            continue
         if markers.search(line):
             violations.append(f"{path}:{number}: possible Danish source text")
 if violations:
