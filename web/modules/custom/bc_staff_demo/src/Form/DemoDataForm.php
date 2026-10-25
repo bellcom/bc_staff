@@ -48,6 +48,23 @@ final class DemoDataForm extends ConfirmFormBase {
       $departments[$name] = $term->id();
     }
 
+    $locations = [
+      'Reception', 'Møderum 1', 'Møderum 2', 'Personalerum',
+      'Kontor 2', 'Kontor 3', 'Hjemme', 'Ude af huset',
+    ];
+    foreach ($locations as $location_name) {
+      $existing_location = $term_storage->loadByProperties([
+        'vid' => 'bc_staff_location',
+        'name' => $location_name,
+      ]);
+      if (!$existing_location) {
+        Term::create([
+          'vid' => 'bc_staff_location',
+          'name' => $location_name,
+        ])->save();
+      }
+    }
+
     $people = [
       ['Anna Madsen', 'present', 'Næstved – Administration', 'Reception'],
       ['Peter Holm', 'meeting', 'Næstved – Administration', 'Møderum 1'],
