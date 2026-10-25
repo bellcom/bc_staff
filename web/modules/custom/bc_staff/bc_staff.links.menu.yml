@@ -7,3 +7,8 @@ bc_staff.my_status:
   title: 'Min status'
   route_name: bc_staff.my_status
   menu_name: main
+bc_staff.employees:
+  title: 'BC Staff medarbejdere'
+  description: 'Opret og vedligehold medarbejdere'
+  route_name: bc_staff.employee_list
+  parent: system.admin_people
