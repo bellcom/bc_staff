@@ -139,7 +139,7 @@ final class DemoDataForm extends ConfirmFormBase {
       else {
         $updated++;
       }
-      // Preserve the status of existing demo accounts; new accounts remain blocked.
+      // Keep existing demo account states; new accounts remain blocked.
       if ($account->isActive()) {
         $account->addRole('bc_staff_employee');
       }
