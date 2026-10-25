@@ -1,0 +1,17 @@
+langcode: da
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_bc_staff_location
+id: user.user.field_bc_staff_location
+field_name: field_bc_staff_location
+entity_type: user
+bundle: user
+label: 'Aktuel lokation'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string
