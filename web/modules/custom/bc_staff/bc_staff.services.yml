@@ -4,3 +4,8 @@ services:
     arguments: ['@current_user']
     tags:
       - { name: event_subscriber }
+  bc_staff.theme_negotiator:
+    class: Drupal\bc_staff\Theme\StaffThemeNegotiator
+    arguments: ['@theme_handler']
+    tags:
+      - { name: theme_negotiator, priority: 20 }
