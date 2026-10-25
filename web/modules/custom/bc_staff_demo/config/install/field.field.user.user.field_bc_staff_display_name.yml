@@ -1,4 +1,4 @@
-langcode: da
+langcode: en
 status: true
 dependencies:
   config:
@@ -7,7 +7,7 @@ id: user.user.field_bc_staff_display_name
 field_name: field_bc_staff_display_name
 entity_type: user
 bundle: user
-label: 'Medarbejdernavn'
+label: 'Employee name'
 description: ''
 required: false
 translatable: false
