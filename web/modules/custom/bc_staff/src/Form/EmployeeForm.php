@@ -97,6 +97,9 @@ final class EmployeeForm extends FormBase {
     if ($user->hasField('field_bc_staff_department')) {
       $user->set('field_bc_staff_department', $form_state->getValue('department') ?: NULL);
     }
+    if (!$uid && $user->hasField('field_bc_staff_status')) {
+      $user->set('field_bc_staff_status', 'absent');
+    }
     $user->save();
     $this->messenger()->addStatus($this->t('Medarbejderen blev gemt.'));
     $form_state->setRedirect('bc_staff.employee_list');
