@@ -1,10 +1,10 @@
 view bc staff overview:
-  title: 'Se BC Staff medarbejderoverblik'
+  title: 'View BC Staff overview'
 update own bc staff status:
-  title: 'Opdater egen BC Staff-status'
+  title: 'Update own BC Staff status'
 administer bc staff employees:
-  title: 'Administrer BC Staff medarbejdere'
+  title: 'Manage BC Staff employees'
   restrict access: true
 manage own bc staff department:
-  title: 'Administrer medarbejdere i egen afdeling'
+  title: 'Manage employees in own department'
   restrict access: true
