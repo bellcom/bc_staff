@@ -1,0 +1,46 @@
+name: Drupal quality
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: PHP setup
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, xml, gd, curl, zip, intl, bcmath, pdo_mysql
+          tools: composer:v2
+          coverage: none
+
+      - name: Validate Composer
+        run: composer validate --no-check-publish
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: PHP syntax
+        run: |
+          find web/modules/custom -type f \( -name '*.php' -o -name '*.module' -o -name '*.install' -o -name '*.inc' \) -print0 |
+            xargs -0 -r -n1 php -l
+
+      - name: Drupal and DrupalPractice PHPCS
+        if: always()
+        run: vendor/bin/phpcs --standard=phpcs.xml.dist
+
+      - name: Source-language check
+        if: always()
+        run: python3 scripts/check-source-language.py
