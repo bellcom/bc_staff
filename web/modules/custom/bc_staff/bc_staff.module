@@ -22,3 +22,23 @@ function bc_staff_theme($existing, $type, $theme, $path): array {
     ],
   ];
 }
+
+/**
+ * Implements hook_page_attachments().
+ */
+function bc_staff_page_attachments(array &$page): void {
+  if (\Drupal::routeMatch()->getRouteName() === 'bc_staff.mobile') {
+    $path = base_path() . \Drupal::service('extension.list.module')->getPath('bc_staff');
+    $page['#attached']['html_head_link'][] = [
+      ['rel' => 'manifest', 'href' => $path . '/assets/manifest.webmanifest'],
+      TRUE,
+    ];
+    $page['#attached']['html_head'][] = [
+      [
+        '#tag' => 'meta',
+        '#attributes' => ['name' => 'theme-color', 'content' => '#164878'],
+      ],
+      'bc_staff_theme_color',
+    ];
+  }
+}
