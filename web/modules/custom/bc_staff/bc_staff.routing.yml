@@ -1,0 +1,14 @@
+bc_staff.overview:
+  path: '/staff'
+  defaults:
+    _controller: '\Drupal\bc_staff\Controller\StaffController::overview'
+    _title: 'Medarbejderoverblik'
+  requirements:
+    _permission: 'view bc staff overview'
+bc_staff.my_status:
+  path: '/staff/min-status'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\MyStatusForm'
+    _title: 'Min status'
+  requirements:
+    _permission: 'update own bc staff status'
