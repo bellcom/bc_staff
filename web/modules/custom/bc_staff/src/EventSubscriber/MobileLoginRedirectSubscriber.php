@@ -23,6 +23,9 @@ final class MobileLoginRedirectSubscriber implements EventSubscriberInterface {
     return [KernelEvents::EXCEPTION => ['onException', 75]];
   }
 
+  /**
+   * Handles onException.
+   */
   public function onException(ExceptionEvent $event): void {
     if (!$event->getThrowable() instanceof AccessDeniedHttpException
       || $this->currentUser->isAuthenticated()) {
