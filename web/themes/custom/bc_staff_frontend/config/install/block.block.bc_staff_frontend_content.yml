@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - bc_staff_frontend
+id: bc_staff_frontend_content
+theme: bc_staff_frontend
+region: content
+weight: 0
+provider: null
+plugin: system_main_block
+settings:
+  id: system_main_block
+  label: 'Main page content'
+  label_display: '0'
+visibility: {  }
