@@ -16,9 +16,9 @@ final class EmployeeForm extends FormBase {
     return 'bc_staff_employee_form';
   }
 
-  public function buildForm(array $form, FormStateInterface $form_state, ?User $user = NULL): array {
+  public function buildForm(array $form, FormStateInterface $form_state): array {
     $id = \Drupal::routeMatch()->getParameter('user');
-    $account = $user ?: ($id ? User::load(is_object($id) ? $id->id() : $id) : NULL);
+    $account = $id ? User::load(is_object($id) ? $id->id() : $id) : NULL;
     if ($id && (!$account || (int) $account->id() === 1)) {
       return ['notice' => ['#markup' => $this->t('Denne konto kan ikke redigeres her.')]];
     }
