@@ -5,7 +5,6 @@ namespace Drupal\bc_staff\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
-use Drupal\user\Entity\User;
 
 /**
  * BC Staff employee administration.
@@ -17,11 +16,13 @@ final class EmployeeAdminController extends ControllerBase {
    */
   public function listing(): array {
     $rows = [];
-    $ids = $this->entityTypeManager()->getStorage('user')->getQuery()
+    $storage = $this->entityTypeManager()->getStorage('user');
+    $ids = $storage->getQuery()
       ->accessCheck(FALSE)->condition('uid', 0, '>')->sort('name')->execute();
-    $manager = $this->currentUser()->hasPermission('manage own bc staff department') && !$this->currentUser()->hasPermission('administer bc staff employees');
-    $leader = $manager ? User::load($this->currentUser()->id()) : NULL;
-    foreach (User::loadMultiple($ids) as $user) {
+    $manager = $this->currentUser()->hasPermission('manage own bc staff department')
+      && !$this->currentUser()->hasPermission('administer bc staff employees');
+    $leader = $manager ? $storage->load($this->currentUser()->id()) : NULL;
+    foreach ($storage->loadMultiple($ids) as $user) {
       if ($manager && !EmployeeAccess::canManage($leader, $user)) {
         continue;
       }
