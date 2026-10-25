@@ -1,0 +1,13 @@
+{
+  "name": "BC Staff – Min status",
+  "short_name": "BC Staff",
+  "id": "/staff/mobil",
+  "start_url": "/staff/mobil",
+  "scope": "/staff/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#164878",
+  "icons": [
+    {"src": "/modules/custom/bc_staff/assets/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable"}
+  ]
+}
