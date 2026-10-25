@@ -49,6 +49,8 @@ final class StaffController extends ControllerBase {
       }
       $staff[] = [
         'name' => $name,
+        'is_me' => (int) $account->id() === (int) $this->currentUser()->id(),
+        'profile_url' => ((int) $account->id() === (int) $this->currentUser()->id() || $this->currentUser()->hasPermission('administer users')) ? Url::fromRoute('entity.user.canonical', ['user' => $account->id()])->toString() : '',
         'department' => $department,
         'status_key' => $status_key,
         'status' => $choices[$status_key] ?? 'Ikke angivet',
@@ -61,6 +63,8 @@ final class StaffController extends ControllerBase {
       '#staff' => $staff,
       '#departments' => array_values($departments),
       '#avatar' => $avatar,
+      '#my_name' => $this->currentUser()->isAuthenticated() ? (function () { $u = User::load($this->currentUser()->id()); return $u && $u->hasField('field_bc_staff_display_name') && !$u->get('field_bc_staff_display_name')->isEmpty() ? $u->get('field_bc_staff_display_name')->value : $this->currentUser()->getDisplayName(); })() : '',
+      '#my_profile_url' => $this->currentUser()->isAuthenticated() ? Url::fromRoute('entity.user.canonical', ['user' => $this->currentUser()->id()])->toString() : '',
       '#status_url' => $this->currentUser()->hasPermission('update own bc staff status')
         ? Url::fromRoute('bc_staff.my_status')->toString() : '',
       '#demo_url' => $demo_enabled && $this->currentUser()->hasPermission('administer users')
