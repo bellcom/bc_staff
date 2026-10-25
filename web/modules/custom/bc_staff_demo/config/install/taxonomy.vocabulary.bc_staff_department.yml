@@ -1,0 +1,7 @@
+langcode: da
+status: true
+dependencies: {  }
+name: Afdelinger
+vid: bc_staff_department
+description: 'Afdelinger i BC Staff'
+weight: 0
