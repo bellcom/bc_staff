@@ -19,7 +19,10 @@ final class MobileLoginRedirectSubscriber implements EventSubscriberInterface {
     private readonly AccountProxyInterface $currentUser,
   ) {}
 
-  /**\n   * Registers handled events.\n   */\n  public static function getSubscribedEvents(): array {
+  /**
+   * Registers handled events.
+   */
+  public static function getSubscribedEvents(): array {
     return [KernelEvents::EXCEPTION => ['onException', 75]];
   }
 
