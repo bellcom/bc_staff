@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Dedicated BC Staff front-end page layout.
+ *
+ * Staff links are generated with Drupal's route access checks in preprocess.
+ */
+#}
+<div class="bc-app">
+  <a class="bc-app__skip" href="#main-content">{{ 'Skip to main content'|t }}</a>
+  <header class="bc-app__header">
+    <div class="bc-app__header-inner">
+      <a class="bc-app__brand" href="{{ path('bc_staff.overview') }}" aria-label="{{ 'BC Staff home'|t }}">
+        <span class="bc-app__brand-mark" aria-hidden="true">BC</span>
+        <span>BC Staff</span>
+      </a>
+      {% if bc_staff_navigation %}
+        <nav class="bc-app__navigation" aria-label="{{ 'Staff navigation'|t }}">
+          {% for item in bc_staff_navigation %}
+            <a href="{{ item.url }}"{{ item.active ? ' aria-current="page"' : '' }}>{{ item.title }}</a>
+          {% endfor %}
+        </nav>
+      {% endif %}
+    </div>
+  </header>
+  <main id="main-content" class="bc-app__main">
+    {% if page.highlighted %}
+      <div class="bc-app__highlighted">{{ page.highlighted }}</div>
+    {% endif %}
+    {% if page.content %}
+      {{ page.content }}
+    {% endif %}
+  </main>
+  <footer class="bc-app__footer">
+    <span>BC Staff</span>
+  </footer>
+</div>
