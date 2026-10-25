@@ -44,3 +44,46 @@ function bc_staff_page_attachments(array &$page): void {
     ];
   }
 }
+
+/**
+ * Implements hook_entity_view().
+ *
+ * Show BC Staff identity on the profile, not on the shared/public overview.
+ */
+function bc_staff_entity_view(array &$build, \Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display, $view_mode): void {
+  if ($entity->getEntityTypeId() !== 'user') {
+    return;
+  }
+  $viewer = \Drupal::currentUser();
+  if ((int) $viewer->id() !== (int) $entity->id() && !$viewer->hasPermission('administer users')) {
+    return;
+  }
+  if (!$entity->hasField('field_bc_staff_status')) {
+    return;
+  }
+  $name = $entity->hasField('field_bc_staff_display_name') && !$entity->get('field_bc_staff_display_name')->isEmpty()
+    ? $entity->get('field_bc_staff_display_name')->value
+    : $entity->getDisplayName();
+  $key = $entity->get('field_bc_staff_status')->value;
+  $options = $entity->get('field_bc_staff_status')->getFieldDefinition()->getSetting('allowed_values');
+  $build['bc_staff_identity'] = [
+    '#type' => 'container',
+    '#weight' => -30,
+    '#attributes' => ['class' => ['bc-staff-profile']],
+    'heading' => [
+      '#type' => 'html_tag',
+      '#tag' => 'h2',
+      '#value' => 'BC Staff: ' . $name,
+    ],
+    'status' => ['#plain_text' => 'Status: ' . ($options[$key] ?? 'Ikke angivet')],
+    'location' => ['#markup' => '<p>' . \Drupal\Component\Utility\Html::escape('Lokation: ' . ($entity->get('field_bc_staff_location')->value ?: 'Ikke angivet')) . '</p>'],
+    '#cache' => ['contexts' => ['user'], 'tags' => $entity->getCacheTags()],
+  ];
+  if ((int) $viewer->id() === (int) $entity->id() && $viewer->hasPermission('update own bc staff status')) {
+    $build['bc_staff_identity']['mobile'] = [
+      '#type' => 'link',
+      '#title' => t('Ændr min status i BC Staff'),
+      '#url' => \Drupal\Core\Url::fromRoute('bc_staff.mobile'),
+    ];
+  }
+}
