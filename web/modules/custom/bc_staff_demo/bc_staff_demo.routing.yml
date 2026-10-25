@@ -1,0 +1,7 @@
+bc_staff_demo.admin:
+  path: '/admin/config/bc-staff/demo'
+  defaults:
+    _form: '\Drupal\bc_staff_demo\Form\DemoDataForm'
+    _title: 'BC Staff – testdata'
+  requirements:
+    _permission: 'administer users'
