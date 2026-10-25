@@ -12,11 +12,11 @@ use Drupal\user\Entity\User;
  */
 final class EmployeeForm extends FormBase {
 
-  public function getFormId(): string {
+  /**\n   * Returns the form ID.\n   */\n  public function getFormId(): string {
     return 'bc_staff_employee_form';
   }
 
-  public function buildForm(array $form, FormStateInterface $form_state): array {
+  /**\n   * Builds the form.\n   */\n  public function buildForm(array $form, FormStateInterface $form_state): array {
     $id = \Drupal::routeMatch()->getParameter('user');
     $account = $id ? User::load(is_object($id) ? $id->id() : $id) : NULL;
     if ($id && (!$account || (int) $account->id() === 1 || $account->hasRole('administrator'))) {
@@ -62,7 +62,7 @@ final class EmployeeForm extends FormBase {
     return $form;
   }
 
-  public function validateForm(array &$form, FormStateInterface $form_state): void {
+  /**\n   * Validates submitted values.\n   */\n  public function validateForm(array &$form, FormStateInterface $form_state): void {
     $storage = \Drupal::entityTypeManager()->getStorage('user');
     $uid = $form_state->get('bc_staff_uid');
     foreach (['name' => 'name', 'mail' => 'mail'] as $key => $property) {
@@ -81,7 +81,7 @@ final class EmployeeForm extends FormBase {
     }
   }
 
-  public function submitForm(array &$form, FormStateInterface $form_state): void {
+  /**\n   * Saves submitted values.\n   */\n  public function submitForm(array &$form, FormStateInterface $form_state): void {
     $uid = $form_state->get('bc_staff_uid');
     $user = $uid ? User::load($uid) : User::create();
     $manager_department = $form_state->get('bc_staff_manager_department');
