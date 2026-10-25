@@ -25,3 +25,9 @@ login:
   css:
     theme:
       css/login.css: {}
+
+staff_ui:
+  version: 0.5.0
+  css:
+    theme:
+      css/staff-ui.css: {}
