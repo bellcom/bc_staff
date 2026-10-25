@@ -78,7 +78,7 @@ final class StaffController extends ControllerBase {
         'is_me' => (int) $account->id() === (int) $this->currentUser()->id(),
         'profile_url' => ((int) $account->id() === (int) $this->currentUser()->id()
           || $this->currentUser()->hasPermission('administer users'))
-            ? Url::fromRoute('entity.user.canonical', ['user' => $account->id()])->toString() : '',
+          ? Url::fromRoute('entity.user.canonical', ['user' => $account->id()])->toString() : '',
         'department' => $department,
         'status_key' => $status_key,
         'status' => $choices[$status_key] ?? $this->t('Not specified'),
@@ -109,7 +109,7 @@ final class StaffController extends ControllerBase {
         ? Url::fromRoute('bc_staff.my_status')->toString() : '',
       '#employees_url' => ($this->currentUser()->hasPermission('administer bc staff employees')
         || $this->currentUser()->hasPermission('manage own bc staff department'))
-          ? Url::fromRoute('bc_staff.employee_list')->toString() : '',
+        ? Url::fromRoute('bc_staff.employee_list')->toString() : '',
       '#demo_url' => $demo_enabled && $this->currentUser()->hasPermission('administer users')
         ? Url::fromRoute('bc_staff_demo.admin')->toString() : '',
       '#attached' => ['library' => ['bc_staff/dashboard']],
