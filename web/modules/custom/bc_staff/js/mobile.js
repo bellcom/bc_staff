@@ -10,14 +10,12 @@
           radio.addEventListener('change', () => {
             if (!radio.checked || !submit || form.dataset.bcStaffSubmitting === '1') return;
             form.dataset.bcStaffSubmitting = '1';
-            submit.disabled = true;
-            submit.value = 'Gemmer status…';
+            root.classList.add('bc-staff-is-saving');
             // Submit with Drupal's standard CSRF-protected form semantics.
             if (form.requestSubmit) {
-              form.requestSubmit();
+              form.requestSubmit(submit);
             }
             else {
-              submit.disabled = false;
               submit.click();
             }
           });
