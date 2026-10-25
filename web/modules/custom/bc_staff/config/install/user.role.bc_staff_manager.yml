@@ -1,0 +1,13 @@
+langcode: da
+status: true
+dependencies:
+  module:
+    - bc_staff
+id: bc_staff_manager
+label: 'BC Staff Leder'
+weight: 5
+is_admin: false
+permissions:
+  - 'view bc staff overview'
+  - 'update own bc staff status'
+  - 'manage own bc staff department'
