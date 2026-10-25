@@ -6,3 +6,5 @@
 .bc-staff-mobile .bc-staff-status-buttons .form-item:has(input:checked) label{background:#e7f1fc;color:#153f6b;border-color:#164878}
 .bc-staff-mobile .bc-staff-status-buttons .form-item:has(input:focus-visible) label{outline:3px solid #2465b4;outline-offset:3px}
 .bc-staff-mobile .bc-staff-status-buttons .form-item input{position:absolute;opacity:0;width:1px;height:1px}
+
+.bc-staff-mobile-identity{background:#eef4fb;border:1px solid #cbdced;border-radius:16px;padding:19px;margin-bottom:24px;display:flex;flex-direction:column;gap:5px}.bc-staff-mobile-identity__label{margin:0 0 5px;color:#516984;font-size:13px;font-weight:700}.bc-staff-mobile-identity strong{font-size:23px;color:#143d67}.bc-staff-mobile-identity small{color:#59718b}.bc-staff-mobile-identity p:not(.bc-staff-mobile-identity__label){margin:5px 0 0;color:#304c69}
