@@ -8,3 +8,9 @@ dashboard:
   dependencies:
     - core/drupal
     - core/once
+
+mobile:
+  version: 0.3.0
+  css:
+    theme:
+      css/mobile.css: {}
