@@ -1,0 +1,44 @@
+<div class="bc-staff" data-bc-staff-dashboard>
+  <div class="bc-staff__header">
+    <div>
+      <p class="bc-staff__eyebrow">BC STAFF</p>
+      <h2>Medarbejderoverblik</h2>
+      <p>Aktuel status og placering. Oversigten opdateres hvert 30. sekund.</p>
+    </div>
+    <div class="bc-staff__actions">
+      {% if status_url %}<a class="bc-staff__action" href="{{ status_url }}">Min status</a>{% endif %}
+      {% if demo_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ demo_url }}">Testdata</a>{% endif %}
+    </div>
+  </div>
+  <div class="bc-staff__toolbar">
+    <label for="bc-staff-department">Afdeling</label>
+    <select id="bc-staff-department" data-bc-staff-filter>
+      <option value="">Alle afdelinger</option>
+      {% for department in departments %}
+        <option value="{{ department }}">{{ department }}</option>
+      {% endfor %}
+    </select>
+    <span aria-live="polite" data-bc-staff-count></span>
+  </div>
+  <div class="bc-staff__grid">
+    {% for person in staff %}
+      <article class="bc-staff__card" data-bc-staff-card data-department="{{ person.department }}">
+        <div class="bc-staff__person">
+          <img class="bc-staff__avatar" src="{{ avatar }}" alt="" width="64" height="64" loading="lazy">
+          <div>
+            <h3>{{ person.name }}</h3>
+            <p>{{ person.department ?: 'Uden afdeling' }}</p>
+          </div>
+        </div>
+        <div class="bc-staff__status bc-staff__status--{{ person.status_key }}">
+          <span class="bc-staff__dot" aria-hidden="true"></span>
+          <span>{{ person.status }}</span>
+        </div>
+        <p class="bc-staff__location"><span aria-hidden="true">⌖</span> {{ person.location ?: 'Ikke angivet' }}</p>
+      </article>
+    {% else %}
+      <p>Ingen medarbejdere er tilgængelige i overblikket.</p>
+    {% endfor %}
+  </div>
+  <p class="bc-staff__empty" data-bc-staff-empty hidden>Ingen medarbejdere i den valgte afdeling.</p>
+</div>
