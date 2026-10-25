@@ -4,10 +4,11 @@ namespace Drupal\bc_staff\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\taxonomy\Entity\Term;
 use Drupal\user\Entity\User;
 
 /**
- * Change the current account's own presence and location.
+ * Mobile-friendly self service, always limited to the logged-in user.
  */
 final class MyStatusForm extends FormBase {
 
@@ -16,25 +17,61 @@ final class MyStatusForm extends FormBase {
   }
 
   public function buildForm(array $form, FormStateInterface $form_state): array {
-    $user = User::load($this->currentUser()->id());
-    if (!$user || !$user->hasField('field_bc_staff_status')) {
-      $form['error'] = ['#markup' => $this->t('BC Staff-felterne er ikke installeret.')];
-      return $form;
+    $account = User::load($this->currentUser()->id());
+    if (!$account || !$account->isActive() || !$account->hasField('field_bc_staff_status')) {
+      return ['error' => ['#markup' => $this->t('Log ind med en aktiv medarbejderkonto.')]];
     }
-    $options = $user->get('field_bc_staff_status')->getFieldDefinition()->getSetting('allowed_values');
+
+    $options = $account->get('field_bc_staff_status')->getFieldDefinition()->getSetting('allowed_values');
+    $form['#prefix'] = '<div class="bc-staff-mobile">';
+    $form['#suffix'] = '</div>';
+    $form['#attached']['library'][] = 'bc_staff/mobile';
+    $form['intro'] = [
+      '#markup' => '<p class="bc-staff-mobile-note">Vælg din status og placering. Ændringer gemmes først, når du trykker Gem.</p>',
+    ];
     $form['status'] = [
-      '#type' => 'select',
+      '#type' => 'radios',
       '#title' => $this->t('Min status'),
       '#options' => $options,
-      '#default_value' => $user->get('field_bc_staff_status')->value ?: 'absent',
+      '#default_value' => $account->get('field_bc_staff_status')->value ?: 'absent',
       '#required' => TRUE,
+      '#attributes' => ['class' => ['bc-staff-status-buttons']],
     ];
-    $form['location'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Min lokation'),
-      '#default_value' => $user->get('field_bc_staff_location')->value ?: '',
-      '#maxlength' => 128,
-    ];
+
+    $locations = [];
+    if (\Drupal::moduleHandler()->moduleExists('taxonomy')) {
+      $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_location');
+      foreach ($terms as $term) {
+        $locations[$term->tid] = $term->name;
+      }
+    }
+
+    if ($locations) {
+      $current = (string) ($account->get('field_bc_staff_location')->value ?? '');
+      $selected = '';
+      foreach ($locations as $tid => $label) {
+        if ($label === $current) {
+          $selected = (string) $tid;
+          break;
+        }
+      }
+      $form['location'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Min lokation'),
+        '#options' => ['' => $this->t('Vælg lokation')] + $locations,
+        '#default_value' => $selected,
+      ];
+    }
+    else {
+      $form['location'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Min lokation'),
+        '#default_value' => $account->get('field_bc_staff_location')->value ?: '',
+        '#maxlength' => 128,
+      ];
+      $form['location']['#description'] = $this->t('Administrator kan oprette valgbare lokationer under Struktur → Taksonomi.');
+    }
+
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Gem min status'),
@@ -43,16 +80,37 @@ final class MyStatusForm extends FormBase {
   }
 
   public function submitForm(array &$form, FormStateInterface $form_state): void {
-    $user = User::load($this->currentUser()->id());
-    if (!$user || !$user->isActive()) {
+    $account = User::load($this->currentUser()->id());
+    if (!$account || !$account->isActive()) {
       $this->messenger()->addError($this->t('Brugerkontoen kunne ikke opdateres.'));
       return;
     }
-    $user->set('field_bc_staff_status', $form_state->getValue('status'));
-    $user->set('field_bc_staff_location', $form_state->getValue('location'));
-    $user->save();
+    $status = $form_state->getValue('status');
+    $options = $account->get('field_bc_staff_status')->getFieldDefinition()->getSetting('allowed_values');
+    if (!array_key_exists($status, $options)) {
+      $this->messenger()->addError($this->t('Ugyldig status.'));
+      return;
+    }
+    $location = $form_state->getValue('location');
+    if (\Drupal::moduleHandler()->moduleExists('taxonomy')) {
+      $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_location');
+      if ($terms) {
+        $allowed = [];
+        foreach ($terms as $term) {
+          $allowed[$term->tid] = $term->name;
+        }
+        if ($location !== '' && !isset($allowed[$location])) {
+          $this->messenger()->addError($this->t('Ugyldig lokation.'));
+          return;
+        }
+        $location = $location === '' ? '' : $allowed[$location];
+      }
+    }
+    $account->set('field_bc_staff_status', $status);
+    $account->set('field_bc_staff_location', $location);
+    $account->save();
     $this->messenger()->addStatus($this->t('Din status blev opdateret.'));
-    $form_state->setRedirect('bc_staff.overview');
+    $form_state->setRedirect('bc_staff.mobile');
   }
 
 }
