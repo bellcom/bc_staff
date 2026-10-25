@@ -37,6 +37,10 @@ function bc_staff_theme($existing, $type, $theme, $path): array {
  * Implements hook_page_attachments().
  */
 function bc_staff_page_attachments(array &$page): void {
+  $route_name = \Drupal::routeMatch()->getRouteName();
+  if ($route_name && str_starts_with($route_name, 'bc_staff.')) {
+    $page['#attached']['library'][] = 'bc_staff/staff_ui';
+  }
   if (\Drupal::routeMatch()->getRouteName() === 'bc_staff.mobile') {
     $path = base_path() . \Drupal::service('extension.list.module')->getPath('bc_staff');
     $page['#attached']['html_head_link'][] = [
