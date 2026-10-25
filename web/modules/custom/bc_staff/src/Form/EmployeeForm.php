@@ -26,7 +26,7 @@ final class EmployeeForm extends FormBase {
     $id = \Drupal::routeMatch()->getParameter('user');
     $account = $id ? User::load(is_object($id) ? $id->id() : $id) : NULL;
     if ($id && (!$account || (int) $account->id() === 1 || $account->hasRole('administrator'))) {
-      return ['notice' => ['#markup' => $this->t('Denne konto kan ikke redigeres her.')]];
+      return ['notice' => ['#markup' => $this->t('This account cannot be edited here.')]];
     }
     $manager = $this->currentUser()->hasPermission('manage own bc staff department')
       && !$this->currentUser()->hasPermission('administer bc staff employees');
@@ -40,28 +40,28 @@ final class EmployeeForm extends FormBase {
     $value = static fn(string $field) => $account && $account->hasField($field) ? ($account->get($field)->value ?? '') : '';
     $form['name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Loginbrugernavn'),
+      '#title' => $this->t('Login username'),
       '#required' => TRUE,
       '#default_value' => $account?->getAccountName() ?? '',
       '#maxlength' => 60,
     ];
     $form['mail'] = [
       '#type' => 'email',
-      '#title' => $this->t('E-mail'),
+      '#title' => $this->t('Email'),
       '#required' => TRUE,
       '#default_value' => $account?->getEmail() ?? '',
     ];
     $form['display_name'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Medarbejdernavn'),
+      '#title' => $this->t('Employee name'),
       '#required' => TRUE,
       '#default_value' => $value('field_bc_staff_display_name'),
       '#maxlength' => 128,
     ];
     $form['department'] = [
       '#type' => 'select',
-      '#title' => $this->t('Afdeling'),
-      '#options' => ['' => $this->t('Ingen afdeling')],
+      '#title' => $this->t('Department'),
+      '#options' => ['' => $this->t('No department')],
       '#default_value' => $account && $account->hasField('field_bc_staff_department') ? ($account->get('field_bc_staff_department')->target_id ?? '') : '',
     ];
     if (\Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary')->load('bc_staff_department')) {
@@ -70,45 +70,45 @@ final class EmployeeForm extends FormBase {
       }
     }
     if ($manager) {
-      $form['department']['#options'] = [$leader_department => $form['department']['#options'][$leader_department] ?? $this->t('Egen afdeling')];
+      $form['department']['#options'] = [$leader_department => $form['department']['#options'][$leader_department] ?? $this->t('Own department')];
       $form['department']['#default_value'] = $leader_department;
       $form['department']['#disabled'] = TRUE;
     }
     $form['location'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Aktuel lokation'),
+      '#title' => $this->t('Current location'),
       '#default_value' => $value('field_bc_staff_location'),
       '#maxlength' => 128,
     ];
     $form['enabled'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Aktiv konto (kan logge ind)'),
+      '#title' => $this->t('Active account (can sign in)'),
       '#default_value' => $account ? (int) $account->isActive() : 1,
     ];
     $form['employee_role'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('BC Staff Medarbejder'),
+      '#title' => $this->t('BC Staff Employee'),
       '#default_value' => $account ? (int) $account->hasRole('bc_staff_employee') : 1,
     ];
     $form['password'] = [
       '#type' => 'password',
-      '#title' => $account ? $this->t('Ny adgangskode (valgfrit)') : $this->t('Adgangskode'),
+      '#title' => $account ? $this->t('New password (optional)') : $this->t('Password'),
       '#required' => !$account,
-      '#description' => $this->t('Ved redigering ændres adgangskoden kun, hvis feltet udfyldes.'),
+      '#description' => $this->t('When editing, leave the field blank to keep the existing password.'),
     ];
     if ($account) {
       $form['photo'] = [
-        '#type' => 'item', '#title' => $this->t('Profilfoto'),
-        '#markup' => $this->t('Rediger profilfoto via Drupals brugerformular.'),
-        '#description' => $this->t('Brugerløsningen anvender Drupal-kontoens eksisterende profilfoto.'),
+        '#type' => 'item', '#title' => $this->t('Profile photo'),
+        '#markup' => $this->t('Edit the profile photo through the Drupal user form.'),
+        '#description' => $this->t('BC Staff uses the existing account profile photo.'),
       ];
       $form['photo_link'] = [
         '#type' => 'link',
-        '#title' => $this->t('Administrer foto og øvrige kontoindstillinger'),
+        '#title' => $this->t('Manage photo and account settings'),
         '#url' => Url::fromRoute('entity.user.edit_form', ['user' => $account->id()]),
       ];
     }
-    $form['actions']['submit'] = ['#type' => 'submit', '#value' => $this->t('Gem medarbejder')];
+    $form['actions']['submit'] = ['#type' => 'submit', '#value' => $this->t('Save employee')];
     return $form;
   }
 
@@ -122,7 +122,7 @@ final class EmployeeForm extends FormBase {
       $matching = $storage->loadByProperties([$property => $form_state->getValue($key)]);
       foreach ($matching as $match) {
         if ((string) $match->id() !== (string) $uid) {
-          $form_state->setErrorByName($key, $this->t('Værdien bruges allerede af en anden konto.'));
+          $form_state->setErrorByName($key, $this->t('This value is already used by another account.'));
           break;
         }
       }
@@ -130,7 +130,7 @@ final class EmployeeForm extends FormBase {
     $department = $form_state->get('bc_staff_manager_department') ?: $form_state->getValue('department');
     $term = $department ? \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($department) : NULL;
     if ($department && (!$term || $term->bundle() !== 'bc_staff_department')) {
-      $form_state->setErrorByName('department', $this->t('Ugyldig afdeling.'));
+      $form_state->setErrorByName('department', $this->t('Invalid department.'));
     }
   }
 
@@ -149,7 +149,7 @@ final class EmployeeForm extends FormBase {
       }
     }
     if (!$user || ($uid && ((int) $uid === 1 || $user->hasRole('administrator') || $user->hasRole('bc_staff_admin') || $user->hasRole('bc_staff_manager')))) {
-      $this->messenger()->addError($this->t('Medarbejderen kunne ikke gemmes.'));
+      $this->messenger()->addError($this->t('The employee could not be saved.'));
       return;
     }
     $user->setUsername($form_state->getValue('name'));
@@ -179,7 +179,7 @@ final class EmployeeForm extends FormBase {
       $user->set('field_bc_staff_status', 'absent');
     }
     $user->save();
-    $this->messenger()->addStatus($this->t('Medarbejderen blev gemt.'));
+    $this->messenger()->addStatus($this->t('The employee was saved.'));
     $form_state->setRedirect('bc_staff.employee_list');
   }
 
