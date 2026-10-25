@@ -1,0 +1,9 @@
+bc_staff.overview:
+  title: 'BC Staff'
+  description: 'Medarbejderoverblik'
+  route_name: bc_staff.overview
+  menu_name: main
+bc_staff.my_status:
+  title: 'Min status'
+  route_name: bc_staff.my_status
+  menu_name: main
