@@ -1,13 +1,15 @@
-# BC Staff kernemodul – 0.2.0 (udvikling)
+# BC Staff – 0.3.0 (POC)
 
 ## Funktioner
-- `/staff`: responsivt kortbaseret medarbejderoverblik med foto-placeholder, statusfarver og afdelingsfilter.
-- Automatisk sideopdatering hvert 30. sekund, kun når fanen er synlig.
-- `/staff/min-status`: ændring af egen status og lokation efter Drupal-login.
-- `/staff/mobil`: mobilvenlig indgang til samme sikre formular.
-- Ingen anonym adgang eller mulighed for at redigere andres status gennem formularen.
 
-## Installation/opdatering
+- `/staff`: medarbejderkort, statusfarver, afdelingsfilter og opdatering hvert 30. sekund.
+- `/staff/mobil`: store touchvenlige statusknapper og egen lokation efter Drupal-login.
+- `/staff/min-status`: samme formular som mobilvisningen.
+- `/admin/structure/taxonomy/manage/bc_staff_location/overview`: administratorens liste over lokationer.
+- Manifest og SVG-ikon til mobilens hjemmeskærm (PWA-grundlag). Ingen offline-cache eller push.
+
+## Opgradering fra 0.2.0
+
 ```bash
 cd /var/www/bc-staff
 git pull --ff-only origin main
@@ -15,7 +17,10 @@ drush updb -y
 drush cr
 ```
 
-Tildel rettigheder under `/admin/people/permissions`. Demo-data forudsætter modulet `bc_staff_demo`.
+Kør ikke `drush en bc_staff` igen på en eksisterende installation. `bc_staff_update_11001` opretter den nye lokationsordliste. Åbn derefter `/admin/config/bc-staff/demo`, og bekræft for at oprette eksempel-lokationer.
 
-## Status
-Dette er en POC. Den mobile side er endnu ikke en installérbar PWA med manifest, service worker eller push-notifikationer. Delte touchskærme kræver sikker identifikation; tryk på foto giver ikke statusændringsadgang. Standardavatar er et lokalt SVG-asset. Overblikket skal ikke bruges til reelle personaledata før databeskyttelse og områdespecifik adgangskontrol er implementeret.
+## Sikkerhed
+
+Statusformularen ændrer kun den aktuelle Drupal-bruger. Delte touchskærme må ikke tillade statusændring alene via foto; sikker identifikation kræves. Demo-konti kan ikke logge ind. Brug fiktive data under udvikling.
+
+Det er endnu ikke en fuld, offline-understøttet PWA eller en app udgivet i appbutikker.
