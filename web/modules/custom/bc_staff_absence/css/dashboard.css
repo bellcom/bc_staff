@@ -1,0 +1,28 @@
+.bc-absence{--absence-border:#dbe5ef;color:#203753;border:1px solid var(--absence-border);border-radius:18px;background:#fff;overflow:hidden;box-shadow:0 8px 28px rgba(30,65,100,.06)}
+.bc-absence__head{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;padding:26px 28px;border-bottom:1px solid var(--absence-border)}
+.bc-absence__eyebrow{letter-spacing:.13em;color:#426e9b;font-size:11px;font-weight:800;margin:0 0 6px}
+.bc-absence__head h2{margin:0;font-size:clamp(23px,3vw,31px)}
+.bc-absence__head p{margin:6px 0 0;color:#62758b}
+.bc-absence__add{background:#184e82;color:#fff!important;border-radius:10px;padding:12px 18px;text-decoration:none;font-weight:750}
+.bc-absence__items{padding:18px 24px;display:grid;gap:12px}
+.bc-absence__item{border:1px solid #e0e8f0;border-radius:13px;padding:18px 20px;background:#fbfdff}
+.bc-absence__main{display:flex;justify-content:space-between;gap:18px;align-items:center}
+.bc-absence__item h3{margin:2px 0 7px;font-size:18px}
+.bc-absence__employee{margin:0 0 6px;color:#476583;font-weight:700;font-size:13px}
+.bc-absence__dates{color:#61758a;font-size:14px;margin:0}
+.bc-absence__state{padding:7px 12px;border-radius:24px;font-size:12px;font-weight:750;white-space:nowrap;background:#e6edf5;color:#4e657d}
+.bc-absence__state--approved,.bc-absence__state--registered{background:#d9eee5;color:#176b4a}
+.bc-absence__state--pending{background:#f3eef9;color:#69459e}
+.bc-absence__state--rejected{background:#fbe3e2;color:#9f3c37}
+.bc-absence__actions{border-top:1px solid #e2e9f0;margin-top:16px;padding-top:12px}
+.bc-absence__actions form{display:flex;align-items:center;flex-wrap:wrap;gap:12px}
+.bc-absence__actions input[type=submit],.bc-absence__actions button{border:0;border-radius:9px;padding:10px 16px;background:#184e82;color:#fff;font-weight:700;cursor:pointer}
+.bc-absence__empty{padding:26px;color:#61758a}
+.bc-absence__empty strong{color:#203753}
+.bc-absence__empty p{margin-bottom:0}
+.bc-staff-absence-form{border-radius:18px;background:#fff;border:1px solid #dbe5ef;padding:26px 30px;box-shadow:0 8px 28px rgba(30,65,100,.06)}
+.bc-staff-absence-form .form-item{margin-bottom:18px}
+.bc-staff-absence-form label{display:block;color:#203753;font-weight:700;margin-bottom:7px}
+.bc-staff-absence-form select,.bc-staff-absence-form input[type=date],.bc-staff-absence-form input[type=text]{border:1px solid #cfdae6;border-radius:10px;padding:12px 14px;background:#fff;color:#203753;max-width:100%}
+.bc-staff-absence-form .form-actions input{background:#184e82;color:#fff;border:0;border-radius:10px;padding:12px 20px;font-weight:700;cursor:pointer}
+@media(max-width:640px){.bc-absence__head{padding:20px}.bc-absence__items{padding:12px}.bc-absence__item{padding:15px}.bc-absence__main{align-items:flex-start}.bc-staff-absence-form{padding:18px}}
