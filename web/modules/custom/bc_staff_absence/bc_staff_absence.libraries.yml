@@ -1,0 +1,4 @@
+calendar:
+  css:
+    theme:
+      css/calendar.css: {}
