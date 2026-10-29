@@ -21,3 +21,11 @@ bc_staff_absence.review:
     _title: 'Absence requests'
   requirements:
     _permission: 'manage own bc staff department+manage all bc staff absences'
+
+bc_staff_absence.calendar:
+  path: '/staff/kalender'
+  defaults:
+    _controller: '\Drupal\bc_staff_absence\Controller\AbsenceCalendarController::calendar'
+    _title: 'Team calendar'
+  requirements:
+    _permission: 'manage own bc staff department+manage all bc staff absences'
