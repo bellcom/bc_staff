@@ -67,3 +67,13 @@ bc_staff.organization_add:
   requirements:
     _permission: 'administer bc staff employees'
     vocabulary: 'bc_staff_department|bc_staff_house|bc_staff_location|bc_staff_workgroup'
+
+bc_staff.organization_edit:
+  path: '/staff/organisation/{vocabulary}/{term}/rediger'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\OrganizationTermForm'
+    _title: 'Edit organization entry'
+  requirements:
+    _permission: 'administer bc staff employees'
+    vocabulary: 'bc_staff_department|bc_staff_house|bc_staff_location|bc_staff_workgroup'
+    term: '\d+'

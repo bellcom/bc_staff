@@ -31,3 +31,8 @@ staff_ui:
   css:
     theme:
       css/staff-ui.css: {}
+
+organization:
+  css:
+    theme:
+      css/organization.css: {}

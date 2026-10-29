@@ -6,54 +6,50 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 
 /**
- * Provides a central BC Staff organization administration overview.
+ * Provides the BC Staff organization administration overview.
  */
 final class OrganizationController extends ControllerBase {
 
   /**
-   * Lists organizational taxonomies for administrators.
+   * Displays manageable organization entities as cards.
    */
   public function overview(): array {
-    $items = [];
-    foreach ([
+    $groups = [];
+    $vocabularies = [
       'bc_staff_department' => $this->t('Departments'),
       'bc_staff_house' => $this->t('Houses'),
       'bc_staff_location' => $this->t('Locations and rooms'),
       'bc_staff_workgroup' => $this->t('Workgroups'),
-    ] as $vid => $label) {
-      $vocabulary = $this->entityTypeManager()->getStorage('taxonomy_vocabulary')->load($vid);
-      if (!$vocabulary) {
+    ];
+    $storage = $this->entityTypeManager()->getStorage('taxonomy_term');
+    foreach ($vocabularies as $vid => $label) {
+      if (!$this->entityTypeManager()->getStorage('taxonomy_vocabulary')->load($vid)) {
         continue;
       }
-      $terms = $this->entityTypeManager()->getStorage('taxonomy_term')
-        ->loadTree($vid);
-      $details = [];
-      foreach ($terms as $term) {
-        $details[] = str_repeat('— ', (int) $term->depth) . $term->name;
+      $entries = [];
+      foreach ($storage->loadTree($vid) as $term) {
+        $entries[] = [
+          'name' => $term->name,
+          'depth' => (int) $term->depth,
+          'edit_url' => Url::fromRoute('bc_staff.organization_edit', [
+            'vocabulary' => $vid,
+            'term' => $term->tid,
+          ])->toString(),
+        ];
       }
-      $items[] = [
-        'data' => [
-          $label,
-          $details ? implode(', ', $details) : $this->t('No entries yet'),
-          [
-            'data' => [
-              '#type' => 'link',
-              '#title' => $this->t('Add entry'),
-              '#url' => Url::fromRoute('bc_staff.organization_add', ['vocabulary' => $vid]),
-            ],
-          ],
-        ],
+      $groups[] = [
+        'label' => $label,
+        'count' => count($entries),
+        'entries' => $entries,
+        'add_url' => Url::fromRoute('bc_staff.organization_add', [
+          'vocabulary' => $vid,
+        ])->toString(),
       ];
     }
     return [
-      'intro' => [
-        '#markup' => '<p>' . $this->t('Manage departments, houses, locations and workgroups in one place.') . '</p>',
-      ],
-      'table' => [
-        '#type' => 'table',
-        '#header' => [$this->t('Area'), $this->t('Current entries'), $this->t('Action')],
-        '#rows' => $items,
-      ],
+      '#theme' => 'bc_staff_organization',
+      '#groups' => $groups,
+      '#attached' => ['library' => ['bc_staff/organization']],
       '#cache' => ['max-age' => 0],
     ];
   }
