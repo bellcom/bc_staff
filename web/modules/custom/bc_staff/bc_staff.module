@@ -17,6 +17,14 @@ use Drupal\user\UserInterface;
  */
 function bc_staff_theme($existing, $type, $theme, $path): array {
   return [
+    'bc_staff_employee_admin' => [
+      'variables' => [
+        'employees' => [],
+        'departments' => [],
+        'add_url' => '',
+      ],
+      'template' => 'bc-staff-employee-admin',
+    ],
     'bc_staff_organization' => [
       'variables' => ['groups' => []],
       'template' => 'bc-staff-organization',
