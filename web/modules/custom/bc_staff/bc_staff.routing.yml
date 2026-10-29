@@ -57,7 +57,7 @@ bc_staff.organization:
     _controller: '\Drupal\bc_staff\Controller\OrganizationController::overview'
     _title: 'Organization'
   requirements:
-    _permission: 'administer bc staff employees'
+    _custom_access: '\\Drupal\\bc_staff\\Access\\OrganizationAccess::access'
 
 bc_staff.organization_add:
   path: '/staff/organisation/{vocabulary}/ny'
@@ -65,7 +65,7 @@ bc_staff.organization_add:
     _form: '\Drupal\bc_staff\Form\OrganizationTermForm'
     _title: 'Add organization entry'
   requirements:
-    _permission: 'administer bc staff employees'
+    _custom_access: '\\Drupal\\bc_staff\\Access\\OrganizationAccess::access'
     vocabulary: 'bc_staff_department|bc_staff_house|bc_staff_location|bc_staff_workgroup'
 
 bc_staff.organization_edit:
@@ -74,6 +74,6 @@ bc_staff.organization_edit:
     _form: '\Drupal\bc_staff\Form\OrganizationTermForm'
     _title: 'Edit organization entry'
   requirements:
-    _permission: 'administer bc staff employees'
+    _custom_access: '\\Drupal\\bc_staff\\Access\\OrganizationAccess::access'
     vocabulary: 'bc_staff_department|bc_staff_house|bc_staff_location|bc_staff_workgroup'
     term: '\d+'
