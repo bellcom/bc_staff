@@ -7,7 +7,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Url;
-use IntlDateFormatter;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -54,7 +53,7 @@ final class AbsenceCalendarController extends ControllerBase {
     $requested_department = $query->get('department');
     $selected_department = $global && is_string($requested_department) && ctype_digit($requested_department)
       ? $requested_department : NULL;
-    $formatter = new IntlDateFormatter('da_DK', IntlDateFormatter::NONE, IntlDateFormatter::NONE);
+    $formatter = new \IntlDateFormatter('da_DK', \IntlDateFormatter::NONE, IntlDateFormatter::NONE);
     $mode = $query->get('view') === 'month' ? 'month' : 'week';
     $date = $query->get('date');
     $anchor = is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)
@@ -184,7 +183,7 @@ final class AbsenceCalendarController extends ControllerBase {
       '#period' => $mode === 'month'
         ? $formatter->formatObject($anchor, 'LLLL yyyy', 'da_DK')
         : $formatter->formatObject($start, 'd. MMM', 'da_DK') . ' – '
-          . $formatter->formatObject($end, 'd. MMM yyyy', 'da_DK'),
+        . $formatter->formatObject($end, 'd. MMM yyyy', 'da_DK'),
       '#mode' => $mode,
       '#filter_available' => $global,
       '#departments' => $departments,
