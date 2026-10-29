@@ -59,3 +59,20 @@ function bc_staff_update_11003(): void {
     $role->save();
   }
 }
+
+/**
+ * Install organizational vocabularies used by BC Staff.
+ */
+function bc_staff_update_11004(): void {
+  $storage = \Drupal::entityTypeManager()->getStorage('taxonomy_vocabulary');
+  foreach ([
+    'bc_staff_department' => 'BC Staff departments',
+    'bc_staff_house' => 'BC Staff houses',
+    'bc_staff_location' => 'BC Staff locations',
+    'bc_staff_workgroup' => 'BC Staff workgroups',
+  ] as $vid => $label) {
+    if (!$storage->load($vid)) {
+      $storage->create(['vid' => $vid, 'name' => $label])->save();
+    }
+  }
+}
