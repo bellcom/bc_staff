@@ -1,0 +1,4 @@
+services:
+  bc_staff_demo.absence_seeder:
+    class: Drupal\bc_staff_demo\Service\DemoAbsenceSeeder
+    arguments: ['@database', '@entity_type.manager']

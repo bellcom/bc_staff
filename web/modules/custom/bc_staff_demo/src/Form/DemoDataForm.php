@@ -6,6 +6,8 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\ConfirmFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Extension\ModuleHandlerInterface;
+use Drupal\bc_staff_demo\Service\DemoAbsenceSeeder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -18,13 +20,19 @@ final class DemoDataForm extends ConfirmFormBase {
    */
   public function __construct(
     private readonly EntityTypeManagerInterface $staffEntityTypeManager,
+    private readonly ModuleHandlerInterface $staffModuleHandler,
+    private readonly DemoAbsenceSeeder $demoAbsenceSeeder,
   ) {}
 
   /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container): static {
-    return new static($container->get('entity_type.manager'));
+    return new static(
+      $container->get('entity_type.manager'),
+      $container->get('module_handler'),
+      $container->get('bc_staff_demo.absence_seeder'),
+    );
   }
 
   /**
@@ -45,7 +53,7 @@ final class DemoDataForm extends ConfirmFormBase {
    * Returns the confirmation description.
    */
   public function getDescription() {
-    return $this->t('Creates four departments and twelve blocked demo accounts. Only accounts starting with bc_demo_ are updated. Existing non-demo accounts remain unchanged.');
+    return $this->t('Creates four departments, twelve blocked display accounts, and, when BC Staff Absence is enabled, eight active demonstration accounts with vacation and absence scenarios. Existing non-demo accounts remain unchanged.');
   }
 
   /**
@@ -149,6 +157,17 @@ final class DemoDataForm extends ConfirmFormBase {
       $account->set('field_bc_staff_location', $location);
       $account->set('field_bc_staff_department', ['target_id' => $departments[$department]]);
       $account->save();
+    }
+    if ($this->staffModuleHandler->moduleExists('bc_staff_absence')) {
+      $counts = $this->demoAbsenceSeeder->seed($departments);
+      $this->messenger()->addStatus($this->t('Absence scenarios: @users new active demo accounts, @absences new records, @skipped reserved names skipped.', [
+        '@users' => $counts['users'],
+        '@absences' => $counts['absences'],
+        '@skipped' => $counts['skipped'],
+      ]));
+    }
+    else {
+      $this->messenger()->addWarning($this->t('Enable BC Staff Absence to generate vacation and absence scenarios.'));
     }
     $this->messenger()->addStatus($this->t('Demo data ready: @new new employees and @updated updated employees.', [
       '@new' => $created,
