@@ -59,7 +59,7 @@ final class AbsenceCalendarController extends ControllerBase {
     if ($mode === 'month') {
       $start = $anchor->modify('first day of this month')->modify('monday this week');
     }
-    $days_count = $mode === 'month' ? 35 : 7;
+    $days_count = $mode === 'month' ? 42 : 7;
     $end = $start->modify('+' . ($days_count - 1) . ' days');
     $dates = [];
     for ($i = 0; $i < $days_count; $i++) {
