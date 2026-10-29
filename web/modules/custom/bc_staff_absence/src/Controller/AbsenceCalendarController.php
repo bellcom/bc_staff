@@ -163,7 +163,7 @@ final class AbsenceCalendarController extends ControllerBase {
       '#rows' => $rows,
       '#period' => $mode === 'month' ? $anchor->format('F Y') : $start->format('j M') . ' – ' . $end->format('j M Y'),
       '#mode' => $mode,
-      '#today_url' => $url((new \\DateTimeImmutable('today'))->format('Y-m-d'), $mode),
+      '#today_url' => $url((new \DateTimeImmutable('today'))->format('Y-m-d'), $mode),
       '#previous' => $url($anchor->modify("-1 $shift")->format('Y-m-d'), $mode),
       '#next' => $url($anchor->modify("+1 $shift")->format('Y-m-d'), $mode),
       '#week_url' => $url($anchor->format('Y-m-d'), 'week'),
