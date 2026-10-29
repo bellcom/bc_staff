@@ -71,7 +71,7 @@ final class AbsenceCalendarController extends ControllerBase {
       $dates[] = [
         'key' => $day->format('Y-m-d'),
         'number' => $day->format('j'),
-        'label' => $formatter->formatObject($day, 'EEE', 'da_DK'),
+        'label' => $weekdays[(int) $day->format('N') - 1],
         'weekend' => (int) $day->format('N') >= 6,
         'outside' => $mode === 'month' && $day->format('m') !== $anchor->format('m'),
         'today' => $day->format('Y-m-d') === date('Y-m-d'),
@@ -177,9 +177,10 @@ final class AbsenceCalendarController extends ControllerBase {
       return Url::fromRoute('bc_staff_absence.calendar', [], ['query' => $parameters])->toString();
     };
     $period = $mode === 'month'
-      ? $formatter->formatObject($anchor, 'LLLL yyyy', 'da_DK')
-      : $formatter->formatObject($start, 'd. MMM', 'da_DK') . ' – '
-        . $formatter->formatObject($end, 'd. MMM yyyy', 'da_DK');
+      ? $months[(int) $anchor->format('n') - 1] . ' ' . $anchor->format('Y')
+      : $start->format('j') . '. ' . $months[(int) $start->format('n') - 1]
+        . ' – ' . $end->format('j') . '. ' . $months[(int) $end->format('n') - 1]
+        . ' ' . $end->format('Y');
     return [
       '#theme' => 'bc_staff_absence_calendar',
       '#dates' => $dates,
