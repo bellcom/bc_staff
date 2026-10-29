@@ -5,6 +5,7 @@ namespace Drupal\bc_staff_absence\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
+use Drupal\bc_staff_absence\Access\AbsenceApprovalAccess;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -78,7 +79,7 @@ final class AbsenceController extends ControllerBase {
     $rows = [];
     foreach ($records as $record) {
       $employee = $this->staffEntities->getStorage('user')->load($record->uid);
-      if (!$employee || (!$is_admin && !EmployeeAccess::canManage($manager, $employee))) {
+      if (!$employee || !AbsenceApprovalAccess::canReview($account, $manager, $employee)) {
         continue;
       }
       $rows[] = [
