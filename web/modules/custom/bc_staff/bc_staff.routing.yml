@@ -50,3 +50,20 @@ bc_staff.login:
     _title: 'BC Staff login'
   requirements:
     _access: 'TRUE'
+
+bc_staff.organization:
+  path: '/staff/organisation'
+  defaults:
+    _controller: '\Drupal\bc_staff\Controller\OrganizationController::overview'
+    _title: 'Organization'
+  requirements:
+    _permission: 'administer bc staff employees'
+
+bc_staff.organization_add:
+  path: '/staff/organisation/{vocabulary}/ny'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\OrganizationTermForm'
+    _title: 'Add organization entry'
+  requirements:
+    _permission: 'administer bc staff employees'
+    vocabulary: 'bc_staff_department|bc_staff_house|bc_staff_location|bc_staff_workgroup'
