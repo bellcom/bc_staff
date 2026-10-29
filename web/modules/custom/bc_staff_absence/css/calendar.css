@@ -51,3 +51,9 @@
 .bc-planner--month .bc-planner__event{min-height:28px;font-size:11px}
 .bc-planner--month .bc-planner__weekday{font-size:9px}
 .bc-planner--month .bc-planner__day{font-size:14px}
+
+.bc-planner__filters{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 28px;background:#f8fbfe;border-bottom:1px solid var(--bc-border)}
+.bc-planner__filters label{font-weight:700;font-size:13px}
+.bc-planner__filters select{border:1px solid var(--bc-border);border-radius:8px;padding:9px 12px;min-width:170px;background:#fff}
+.bc-planner__filters button{background:#184e82;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer}
+.bc-planner__approval-link{display:inline-block;margin-top:12px;color:#174c80;font-weight:700;text-underline-offset:3px}

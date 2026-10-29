@@ -50,6 +50,10 @@ final class AbsenceCalendarController extends ControllerBase {
     }
 
     $query = $this->staffRequestStack->getCurrentRequest()->query;
+    $requested_department = $query->get('department');
+    $selected_department = $global && is_string($requested_department) && ctype_digit($requested_department)
+      ? $requested_department : NULL;
+    $formatter = new \IntlDateFormatter('da_DK', \IntlDateFormatter::NONE, IntlDateFormatter::NONE);
     $mode = $query->get('view') === 'month' ? 'month' : 'week';
     $date = $query->get('date');
     $anchor = is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)
@@ -67,7 +71,7 @@ final class AbsenceCalendarController extends ControllerBase {
       $dates[] = [
         'key' => $day->format('Y-m-d'),
         'number' => $day->format('j'),
-        'label' => $day->format('D'),
+        'label' => $formatter->formatObject($day, 'EEE', 'da_DK'),
         'weekend' => (int) $day->format('N') >= 6,
         'outside' => $mode === 'month' && $day->format('m') !== $anchor->format('m'),
         'today' => $day->format('Y-m-d') === date('Y-m-d'),
@@ -78,11 +82,22 @@ final class AbsenceCalendarController extends ControllerBase {
     $ids = $storage->getQuery()->accessCheck(FALSE)
       ->condition('uid', 0, '>')->condition('status', 1)->sort('name')->execute();
     $employees = [];
+    $departments = [];
     foreach ($storage->loadMultiple($ids) as $employee) {
       if (!$employee->hasField('field_bc_staff_department')) {
         continue;
       }
-      if (!$global && EmployeeAccess::departmentId($employee) !== $department) {
+      $employee_department = EmployeeAccess::departmentId($employee);
+      if (!$global && $employee_department !== $department) {
+        continue;
+      }
+      if ($global && $employee_department && !$employee->get('field_bc_staff_department')->isEmpty()) {
+        $term = $employee->get('field_bc_staff_department')->entity;
+        if ($term) {
+          $departments[$employee_department] = $term->label();
+        }
+      }
+      if ($selected_department !== NULL && $employee_department !== $selected_department) {
         continue;
       }
       $employees[$employee->id()] = $employee;
@@ -152,17 +167,30 @@ final class AbsenceCalendarController extends ControllerBase {
         'cells' => $cells,
       ];
     }
+    asort($departments, SORT_NATURAL | SORT_FLAG_CASE);
     $shift = $mode === 'month' ? 'month' : 'week';
-    $url = static fn (string $date_value, string $view): string =>
-      Url::fromRoute('bc_staff_absence.calendar', [], [
-        'query' => ['date' => $date_value, 'view' => $view],
-      ])->toString();
+    $url = static function (string $date_value, string $view) use ($selected_department): string {
+      $parameters = ['date' => $date_value, 'view' => $view];
+      if ($selected_department !== NULL) {
+        $parameters['department'] = $selected_department;
+      }
+      return Url::fromRoute('bc_staff_absence.calendar', [], ['query' => $parameters])->toString();
+    };
+    $period = $mode === 'month'
+      ? $formatter->formatObject($anchor, 'LLLL yyyy', 'da_DK')
+      : $formatter->formatObject($start, 'd. MMM', 'da_DK') . ' – '
+        . $formatter->formatObject($end, 'd. MMM yyyy', 'da_DK');
     return [
       '#theme' => 'bc_staff_absence_calendar',
       '#dates' => $dates,
       '#rows' => $rows,
-      '#period' => $mode === 'month' ? $anchor->format('F Y') : $start->format('j M') . ' – ' . $end->format('j M Y'),
+      '#period' => $period,
       '#mode' => $mode,
+      '#filter_available' => $global,
+      '#departments' => $departments,
+      '#selected_department' => $selected_department ?? '',
+      '#filter_date' => $anchor->format('Y-m-d'),
+      '#filter_url' => Url::fromRoute('bc_staff_absence.calendar')->toString(),
       '#today_url' => $url((new \DateTimeImmutable('today'))->format('Y-m-d'), $mode),
       '#previous' => $url($anchor->modify("-1 $shift")->format('Y-m-d'), $mode),
       '#next' => $url($anchor->modify("+1 $shift")->format('Y-m-d'), $mode),

@@ -4,6 +4,7 @@
       <p class="bc-planner__eyebrow">{{ 'BC STAFF / PLANNING'|t }}</p>
       <h2>{{ 'Team availability'|t }}</h2>
       <p>{{ 'View scheduled absence across your team.'|t }}</p>
+      <a class="bc-planner__approval-link" href="{{ path('bc_staff_absence.review') }}">{{ 'Review vacation requests'|t }}</a>
     </div>
     <div class="bc-planner__controls">
       <a class="bc-planner__today" href="{{ today_url }}">{{ 'Today'|t }}</a>
@@ -16,6 +17,20 @@
       </div>
     </div>
   </header>
+  {% if filter_available and departments %}
+    <form class="bc-planner__filters" action="{{ filter_url }}" method="get">
+      <input type="hidden" name="view" value="{{ mode }}">
+      <input type="hidden" name="date" value="{{ filter_date }}">
+      <label for="bc-planner-department">{{ 'Department'|t }}</label>
+      <select id="bc-planner-department" name="department">
+        <option value="">{{ 'All departments'|t }}</option>
+        {% for id, name in departments %}
+          <option value="{{ id }}"{{ selected_department == id ? ' selected' : '' }}>{{ name }}</option>
+        {% endfor %}
+      </select>
+      <button type="submit">{{ 'Apply filter'|t }}</button>
+    </form>
+  {% endif %}
   <div class="bc-planner__scroll" tabindex="0" role="region" aria-label="{{ 'Team calendar, scroll horizontally to see all dates'|t }}">
     <table class="bc-planner__table">
       <thead>
