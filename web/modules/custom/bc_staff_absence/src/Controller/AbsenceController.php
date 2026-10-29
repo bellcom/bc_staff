@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Displays absence requests with role-aware access restrictions.
@@ -50,7 +51,7 @@ final class AbsenceController extends ControllerBase {
     $manager = User::load($account->id());
     $department = EmployeeAccess::departmentId($manager);
     if (!$is_admin && !$department) {
-      throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+      throw new AccessDeniedHttpException();
     }
 
     $records = \Drupal::database()->select('bc_staff_absence', 'a')
