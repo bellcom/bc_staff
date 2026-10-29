@@ -5,7 +5,10 @@ namespace Drupal\bc_staff_absence\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
-use Drupal\user\Entity\User;
+use Drupal\Core\Database\Connection;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Form\FormBuilderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -13,11 +16,22 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
  */
 final class AbsenceController extends ControllerBase {
 
+  public function __construct(
+    private readonly Connection $staffDb,
+    private readonly EntityTypeManagerInterface $staffEntities,
+    private readonly FormBuilderInterface $staffFormBuilder,
+  ) {}
+
+  public static function create(ContainerInterface $container): static {
+    return new static($container->get('database'), $container->get('entity_type.manager'), $container->get('form_builder'));
+  }
+
+
   /**
    * Lists absences belonging to the current employee.
    */
   public function listing(): array {
-    $records = \Drupal::database()->select('bc_staff_absence', 'a')
+    $records = $this->staffDb->select('bc_staff_absence', 'a')
       ->fields('a', ['type', 'start_date', 'end_date', 'state'])
       ->condition('uid', (int) $this->currentUser()->id())
       ->orderBy('start_date', 'DESC')
@@ -48,20 +62,20 @@ final class AbsenceController extends ControllerBase {
   public function review(): array {
     $account = $this->currentUser();
     $is_admin = $account->id() === '1' || $account->hasPermission('manage all bc staff absences');
-    $manager = User::load($account->id());
+    $manager = $this->staffEntities->getStorage('user')->load($account->id());
     $department = EmployeeAccess::departmentId($manager);
     if (!$is_admin && !$department) {
       throw new AccessDeniedHttpException();
     }
 
-    $records = \Drupal::database()->select('bc_staff_absence', 'a')
+    $records = $this->staffDb->select('bc_staff_absence', 'a')
       ->fields('a', ['id', 'uid', 'type', 'start_date', 'end_date'])
       ->condition('state', 'pending')
       ->orderBy('created', 'ASC')
       ->execute()->fetchAll();
     $rows = [];
     foreach ($records as $record) {
-      $employee = User::load($record->uid);
+      $employee = $this->staffEntities->getStorage('user')->load($record->uid);
       if (!$employee || (!$is_admin && !EmployeeAccess::canManage($manager, $employee))) {
         continue;
       }
@@ -70,7 +84,7 @@ final class AbsenceController extends ControllerBase {
         $record->type,
         $record->start_date,
         $record->end_date,
-        \Drupal::formBuilder()->getForm('Drupal\\bc_staff_absence\\Form\\AbsenceDecisionForm', $record->id),
+        $this->staffFormBuilder->getForm('Drupal\\bc_staff_absence\\Form\\AbsenceDecisionForm', $record->id),
       ];
     }
     return [
