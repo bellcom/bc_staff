@@ -77,13 +77,16 @@ function bc_staff_update_11004(): void {
   }
 }
 
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
 /**
  * Add employee house/workgroup and location department reference fields.
  */
 function bc_staff_update_11005(): void {
-  $storage = \Drupal\field\Entity\FieldStorageConfig::load('user.field_bc_staff_house');
+  $storage = FieldStorageConfig::load('user.field_bc_staff_house');
   if (!$storage) {
-    \Drupal\field\Entity\FieldStorageConfig::create([
+    FieldStorageConfig::create([
       'field_name' => 'field_bc_staff_house',
       'entity_type' => 'user',
       'type' => 'entity_reference',
@@ -95,8 +98,8 @@ function bc_staff_update_11005(): void {
     'field_bc_staff_house' => ['House', 'bc_staff_house', 1],
     'field_bc_staff_workgroups' => ['Workgroups', 'bc_staff_workgroup', -1],
   ] as $field => [$label, $vid, $cardinality]) {
-    if (!\Drupal\field\Entity\FieldStorageConfig::load('user.' . $field)) {
-      \Drupal\field\Entity\FieldStorageConfig::create([
+    if (!FieldStorageConfig::load('user.' . $field)) {
+      FieldStorageConfig::create([
         'field_name' => $field,
         'entity_type' => 'user',
         'type' => 'entity_reference',
@@ -104,8 +107,8 @@ function bc_staff_update_11005(): void {
         'cardinality' => $cardinality,
       ])->save();
     }
-    if (!\Drupal\field\Entity\FieldConfig::load('user.user.' . $field)) {
-      \Drupal\field\Entity\FieldConfig::create([
+    if (!FieldConfig::load('user.user.' . $field)) {
+      FieldConfig::create([
         'field_name' => $field,
         'entity_type' => 'user',
         'bundle' => 'user',
@@ -114,8 +117,8 @@ function bc_staff_update_11005(): void {
       ])->save();
     }
   }
-  if (!\Drupal\field\Entity\FieldStorageConfig::load('taxonomy_term.field_bc_staff_department')) {
-    \Drupal\field\Entity\FieldStorageConfig::create([
+  if (!FieldStorageConfig::load('taxonomy_term.field_bc_staff_department')) {
+    FieldStorageConfig::create([
       'field_name' => 'field_bc_staff_department',
       'entity_type' => 'taxonomy_term',
       'type' => 'entity_reference',
@@ -123,13 +126,16 @@ function bc_staff_update_11005(): void {
       'cardinality' => 1,
     ])->save();
   }
-  if (!\Drupal\field\Entity\FieldConfig::load('taxonomy_term.bc_staff_location.field_bc_staff_department')) {
-    \Drupal\field\Entity\FieldConfig::create([
+  if (!FieldConfig::load('taxonomy_term.bc_staff_location.field_bc_staff_department')) {
+    FieldConfig::create([
       'field_name' => 'field_bc_staff_department',
       'entity_type' => 'taxonomy_term',
       'bundle' => 'bc_staff_location',
       'label' => 'Responsible department',
-      'settings' => ['handler' => 'default:taxonomy_term', 'handler_settings' => ['target_bundles' => ['bc_staff_department' => 'bc_staff_department']]],
+      'settings' => [
+        'handler' => 'default:taxonomy_term',
+        'handler_settings' => ['target_bundles' => ['bc_staff_department' => 'bc_staff_department']],
+      ],
     ])->save();
   }
 }
