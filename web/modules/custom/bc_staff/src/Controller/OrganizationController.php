@@ -2,6 +2,7 @@
 
 namespace Drupal\bc_staff\Controller;
 
+use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 
@@ -26,7 +27,7 @@ final class OrganizationController extends ControllerBase {
     $is_manager = $viewer->id() !== '1'
       && !$viewer->hasPermission('administer bc staff employees');
     $manager = $is_manager ? $this->entityTypeManager()->getStorage('user')->load($viewer->id()) : NULL;
-    $manager_department = $is_manager ? \Drupal\bc_staff\Access\EmployeeAccess::departmentId($manager) : NULL;
+    $manager_department = $is_manager ? EmployeeAccess::departmentId($manager) : NULL;
     foreach ($vocabularies as $vid => $label) {
       if ($is_manager && $vid !== 'bc_staff_location') {
         continue;
