@@ -20,16 +20,20 @@
         <option value="{{ department }}">{{ department }}</option>
       {% endfor %}
     </select>
+    <label for="bc-staff-house">{{ 'House'|t }}</label>
+    <select id="bc-staff-house" data-bc-staff-house-filter><option value="">{{ 'All houses'|t }}</option>{% for house in houses %}<option value="{{ house }}">{{ house }}</option>{% endfor %}</select>
+    <label for="bc-staff-workgroup">{{ 'Workgroup'|t }}</label>
+    <select id="bc-staff-workgroup" data-bc-staff-workgroup-filter><option value="">{{ 'All workgroups'|t }}</option>{% for group in workgroups %}<option value="{{ group }}">{{ group }}</option>{% endfor %}</select>
     <span aria-live="polite" data-bc-staff-count></span>
   </div>
   <div class="bc-staff__grid">
     {% for person in staff %}
-      <article class="bc-staff__card" data-bc-staff-card data-department="{{ person.department }}">
+      <article class="bc-staff__card" data-bc-staff-card data-department="{{ person.department }}" data-house="{{ person.house }}" data-workgroups="{{ person.workgroups|join('|') }}">
         <div class="bc-staff__person">
           <img class="bc-staff__avatar" src="{{ avatar }}" alt="" width="64" height="64" loading="lazy">
           <div>
             <h3>{% if person.profile_url %}<a href="{{ person.profile_url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if person.is_me %} <small>({{ 'you'|t }})</small>{% endif %}</h3>
-            <p>{{ person.department ?: 'No department'|t }}</p>
+            <p>{{ person.department ?: 'No department'|t }}{% if person.house %} · {{ person.house }}{% endif %}</p>
           </div>
         </div>
         <div class="bc-staff__status bc-staff__status--{{ person.status_key }}">

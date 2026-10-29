@@ -2,7 +2,9 @@
 
 namespace Drupal\bc_staff\Form;
 
+use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\Core\Form\FormBase;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Term;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -23,6 +25,15 @@ final class OrganizationTermForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state, ?string $vocabulary = NULL, ?int $term = NULL): array {
+    $viewer = $this->currentUser();
+    $is_manager = $viewer->id() !== '1'
+      && !$viewer->hasPermission('administer bc staff employees');
+    $leader = $is_manager ? $this->entityTypeManager()->getStorage('user')->load($viewer->id()) : NULL;
+    $department = $is_manager ? EmployeeAccess::departmentId($leader) : NULL;
+    if ($is_manager && (!$department || $vocabulary !== 'bc_staff_location')) {
+      throw new AccessDeniedHttpException();
+    }
+    $form_state->set('bc_staff_scope_department', $department);
     $form['#attributes']['class'][] = 'bc-org-form';
     $form['#attached']['library'][] = 'bc_staff/organization';
     $allowed = [
@@ -38,6 +49,10 @@ final class OrganizationTermForm extends FormBase {
     if ($term !== NULL && (!$editing || $editing->bundle() !== $vocabulary)) {
       throw new NotFoundHttpException();
     }
+    if ($is_manager && $editing
+      && (string) ($editing->get('field_bc_staff_department')->target_id ?? '') !== $department) {
+      throw new AccessDeniedHttpException();
+    }
     $form['vocabulary'] = ['#type' => 'value', '#value' => $vocabulary];
     $form['term_id'] = ['#type' => 'value', '#value' => $term];
     $form['name'] = [
@@ -52,7 +67,29 @@ final class OrganizationTermForm extends FormBase {
       if ($editing && (int) $item->tid === (int) $editing->id()) {
         continue;
       }
+      if ($is_manager) {
+        $candidate = $this->entityTypeManager()->getStorage('taxonomy_term')->load($item->tid);
+        if (!$candidate || (string) ($candidate->get('field_bc_staff_department')->target_id ?? '') !== $department) {
+          continue;
+        }
+      }
       $options[$item->tid] = str_repeat('— ', (int) $item->depth) . $item->name;
+    }
+    if ($vocabulary === 'bc_staff_location') {
+      $department_options = ['' => $this->t('Unassigned')];
+      foreach ($this->entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_department') as $item) {
+        $department_options[$item->tid] = $item->name;
+      }
+      $form['department'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Responsible department'),
+        '#options' => $is_manager
+          ? [$department => ($department_options[$department] ?? $this->t('Own department'))]
+          : $department_options,
+        '#default_value' => $is_manager
+          ? $department : ($editing?->get('field_bc_staff_department')->target_id ?? ''),
+        '#disabled' => $is_manager,
+      ];
     }
     $form['parent'] = [
       '#type' => 'select',
@@ -79,7 +116,31 @@ final class OrganizationTermForm extends FormBase {
       throw new NotFoundHttpException();
     }
     $term = $term ?: Term::create(['vid' => $vocabulary]);
+    $scope = $form_state->get('bc_staff_scope_department');
+    if ($scope) {
+      $leader = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
+      if ($vocabulary !== 'bc_staff_location' || EmployeeAccess::departmentId($leader) !== $scope
+        || ($id && (string) ($term->get('field_bc_staff_department')->target_id ?? '') !== $scope)) {
+        throw new AccessDeniedHttpException();
+      }
+    }
+    $parent = (int) $form_state->getValue('parent');
+    if ($parent) {
+      $parent_term = $this->entityTypeManager()->getStorage('taxonomy_term')->load($parent);
+      if (!$parent_term || $parent_term->bundle() !== $vocabulary
+        || ($scope && (string) ($parent_term->get('field_bc_staff_department')->target_id ?? '') !== $scope)) {
+        throw new AccessDeniedHttpException();
+      }
+    }
     $term->setName(trim((string) $form_state->getValue('name')));
+    if ($vocabulary === 'bc_staff_location' && $term->hasField('field_bc_staff_department')) {
+      $department = $scope ?: $form_state->getValue('department');
+      $selected = $department ? $this->entityTypeManager()->getStorage('taxonomy_term')->load($department) : NULL;
+      if ($department && (!$selected || $selected->bundle() !== 'bc_staff_department')) {
+        throw new AccessDeniedHttpException();
+      }
+      $term->set('field_bc_staff_department', $department ?: NULL);
+    }
     $term->set('parent', [(int) $form_state->getValue('parent')]);
     $term->save();
     $this->messenger()->addStatus($this->t('Organization entry saved.'));

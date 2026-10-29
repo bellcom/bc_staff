@@ -53,6 +53,8 @@ final class StaffController extends ControllerBase {
 
     $staff = [];
     $departments = [];
+    $houses = [];
+    $workgroups = [];
     $planned = [];
     if ($this->staffModuleHandler->moduleExists('bc_staff_absence')) {
       $planned = $this->staffContainer->get('bc_staff_absence.planned_status')->forUsers(array_map('intval', $ids));
@@ -80,6 +82,20 @@ final class StaffController extends ControllerBase {
       if ($department !== '') {
         $departments[$department] = $department;
       }
+      $house = '';
+      if ($account->hasField('field_bc_staff_house') && !$account->get('field_bc_staff_house')->isEmpty()) {
+        $house = $account->get('field_bc_staff_house')->entity?->label() ?? '';
+      }
+      if ($house !== '') {
+        $houses[$house] = $house;
+      }
+      $person_groups = [];
+      if ($account->hasField('field_bc_staff_workgroups')) {
+        foreach ($account->get('field_bc_staff_workgroups')->referencedEntities() as $group) {
+          $person_groups[] = $group->label();
+          $workgroups[$group->label()] = $group->label();
+        }
+      }
       $staff[] = [
         'name' => $name,
         'is_me' => (int) $account->id() === (int) $this->currentUser()->id(),
@@ -87,6 +103,8 @@ final class StaffController extends ControllerBase {
           || $this->currentUser()->hasPermission('administer users'))
           ? Url::fromRoute('entity.user.canonical', ['user' => $account->id()])->toString() : '',
         'department' => $department,
+        'house' => $house,
+        'workgroups' => $person_groups,
         'status_key' => $planned_category ? 'absent' : $status_key,
         'status' => $planned_category === 'vacation' ? $this->t('On vacation')
           : ($planned_category ? $this->t('Unavailable')
@@ -95,6 +113,8 @@ final class StaffController extends ControllerBase {
       ];
     }
     natcasesort($departments);
+    natcasesort($houses);
+    natcasesort($workgroups);
     $my_name = '';
     if ($this->currentUser()->isAuthenticated()) {
       $current = $this->staffEntityTypeManager->getStorage('user')->load($this->currentUser()->id());
@@ -109,6 +129,8 @@ final class StaffController extends ControllerBase {
       '#theme' => 'bc_staff_dashboard',
       '#staff' => $staff,
       '#departments' => array_values($departments),
+      '#houses' => array_values($houses),
+      '#workgroups' => array_values($workgroups),
       '#avatar' => $avatar,
       '#my_name' => $my_name,
       '#my_profile_url' => $this->currentUser()->isAuthenticated()

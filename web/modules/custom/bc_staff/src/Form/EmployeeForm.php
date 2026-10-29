@@ -103,12 +103,31 @@ final class EmployeeForm extends FormBase {
       $form['department']['#default_value'] = $leader_department;
       $form['department']['#disabled'] = TRUE;
     }
+    foreach ([
+      'house' => ['bc_staff_house', 'field_bc_staff_house', $this->t('House')],
+      'workgroups' => ['bc_staff_workgroup', 'field_bc_staff_workgroups', $this->t('Workgroups')],
+    ] as $key => [$vid, $field, $label]) {
+      $options = [];
+      foreach ($this->staffEntityTypeManager->getStorage('taxonomy_term')->loadTree($vid) as $term) {
+        $options[$term->tid] = $term->name;
+      }
+      $existing = $account && $account->hasField($field)
+        ? array_column($account->get($field)->getValue(), 'target_id') : [];
+      $form[$key] = [
+        '#type' => $key === 'house' ? 'select' : 'checkboxes',
+        '#title' => $label,
+        '#options' => $key === 'house' ? ['' => $this->t('No house')] + $options : $options,
+        '#default_value' => $key === 'house' ? ($existing[0] ?? '') : $existing,
+      ];
+    }
     $form['location'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Current location'),
       '#default_value' => $value('field_bc_staff_location'),
       '#maxlength' => 128,
     ];
+    $form['#attributes']['class'][] = 'bc-org-form';
+    $form['#attached']['library'][] = 'bc_staff/organization';
     $form['enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Active account (can sign in)'),
@@ -146,6 +165,16 @@ final class EmployeeForm extends FormBase {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state): void {
+    foreach (['house' => 'bc_staff_house', 'workgroups' => 'bc_staff_workgroup'] as $key => $vid) {
+      $values = $key === 'house'
+        ? [$form_state->getValue($key)] : array_filter((array) $form_state->getValue($key));
+      foreach (array_filter($values) as $id) {
+        $term = $this->staffEntityTypeManager->getStorage('taxonomy_term')->load($id);
+        if (!$term || $term->bundle() !== $vid) {
+          $form_state->setErrorByName($key, $this->t('Invalid organization selection.'));
+        }
+      }
+    }
     $storage = $this->staffEntityTypeManager->getStorage('user');
     $uid = $form_state->get('bc_staff_uid');
     foreach (['name' => 'name', 'mail' => 'mail'] as $key => $property) {
@@ -209,6 +238,15 @@ final class EmployeeForm extends FormBase {
     }
     if ($user->hasField('field_bc_staff_department')) {
       $user->set('field_bc_staff_department', ($manager_department ?: $form_state->getValue('department')) ?: NULL);
+    }
+    if ($user->hasField('field_bc_staff_house')) {
+      $user->set('field_bc_staff_house', $form_state->getValue('house') ?: NULL);
+    }
+    if ($user->hasField('field_bc_staff_workgroups')) {
+      $workgroups = array_keys(array_filter((array) $form_state->getValue('workgroups')));
+      $user->set('field_bc_staff_workgroups', array_map(
+        static fn ($id) => ['target_id' => $id], $workgroups,
+      ));
     }
     if (!$uid && $user->hasField('field_bc_staff_status')) {
       $user->set('field_bc_staff_status', 'absent');

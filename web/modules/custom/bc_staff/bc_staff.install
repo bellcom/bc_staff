@@ -76,3 +76,66 @@ function bc_staff_update_11004(): void {
     }
   }
 }
+
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
+
+/**
+ * Add employee house/workgroup and location department reference fields.
+ */
+function bc_staff_update_11005(): void {
+  $storage = FieldStorageConfig::load('user.field_bc_staff_house');
+  if (!$storage) {
+    FieldStorageConfig::create([
+      'field_name' => 'field_bc_staff_house',
+      'entity_type' => 'user',
+      'type' => 'entity_reference',
+      'settings' => ['target_type' => 'taxonomy_term'],
+      'cardinality' => 1,
+    ])->save();
+  }
+  foreach ([
+    'field_bc_staff_house' => ['House', 'bc_staff_house', 1],
+    'field_bc_staff_workgroups' => ['Workgroups', 'bc_staff_workgroup', -1],
+  ] as $field => [$label, $vid, $cardinality]) {
+    if (!FieldStorageConfig::load('user.' . $field)) {
+      FieldStorageConfig::create([
+        'field_name' => $field,
+        'entity_type' => 'user',
+        'type' => 'entity_reference',
+        'settings' => ['target_type' => 'taxonomy_term'],
+        'cardinality' => $cardinality,
+      ])->save();
+    }
+    if (!FieldConfig::load('user.user.' . $field)) {
+      FieldConfig::create([
+        'field_name' => $field,
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'label' => $label,
+        'settings' => ['handler' => 'default:taxonomy_term', 'handler_settings' => ['target_bundles' => [$vid => $vid]]],
+      ])->save();
+    }
+  }
+  if (!FieldStorageConfig::load('taxonomy_term.field_bc_staff_department')) {
+    FieldStorageConfig::create([
+      'field_name' => 'field_bc_staff_department',
+      'entity_type' => 'taxonomy_term',
+      'type' => 'entity_reference',
+      'settings' => ['target_type' => 'taxonomy_term'],
+      'cardinality' => 1,
+    ])->save();
+  }
+  if (!FieldConfig::load('taxonomy_term.bc_staff_location.field_bc_staff_department')) {
+    FieldConfig::create([
+      'field_name' => 'field_bc_staff_department',
+      'entity_type' => 'taxonomy_term',
+      'bundle' => 'bc_staff_location',
+      'label' => 'Responsible department',
+      'settings' => [
+        'handler' => 'default:taxonomy_term',
+        'handler_settings' => ['target_bundles' => ['bc_staff_department' => 'bc_staff_department']],
+      ],
+    ])->save();
+  }
+}
