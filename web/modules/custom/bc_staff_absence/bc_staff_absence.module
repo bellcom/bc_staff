@@ -10,6 +10,16 @@
  */
 function bc_staff_absence_theme(): array {
   return [
+    'bc_staff_absence_dashboard' => [
+      'variables' => [
+        'heading' => '',
+        'description' => '',
+        'items' => [],
+        'review' => FALSE,
+        'add_url' => '',
+      ],
+      'template' => 'bc-staff-absence-dashboard',
+    ],
     'bc_staff_absence_calendar' => [
       'variables' => [
         'dates' => [],
@@ -36,7 +46,11 @@ function bc_staff_absence_theme(): array {
  * Implements hook_page_attachments().
  */
 function bc_staff_absence_page_attachments(array &$page): void {
-  if (Drupal::routeMatch()->getRouteName() === 'bc_staff_absence.calendar') {
+  $route = Drupal::routeMatch()->getRouteName();
+  if (in_array($route, ['bc_staff_absence.list', 'bc_staff_absence.review', 'bc_staff_absence.add'], TRUE)) {
+    $page['#attached']['library'][] = 'bc_staff_absence/dashboard';
+  }
+  if ($route === 'bc_staff_absence.calendar') {
     $page['#attached']['library'][] = 'bc_staff_absence/calendar';
   }
 }
