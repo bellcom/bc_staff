@@ -1,0 +1,59 @@
+<section class="bc-planner">
+  <header class="bc-planner__header">
+    <div>
+      <p class="bc-planner__eyebrow">{{ 'BC STAFF / PLANNING'|t }}</p>
+      <h2>{{ 'Team availability'|t }}</h2>
+      <p>{{ 'View scheduled absence across your team.'|t }}</p>
+    </div>
+    <div class="bc-planner__controls">
+      <a class="bc-planner__arrow" href="{{ previous }}" aria-label="{{ 'Previous period'|t }}">‹</a>
+      <strong class="bc-planner__period">{{ period }}</strong>
+      <a class="bc-planner__arrow" href="{{ next }}" aria-label="{{ 'Next period'|t }}">›</a>
+      <div class="bc-planner__switch" aria-label="{{ 'Calendar view'|t }}">
+        <a href="{{ week_url }}"{{ mode == 'week' ? ' aria-current="page"' : '' }}>{{ 'Week'|t }}</a>
+        <a href="{{ month_url }}"{{ mode == 'month' ? ' aria-current="page"' : '' }}>{{ 'Month'|t }}</a>
+      </div>
+    </div>
+  </header>
+  <div class="bc-planner__scroll" tabindex="0" role="region" aria-label="{{ 'Team calendar, scroll horizontally to see all dates'|t }}">
+    <table class="bc-planner__table">
+      <thead>
+        <tr>
+          <th class="bc-planner__name" scope="col">{{ 'Employee'|t }}</th>
+          {% for date in dates %}
+            <th scope="col" class="{{ date.weekend ? 'is-weekend' : '' }} {{ date.today ? 'is-today' : '' }} {{ date.outside ? 'is-outside' : '' }}">
+              <span class="bc-planner__weekday">{{ date.label }}</span>
+              <span class="bc-planner__day">{{ date.number }}</span>
+            </th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+          <tr>
+            <th scope="row" class="bc-planner__name">{{ row.name }}</th>
+            {% for cell in row.cells %}
+              <td>
+                {% if cell %}
+                  <span class="bc-planner__event bc-planner__event--{{ cell.category }} {{ cell.pending ? 'is-pending' : '' }}" title="{{ cell.pending ? 'Pending'|t : cell.label }}">
+                    <span class="bc-planner__event-label">{{ cell.pending ? 'Requested'|t : cell.label }}</span>
+                  </span>
+                {% else %}
+                  <span class="bc-planner__free" aria-label="{{ 'No registered absence'|t }}"></span>
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+        {% else %}
+          <tr><td colspan="{{ dates|length + 1 }}" class="bc-planner__empty">{{ 'No staff in your team.'|t }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="bc-planner__legend">
+    <span><i class="bc-planner__key bc-planner__key--vacation"></i>{{ 'Vacation'|t }}</span>
+    <span><i class="bc-planner__key bc-planner__key--course"></i>{{ 'Course'|t }}</span>
+    <span><i class="bc-planner__key bc-planner__key--unavailable"></i>{{ 'Unavailable'|t }}</span>
+    <span><i class="bc-planner__key bc-planner__key--pending"></i>{{ 'Requested (not approved)'|t }}</span>
+  </div>
+</section>
