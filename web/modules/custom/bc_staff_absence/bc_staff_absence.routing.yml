@@ -20,4 +20,4 @@ bc_staff_absence.review:
     _controller: '\Drupal\bc_staff_absence\Controller\AbsenceController::review'
     _title: 'Absence requests'
   requirements:
-    _permission: 'manage own department bc staff employees+manage all bc staff absences'
+    _permission: 'manage own bc staff department+manage all bc staff absences'
