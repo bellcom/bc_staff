@@ -3,6 +3,9 @@
 namespace Drupal\bc_staff_absence\Controller;
 
 use Drupal\bc_staff\Access\EmployeeAccess;
+use Drupal\bc_staff_absence\Access\AbsenceApprovalAccess;
+use Drupal\bc_staff_absence\Form\AbsenceDecisionForm;
+use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -23,6 +26,7 @@ final class AbsenceCalendarController extends ControllerBase {
     private readonly Connection $staffDb,
     private readonly EntityTypeManagerInterface $staffEntities,
     private readonly RequestStack $staffRequestStack,
+    private readonly FormBuilderInterface $staffFormBuilder,
   ) {}
 
   /**
@@ -33,6 +37,7 @@ final class AbsenceCalendarController extends ControllerBase {
       $container->get('database'),
       $container->get('entity_type.manager'),
       $container->get('request_stack'),
+      $container->get('form_builder'),
     );
   }
 
@@ -53,6 +58,8 @@ final class AbsenceCalendarController extends ControllerBase {
     $requested_department = $query->get('department');
     $selected_department = $global && is_string($requested_department) && ctype_digit($requested_department)
       ? $requested_department : NULL;
+    $weekdays = ['man', 'tir', 'ons', 'tor', 'fre', 'lør', 'søn'];
+    $months = ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'];
     $mode = $query->get('view') === 'month' ? 'month' : 'week';
     $date = $query->get('date');
     $anchor = is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)
@@ -105,7 +112,7 @@ final class AbsenceCalendarController extends ControllerBase {
     $absences = [];
     if ($employees) {
       $records = $this->staffDb->select('bc_staff_absence', 'a')
-        ->fields('a', ['uid', 'type', 'state', 'start_date', 'end_date'])
+        ->fields('a', ['id', 'uid', 'type', 'state', 'start_date', 'end_date'])
         ->condition('uid', array_keys($employees), 'IN')
         ->condition('start_date', $end->format('Y-m-d'), '<=')
         ->condition('end_date', $start->format('Y-m-d'), '>=')
@@ -131,6 +138,8 @@ final class AbsenceCalendarController extends ControllerBase {
               'category' => $category,
               'label' => $label,
               'pending' => $record->state === 'pending',
+              'approved' => $record->state === 'approved' || $record->state === 'registered',
+              'absence_id' => (int) $record->id,
             ];
           }
         }
@@ -161,6 +170,17 @@ final class AbsenceCalendarController extends ControllerBase {
           'to' => $dates[$index - 1]['key'],
         ];
       }
+      foreach ($cells as &$cell) {
+        if (empty($cell['event']['pending'])) {
+          continue;
+        }
+        $employee_account = $employees[$employee->id()];
+        if (AbsenceApprovalAccess::canReview($viewer, $manager, $employee_account)
+          && $cell['event']['category'] === 'vacation') {
+          $cell['form'] = $this->staffFormBuilder->getForm(AbsenceDecisionForm::class, $cell['event']['absence_id']);
+        }
+      }
+      unset($cell);
       $rows[] = [
         'name' => $employee->getDisplayName(),
         'cells' => $cells,
