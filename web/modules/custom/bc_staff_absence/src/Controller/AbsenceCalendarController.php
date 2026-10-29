@@ -59,7 +59,10 @@ final class AbsenceCalendarController extends ControllerBase {
     $selected_department = $global && is_string($requested_department) && ctype_digit($requested_department)
       ? $requested_department : NULL;
     $weekdays = ['man', 'tir', 'ons', 'tor', 'fre', 'lør', 'søn'];
-    $months = ['januar', 'februar', 'marts', 'april', 'maj', 'juni', 'juli', 'august', 'september', 'oktober', 'november', 'december'];
+    $months = [
+      'januar', 'februar', 'marts', 'april', 'maj', 'juni',
+      'juli', 'august', 'september', 'oktober', 'november', 'december',
+    ];
     $mode = $query->get('view') === 'month' ? 'month' : 'week';
     $date = $query->get('date');
     $anchor = is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)
