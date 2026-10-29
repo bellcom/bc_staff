@@ -1,0 +1,4 @@
+services:
+  bc_staff_absence.planned_status:
+    class: Drupal\bc_staff_absence\Service\PlannedStatusResolver
+    arguments: ['@database', '@datetime.time']
