@@ -21,6 +21,7 @@ final class StaffController extends ControllerBase {
     private readonly EntityTypeManagerInterface $staffEntityTypeManager,
     private readonly ModuleHandlerInterface $staffModuleHandler,
     private readonly ModuleExtensionList $moduleExtensionList,
+    private readonly ContainerInterface $staffContainer,
   ) {}
 
   /**
@@ -31,6 +32,7 @@ final class StaffController extends ControllerBase {
       $container->get('entity_type.manager'),
       $container->get('module_handler'),
       $container->get('extension.list.module'),
+      $container,
     );
   }
 
@@ -53,7 +55,7 @@ final class StaffController extends ControllerBase {
     $departments = [];
     $planned = [];
     if ($this->staffModuleHandler->moduleExists('bc_staff_absence')) {
-      $planned = \Drupal::service('bc_staff_absence.planned_status')->forUsers(array_map('intval', $ids));
+      $planned = $this->staffContainer->get('bc_staff_absence.planned_status')->forUsers(array_map('intval', $ids));
     }
     foreach ($this->staffEntityTypeManager->getStorage('user')->loadMultiple($ids) as $account) {
       $is_demo = $demo_enabled && $account->hasField('field_bc_staff_demo') && (bool) $account->get('field_bc_staff_demo')->value;
