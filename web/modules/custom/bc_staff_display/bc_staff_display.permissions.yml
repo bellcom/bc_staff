@@ -1,0 +1,4 @@
+view bc staff display:
+  title: 'View BC Staff status display'
+  description: 'View staff name, department, status and location on a display.'
+  restrict access: true
