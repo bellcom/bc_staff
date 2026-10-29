@@ -15,7 +15,8 @@ final class EmployeeAdminController extends ControllerBase {
    * Handles listing.
    */
   public function listing(): array {
-    $rows = [];
+    $employees = [];
+    $departments = [];
     $storage = $this->entityTypeManager()->getStorage('user');
     $ids = $storage->getQuery()
       ->accessCheck(FALSE)->condition('uid', 0, '>')->sort('name')->execute();
@@ -39,47 +40,37 @@ final class EmployeeAdminController extends ControllerBase {
         $term = $user->get('field_bc_staff_department')->entity;
         $department = $term ? $term->label() : '—';
       }
-      $rows[] = [
-        'data' => [
-          $name,
-          $user->getAccountName(),
-          $department,
-          $user->isActive() ? $this->t('Active') : $this->t('Blocked'),
-          [
-            'data' => [
-              '#type' => 'link',
-              '#title' => $this->t('Edit'),
-              '#url' => Url::fromRoute('bc_staff.employee_edit', [
-                'user' => $user->id(),
-              ]),
-            ],
-          ],
-        ],
+      $house = '';
+      if ($user->hasField('field_bc_staff_house') && !$user->get('field_bc_staff_house')->isEmpty()) {
+        $house = $user->get('field_bc_staff_house')->entity?->label() ?? '';
+      }
+      $groups = [];
+      if ($user->hasField('field_bc_staff_workgroups')) {
+        foreach ($user->get('field_bc_staff_workgroups')->referencedEntities() as $group) {
+          $groups[] = $group->label();
+        }
+      }
+      $departments[$department] = $department;
+      $employees[] = [
+        'name' => $name,
+        'login' => $user->getAccountName(),
+        'department' => $department,
+        'house' => $house,
+        'groups' => $groups,
+        'active' => $user->isActive(),
+        'edit_url' => Url::fromRoute('bc_staff.employee_edit', [
+          'user' => $user->id(),
+        ])->toString(),
       ];
     }
+    natcasesort($departments);
     return [
-      'description' => [
-        '#markup' => '<p>' . $this->t('Employees use existing Drupal user accounts. Manage their login and staff details together.') . '</p>',
-      ],
-      'add' => [
-        '#type' => 'link',
-        '#title' => $this->t('Add employee'),
-        '#url' => Url::fromRoute('bc_staff.employee_add'),
-        '#attributes' => ['class' => ['button', 'button--primary']],
-      ],
-      'table' => [
-        '#type' => 'table',
-        '#header' => [
-          $this->t('Employee'),
-          $this->t('Login'),
-          $this->t('Department'),
-          $this->t('Account'),
-          $this->t('Action'),
-        ],
-        '#rows' => $rows,
-        '#empty' => $this->t('No employees.'),
-      ],
-      '#cache' => ['max-age' => 0],
+      '#theme' => 'bc_staff_employee_admin',
+      '#employees' => $employees,
+      '#departments' => array_values($departments),
+      '#add_url' => Url::fromRoute('bc_staff.employee_add')->toString(),
+      '#attached' => ['library' => ['bc_staff/employee_admin']],
+      '#cache' => ['contexts' => ['user', 'user.permissions'], 'max-age' => 0],
     ];
   }
 
