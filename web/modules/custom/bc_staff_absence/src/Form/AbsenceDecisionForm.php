@@ -4,7 +4,7 @@ namespace Drupal\bc_staff_absence\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\bc_staff\Access\EmployeeAccess;
+use Drupal\bc_staff_absence\Access\AbsenceApprovalAccess;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Database\Connection;
 use Drupal\Component\Datetime\TimeInterface;
@@ -56,11 +56,10 @@ final class AbsenceDecisionForm extends FormBase {
       ->condition('id', $id)
       ->execute()->fetchObject();
     $account = $this->currentUser();
-    $is_admin = $account->id() === '1' || $account->hasPermission('manage all bc staff absences');
     $manager = $this->staffEntities->getStorage('user')->load($account->id());
     $employee = $record ? $this->staffEntities->getStorage('user')->load($record->uid) : NULL;
     if (!$record || !$employee || $record->type !== 'vacation' || $record->state !== 'pending'
-      || (!$is_admin && (!$account->hasPermission('manage own bc staff department') || !EmployeeAccess::canManage($manager, $employee)))) {
+      || !AbsenceApprovalAccess::canReview($account, $manager, $employee)) {
       throw new AccessDeniedHttpException();
     }
     $decision = $form_state->getTriggeringElement()['#name'] === 'approve' ? 'approved' : 'rejected';
