@@ -36,3 +36,13 @@ organization:
   css:
     theme:
       css/organization.css: {}
+
+employee_admin:
+  css:
+    theme:
+      css/employee-admin.css: {}
+  js:
+    js/employee-admin.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
