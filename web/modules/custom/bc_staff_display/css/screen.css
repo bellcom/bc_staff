@@ -1,0 +1,7 @@
+.bc-staff-display{max-width:1400px;margin:auto;padding:clamp(12px,3vw,32px)}
+.bc-staff-display table{width:100%;border-collapse:separate;border-spacing:0 7px;font-size:clamp(15px,1.6vw,24px)}
+.bc-staff-display th{text-align:left;color:#415673;font-weight:700}
+.bc-staff-display td{background:#fff;padding:18px 16px;border-top:1px solid #dce6ef;border-bottom:1px solid #dce6ef}
+.bc-staff-display td:first-child{font-weight:750;border-left:1px solid #dce6ef;border-radius:10px 0 0 10px}
+.bc-staff-display td:last-child{border-right:1px solid #dce6ef;border-radius:0 10px 10px 0}
+@media(max-width:650px){.bc-staff-display{overflow-x:auto}.bc-staff-display table{min-width:560px}}
