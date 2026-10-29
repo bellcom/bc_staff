@@ -24,7 +24,7 @@ final class StaffThemeNegotiator implements ThemeNegotiatorInterface {
   public function applies(RouteMatchInterface $route_match): bool {
     $route_name = $route_match->getRouteName();
     return $route_name !== NULL
-      && str_starts_with($route_name, 'bc_staff.')
+      && (str_starts_with($route_name, 'bc_staff.') || str_starts_with($route_name, 'bc_staff_absence.') || str_starts_with($route_name, 'bc_staff_display.'))
       && $this->staffThemeHandler->themeExists('bc_staff_frontend');
   }
 
