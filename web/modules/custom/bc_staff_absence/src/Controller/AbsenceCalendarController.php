@@ -107,11 +107,11 @@ final class AbsenceCalendarController extends ControllerBase {
             $label = in_array($record->type, ['sick', 'child_sick'], TRUE)
               ? (string) $this->t('Unavailable')
               : (string) match ($record->type) {
-                'vacation' => $this->t('Vacation'),
-                'course' => $this->t('Course'),
-                'day_off' => $this->t('Day off'),
-                'leave' => $this->t('Leave'),
-                default => $this->t('Unavailable'),
+              'vacation' => $this->t('Vacation'),
+              'course' => $this->t('Course'),
+              'day_off' => $this->t('Day off'),
+              'leave' => $this->t('Leave'),
+              default => $this->t('Unavailable'),
               };
             $absences[$record->uid][$key] = [
               'category' => $category,
