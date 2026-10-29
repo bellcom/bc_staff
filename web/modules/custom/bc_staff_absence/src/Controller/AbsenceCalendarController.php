@@ -176,14 +176,15 @@ final class AbsenceCalendarController extends ControllerBase {
       }
       return Url::fromRoute('bc_staff_absence.calendar', [], ['query' => $parameters])->toString();
     };
+    $period = $mode === 'month'
+      ? $formatter->formatObject($anchor, 'LLLL yyyy', 'da_DK')
+      : $formatter->formatObject($start, 'd. MMM', 'da_DK') . ' – '
+        . $formatter->formatObject($end, 'd. MMM yyyy', 'da_DK');
     return [
       '#theme' => 'bc_staff_absence_calendar',
       '#dates' => $dates,
       '#rows' => $rows,
-      '#period' => $mode === 'month'
-        ? $formatter->formatObject($anchor, 'LLLL yyyy', 'da_DK')
-        : $formatter->formatObject($start, 'd. MMM', 'da_DK') . ' – '
-        . $formatter->formatObject($end, 'd. MMM yyyy', 'da_DK'),
+      '#period' => $period,
       '#mode' => $mode,
       '#filter_available' => $global,
       '#departments' => $departments,
