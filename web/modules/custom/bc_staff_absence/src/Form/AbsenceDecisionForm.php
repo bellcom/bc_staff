@@ -6,6 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\user\Entity\User;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
  * Restricts each vacation decision to the correct manager.
@@ -44,7 +45,7 @@ final class AbsenceDecisionForm extends FormBase {
     $employee = $record ? User::load($record->uid) : NULL;
     if (!$record || !$employee || $record->type !== 'vacation' || $record->state !== 'pending'
       || (!$is_admin && (!$account->hasPermission('manage own bc staff department') || !EmployeeAccess::canManage($manager, $employee)))) {
-      throw new \Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException();
+      throw new AccessDeniedHttpException();
     }
     $decision = $form_state->getTriggeringElement()['#name'] === 'approve' ? 'approved' : 'rejected';
     \Drupal::database()->update('bc_staff_absence')
