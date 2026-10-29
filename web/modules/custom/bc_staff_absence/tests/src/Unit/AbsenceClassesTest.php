@@ -19,7 +19,13 @@ final class AbsenceClassesTest extends UnitTestCase {
    * Confirms controllers and forms can be autoloaded.
    */
   public function testClassesLoad(): void {
-    foreach ([AbsenceController::class, AbsenceCalendarController::class, AbsenceDecisionForm::class, AbsenceForm::class] as $class) {
+    $classes = [
+      AbsenceController::class,
+      AbsenceCalendarController::class,
+      AbsenceDecisionForm::class,
+      AbsenceForm::class,
+    ];
+    foreach ($classes as $class) {
       $this->assertTrue(class_exists($class), sprintf('%s should be loadable.', $class));
     }
   }
