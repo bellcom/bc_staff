@@ -2,3 +2,8 @@ calendar:
   css:
     theme:
       css/calendar.css: {}
+
+dashboard:
+  css:
+    theme:
+      css/dashboard.css: {}

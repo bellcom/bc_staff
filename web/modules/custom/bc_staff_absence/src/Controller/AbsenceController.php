@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\bc_staff_absence\Access\AbsenceApprovalAccess;
+use Drupal\bc_staff_absence\Form\AbsenceDecisionForm;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -39,22 +40,23 @@ final class AbsenceController extends ControllerBase {
       ->condition('uid', (int) $this->currentUser()->id())
       ->orderBy('start_date', 'DESC')
       ->execute()->fetchAll();
-    $rows = [];
+    $items = [];
     foreach ($records as $record) {
-      $rows[] = [$record->type, $record->start_date, $record->end_date, $record->state];
+      $items[] = [
+        'type' => $this->absenceLabel($record->type),
+        'from' => $record->start_date,
+        'to' => $record->end_date,
+        'status' => $this->statusLabel($record->state),
+        'status_key' => $record->state,
+      ];
     }
     return [
-      'add' => [
-        '#type' => 'link',
-        '#title' => $this->t('Register absence'),
-        '#url' => Url::fromRoute('bc_staff_absence.add'),
-      ],
-      'table' => [
-        '#type' => 'table',
-        '#header' => [$this->t('Type'), $this->t('From'), $this->t('To'), $this->t('Decision')],
-        '#rows' => $rows,
-        '#empty' => $this->t('No absence records.'),
-      ],
+      '#theme' => 'bc_staff_absence_dashboard',
+      '#heading' => $this->t('My absence'),
+      '#description' => $this->t('Review your registered absence and requests.'),
+      '#items' => $items,
+      '#review' => FALSE,
+      '#add_url' => Url::fromRoute('bc_staff_absence.add')->toString(),
       '#cache' => ['contexts' => ['user'], 'max-age' => 0],
     ];
   }
@@ -76,29 +78,59 @@ final class AbsenceController extends ControllerBase {
       ->condition('state', 'pending')
       ->orderBy('created', 'ASC')
       ->execute()->fetchAll();
-    $rows = [];
+    $items = [];
     foreach ($records as $record) {
       $employee = $this->staffEntities->getStorage('user')->load($record->uid);
       if (!$employee || !AbsenceApprovalAccess::canReview($account, $manager, $employee)) {
         continue;
       }
-      $rows[] = [
-        $employee->getDisplayName(),
-        $record->type,
-        $record->start_date,
-        $record->end_date,
-        $this->staffFormBuilder->getForm('Drupal\\bc_staff_absence\\Form\\AbsenceDecisionForm', $record->id),
+      $items[] = [
+        'employee' => $employee->getDisplayName(),
+        'type' => $this->absenceLabel($record->type),
+        'from' => $record->start_date,
+        'to' => $record->end_date,
+        'status' => $this->t('Pending'),
+        'status_key' => 'pending',
+        'form' => $this->staffFormBuilder->getForm(AbsenceDecisionForm::class, $record->id),
       ];
     }
     return [
-      'table' => [
-        '#type' => 'table',
-        '#header' => [$this->t('Employee'), $this->t('Type'), $this->t('From'), $this->t('To'), $this->t('Decision')],
-        '#rows' => $rows,
-        '#empty' => $this->t('No pending requests.'),
-      ],
+      '#theme' => 'bc_staff_absence_dashboard',
+      '#heading' => $this->t('Absence approvals'),
+      '#description' => $this->t('Review pending requests from your team.'),
+      '#items' => $items,
+      '#review' => TRUE,
+      '#add_url' => '',
       '#cache' => ['contexts' => ['user', 'user.permissions'], 'max-age' => 0],
     ];
+  }
+
+  /**
+   * Provides translatable absence type labels.
+   */
+  private function absenceLabel(string $type): string {
+    return (string) match ($type) {
+      'vacation' => $this->t('Vacation'),
+      'course' => $this->t('Course'),
+      'child_sick' => $this->t('Child sick day'),
+      'sick' => $this->t('Sickness'),
+      'day_off' => $this->t('Day off'),
+      'leave' => $this->t('Leave'),
+      default => $this->t('Other absence'),
+    };
+  }
+
+  /**
+   * Provides translatable workflow state labels.
+   */
+  private function statusLabel(string $state): string {
+    return (string) match ($state) {
+      'pending' => $this->t('Pending'),
+      'approved' => $this->t('Approved'),
+      'rejected' => $this->t('Rejected'),
+      'registered' => $this->t('Registered'),
+      default => $this->t('Unknown'),
+    };
   }
 
 }
