@@ -1,0 +1,7 @@
+name: 'BC Staff Display'
+type: module
+description: 'Access-controlled staff status JSON and a display-friendly screen for the BC Staff POC.'
+package: 'BC Staff'
+core_version_requirement: ^11
+dependencies:
+  - bc_staff:bc_staff

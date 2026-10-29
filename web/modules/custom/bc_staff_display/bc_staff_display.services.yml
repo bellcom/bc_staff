@@ -1,0 +1,4 @@
+services:
+  bc_staff_display.status_provider:
+    class: Drupal\bc_staff_display\Service\StaffStatusProvider
+    arguments: ['@entity_type.manager']
