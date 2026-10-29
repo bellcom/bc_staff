@@ -22,10 +22,12 @@ final class AbsenceController extends ControllerBase {
     private readonly FormBuilderInterface $staffFormBuilder,
   ) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container): static {
     return new static($container->get('database'), $container->get('entity_type.manager'), $container->get('form_builder'));
   }
-
 
   /**
    * Lists absences belonging to the current employee.
