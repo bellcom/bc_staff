@@ -43,7 +43,7 @@ jobs:
 
       - name: Staff access unit tests
         if: always()
-        run: vendor/bin/phpunit -c web/core/phpunit.xml.dist web/modules/custom/bc_staff/tests/src/Unit
+        run: vendor/bin/phpunit -c web/core/phpunit.xml.dist web/modules/custom/bc_staff/tests/src/Unit web/modules/custom/bc_staff_absence/tests/src/Unit
 
       - name: Source-language check
         if: always()
