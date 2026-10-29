@@ -57,3 +57,8 @@
 .bc-planner__filters select{border:1px solid var(--bc-border);border-radius:8px;padding:9px 12px;min-width:170px;background:#fff}
 .bc-planner__filters button{background:#184e82;color:#fff;border:0;border-radius:8px;padding:10px 16px;font-weight:700;cursor:pointer}
 .bc-planner__approval-link{display:inline-block;margin-top:12px;color:#174c80;font-weight:700;text-underline-offset:3px}
+
+.bc-planner__decision{border-top:1px solid #e2e9f0;padding-top:10px;margin-top:8px}
+.bc-planner__decision form{display:flex;gap:8px;flex-wrap:wrap}
+.bc-planner__decision input[type=submit]{background:#184e82;color:#fff;border:0;border-radius:8px;padding:9px 12px;font-weight:700;cursor:pointer}
+.bc-planner__decision input[name=reject]{background:#fff;color:#9d3c37;border:1px solid #d9a6a1}

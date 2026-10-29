@@ -58,7 +58,14 @@
                     <div class="bc-planner__popover">
                       <strong>{{ cell.event.pending ? 'Requested'|t : cell.event.label }}</strong>
                       <span>{{ cell.from }} – {{ cell.to }}</span>
-                      {% if cell.event.pending %}<span>{{ 'Awaiting approval'|t }}</span>{% endif %}
+                      {% if cell.event.pending %}
+                        <span>{{ 'Awaiting approval'|t }}</span>
+                      {% elseif cell.event.approved %}
+                        <span>{{ 'Planned absence (approved or registered)'|t }}</span>
+                      {% endif %}
+                      {% if cell.form %}
+                        <div class="bc-planner__decision">{{ cell.form }}</div>
+                      {% endif %}
                     </div>
                   </details>
                 {% else %}
