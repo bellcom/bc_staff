@@ -16,6 +16,10 @@ function bc_staff_frontend_preprocess_page(array &$variables): void {
     'bc_staff.mobile' => t('My status'),
     'bc_staff.employee_list' => t('Employees'),
   ];
+  if (\Drupal::moduleHandler()->moduleExists('bc_staff_absence')) {
+    $links['bc_staff_absence.list'] = t('Absence');
+    $links['bc_staff_absence.review'] = t('Absence approvals');
+  }
   if (\Drupal::currentUser()->isAnonymous()) {
     $links = ['bc_staff.login' => t('Sign in')];
   }
