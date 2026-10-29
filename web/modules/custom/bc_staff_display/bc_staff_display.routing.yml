@@ -1,0 +1,15 @@
+bc_staff_display.screen:
+  path: '/staff/skaerm'
+  defaults:
+    _controller: '\Drupal\bc_staff_display\Controller\StaffDisplayController::screen'
+    _title: 'Staff display'
+  requirements:
+    _permission: 'view bc staff display'
+
+bc_staff_display.feed:
+  path: '/staff/api/v1/status'
+  defaults:
+    _controller: '\Drupal\bc_staff_display\Controller\StaffDisplayController::feed'
+  requirements:
+    _permission: 'view bc staff display'
+  methods: [GET]
