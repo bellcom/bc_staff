@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * @file
+ * Install hooks for BC Staff Absence.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function bc_staff_absence_schema(): array {
+  $schema['bc_staff_absence'] = [
+    'description' => 'Staff absences and manager approval decisions.',
+    'fields' => [
+      'id' => ['type' => 'serial', 'not null' => TRUE],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'type' => ['type' => 'varchar', 'length' => 32, 'not null' => TRUE],
+      'start_date' => ['type' => 'varchar', 'length' => 10, 'not null' => TRUE],
+      'end_date' => ['type' => 'varchar', 'length' => 10, 'not null' => TRUE],
+      'state' => ['type' => 'varchar', 'length' => 20, 'not null' => TRUE],
+      'created' => ['type' => 'int', 'not null' => TRUE],
+      'changed' => ['type' => 'int', 'not null' => TRUE],
+      'reviewed_by' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => FALSE],
+    ],
+    'primary key' => ['id'],
+    'indexes' => ['uid_dates' => ['uid', 'start_date', 'end_date'], 'state' => ['state']],
+  ];
+  return $schema;
+}
