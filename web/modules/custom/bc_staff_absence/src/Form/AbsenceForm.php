@@ -18,10 +18,12 @@ final class AbsenceForm extends FormBase {
     private readonly TimeInterface $staffTime,
   ) {}
 
+  /**
+   * {@inheritdoc}
+   */
   public static function create(ContainerInterface $container): static {
     return new static($container->get('database'), $container->get('datetime.time'));
   }
-
 
   /**
    * {@inheritdoc}
