@@ -1,0 +1,7 @@
+name: 'BC Staff Absence'
+type: module
+description: 'Staff absence registration and manager approval.'
+package: 'BC Staff'
+core_version_requirement: ^11
+dependencies:
+  - bc_staff:bc_staff

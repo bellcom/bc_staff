@@ -1,0 +1,23 @@
+bc_staff_absence.list:
+  path: '/staff/fravaer'
+  defaults:
+    _controller: '\Drupal\bc_staff_absence\Controller\AbsenceController::listing'
+    _title: 'My absence'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+bc_staff_absence.add:
+  path: '/staff/fravaer/ny'
+  defaults:
+    _form: '\Drupal\bc_staff_absence\Form\AbsenceForm'
+    _title: 'Register absence'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+bc_staff_absence.review:
+  path: '/staff/fravaer/godkend'
+  defaults:
+    _controller: '\Drupal\bc_staff_absence\Controller\AbsenceController::review'
+    _title: 'Absence requests'
+  requirements:
+    _permission: 'manage own bc staff department+manage all bc staff absences'

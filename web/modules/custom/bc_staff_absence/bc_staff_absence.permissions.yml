@@ -1,0 +1,3 @@
+manage all bc staff absences:
+  title: 'Manage all BC Staff absences'
+  restrict access: true
