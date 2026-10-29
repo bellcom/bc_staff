@@ -32,14 +32,70 @@ final class DemoAbsenceSeeder {
   public function seed(array $departments): array {
     $users = $this->staffEntities->getStorage('user');
     $people = [
-      ['bc_demo_manager_naestved', 'Katrine Brandt', 'Næstved – Administration', 'bc_staff_manager', 'present', 'Office 2'],
-      ['bc_demo_manager_roskilde', 'Thomas Vestergaard', 'Roskilde – Administration', 'bc_staff_manager', 'present', 'Office 3'],
-      ['bc_demo_employee_naestved_1', 'Laura Birk', 'Næstved – Administration', 'bc_staff_employee', 'present', 'Reception'],
-      ['bc_demo_employee_naestved_2', 'Emil Dahl', 'Næstved – Administration', 'bc_staff_employee', 'remote', 'Home'],
-      ['bc_demo_employee_naestved_3', 'Ida Nørgaard', 'Næstved – Administration', 'bc_staff_employee', 'meeting', 'Meeting room 1'],
-      ['bc_demo_employee_roskilde_1', 'Malthe Bæk', 'Roskilde – Administration', 'bc_staff_employee', 'present', 'Reception'],
-      ['bc_demo_employee_roskilde_2', 'Alma Friis', 'Roskilde – Administration', 'bc_staff_employee', 'away', 'Out of office'],
-      ['bc_demo_employee_roskilde_3', 'Felix Sønder', 'Roskilde – Administration', 'bc_staff_employee', 'break', 'Staff room'],
+      [
+        'bc_demo_manager_naestved',
+        'Katrine Brandt',
+        'Næstved – Administration',
+        'bc_staff_manager',
+        'present',
+        'Office 2',
+      ],
+      [
+        'bc_demo_manager_roskilde',
+        'Thomas Vestergaard',
+        'Roskilde – Administration',
+        'bc_staff_manager',
+        'present',
+        'Office 3',
+      ],
+      [
+        'bc_demo_employee_naestved_1',
+        'Laura Birk',
+        'Næstved – Administration',
+        'bc_staff_employee',
+        'present',
+        'Reception',
+      ],
+      [
+        'bc_demo_employee_naestved_2',
+        'Emil Dahl',
+        'Næstved – Administration',
+        'bc_staff_employee',
+        'remote',
+        'Home',
+      ],
+      [
+        'bc_demo_employee_naestved_3',
+        'Ida Nørgaard',
+        'Næstved – Administration',
+        'bc_staff_employee',
+        'meeting',
+        'Meeting room 1',
+      ],
+      [
+        'bc_demo_employee_roskilde_1',
+        'Malthe Bæk',
+        'Roskilde – Administration',
+        'bc_staff_employee',
+        'present',
+        'Reception',
+      ],
+      [
+        'bc_demo_employee_roskilde_2',
+        'Alma Friis',
+        'Roskilde – Administration',
+        'bc_staff_employee',
+        'away',
+        'Out of office',
+      ],
+      [
+        'bc_demo_employee_roskilde_3',
+        'Felix Sønder',
+        'Roskilde – Administration',
+        'bc_staff_employee',
+        'break',
+        'Staff room',
+      ],
     ];
     $accounts = [];
     $created_users = 0;
