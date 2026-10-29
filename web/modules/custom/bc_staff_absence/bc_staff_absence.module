@@ -1,0 +1,36 @@
+<?php
+
+/**
+ * @file
+ * Theme registrations for BC Staff Absence.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function bc_staff_absence_theme(): array {
+  return [
+    'bc_staff_absence_calendar' => [
+      'variables' => [
+        'dates' => [],
+        'rows' => [],
+        'period' => '',
+        'mode' => 'week',
+        'previous' => '',
+        'next' => '',
+        'week_url' => '',
+        'month_url' => '',
+      ],
+      'template' => 'bc-staff-absence-calendar',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function bc_staff_absence_page_attachments(array &$page): void {
+  if (Drupal::routeMatch()->getRouteName() === 'bc_staff_absence.calendar') {
+    $page['#attached']['library'][] = 'bc_staff_absence/calendar';
+  }
+}
