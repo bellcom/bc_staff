@@ -36,6 +36,7 @@ final class AbsenceForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state): array {
+    $form['#attributes']['class'][] = 'bc-staff-absence-form';
     $form['type'] = [
       '#type' => 'select',
       '#title' => $this->t('Absence type'),
