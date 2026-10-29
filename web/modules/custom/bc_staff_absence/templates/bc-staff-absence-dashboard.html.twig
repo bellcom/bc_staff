@@ -1,0 +1,34 @@
+<section class="bc-absence">
+  <header class="bc-absence__head">
+    <div>
+      <p class="bc-absence__eyebrow">{{ 'BC STAFF / ABSENCE'|t }}</p>
+      <h2>{{ heading }}</h2>
+      <p>{{ description }}</p>
+    </div>
+    {% if add_url %}
+      <a class="bc-absence__add" href="{{ add_url }}">{{ 'Register absence'|t }}</a>
+    {% endif %}
+  </header>
+  <div class="bc-absence__items">
+    {% for item in items %}
+      <article class="bc-absence__item">
+        <div class="bc-absence__main">
+          <div>
+            {% if item.employee %}<p class="bc-absence__employee">{{ item.employee }}</p>{% endif %}
+            <h3>{{ item.type }}</h3>
+            <p class="bc-absence__dates">{{ item.from }} <span aria-hidden="true">—</span> {{ item.to }}</p>
+          </div>
+          <span class="bc-absence__state bc-absence__state--{{ item.status_key }}">{{ item.status }}</span>
+        </div>
+        {% if review and item.form %}
+          <div class="bc-absence__actions">{{ item.form }}</div>
+        {% endif %}
+      </article>
+    {% else %}
+      <div class="bc-absence__empty">
+        <strong>{{ review ? 'No pending requests'|t : 'No absence records'|t }}</strong>
+        <p>{{ review ? 'Your team has no requests awaiting approval.'|t : 'Your absence history will appear here.'|t }}</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
