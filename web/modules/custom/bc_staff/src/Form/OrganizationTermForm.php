@@ -5,6 +5,7 @@ namespace Drupal\bc_staff\Form;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Term;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Adds BC Staff organization terms in a controlled vocabulary.
@@ -29,7 +30,7 @@ final class OrganizationTermForm extends FormBase {
       'bc_staff_workgroup',
     ];
     if (!in_array($vocabulary, $allowed, TRUE)) {
-      throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+      throw new NotFoundHttpException();
     }
     $form['vocabulary'] = ['#type' => 'value', '#value' => $vocabulary];
     $form['name'] = [
