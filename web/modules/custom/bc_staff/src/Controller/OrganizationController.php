@@ -22,12 +22,27 @@ final class OrganizationController extends ControllerBase {
       'bc_staff_workgroup' => $this->t('Workgroups'),
     ];
     $storage = $this->entityTypeManager()->getStorage('taxonomy_term');
+    $viewer = $this->currentUser();
+    $is_manager = $viewer->id() !== '1'
+      && !$viewer->hasPermission('administer bc staff employees');
+    $manager = $is_manager ? $this->entityTypeManager()->getStorage('user')->load($viewer->id()) : NULL;
+    $manager_department = $is_manager ? \Drupal\bc_staff\Access\EmployeeAccess::departmentId($manager) : NULL;
     foreach ($vocabularies as $vid => $label) {
+      if ($is_manager && $vid !== 'bc_staff_location') {
+        continue;
+      }
       if (!$this->entityTypeManager()->getStorage('taxonomy_vocabulary')->load($vid)) {
         continue;
       }
       $entries = [];
       foreach ($storage->loadTree($vid) as $term) {
+        if ($is_manager) {
+          $entity = $storage->load($term->tid);
+          if (!$entity || !$entity->hasField('field_bc_staff_department')
+            || (string) ($entity->get('field_bc_staff_department')->target_id ?? '') !== $manager_department) {
+            continue;
+          }
+        }
         $entries[] = [
           'name' => $term->name,
           'depth' => (int) $term->depth,
