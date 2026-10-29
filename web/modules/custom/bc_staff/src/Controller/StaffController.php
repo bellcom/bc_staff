@@ -51,6 +51,10 @@ final class StaffController extends ControllerBase {
 
     $staff = [];
     $departments = [];
+    $planned = [];
+    if ($this->staffModuleHandler->moduleExists('bc_staff_absence')) {
+      $planned = \Drupal::service('bc_staff_absence.planned_status')->forUsers(array_map('intval', $ids));
+    }
     foreach ($this->staffEntityTypeManager->getStorage('user')->loadMultiple($ids) as $account) {
       $is_demo = $demo_enabled && $account->hasField('field_bc_staff_demo') && (bool) $account->get('field_bc_staff_demo')->value;
       if (!$account->isActive() && !$is_demo) {
@@ -61,6 +65,7 @@ final class StaffController extends ControllerBase {
       }
       $status_field = $account->get('field_bc_staff_status');
       $status_key = $status_field->value;
+      $planned_category = $planned[$account->id()] ?? NULL;
       $choices = $status_field->getFieldDefinition()->getSetting('allowed_values');
       $name = $account->hasField('field_bc_staff_display_name')
         ? ($account->get('field_bc_staff_display_name')->value ?: $account->getDisplayName())
@@ -80,8 +85,10 @@ final class StaffController extends ControllerBase {
           || $this->currentUser()->hasPermission('administer users'))
           ? Url::fromRoute('entity.user.canonical', ['user' => $account->id()])->toString() : '',
         'department' => $department,
-        'status_key' => $status_key,
-        'status' => $choices[$status_key] ?? $this->t('Not specified'),
+        'status_key' => $planned_category ? 'absent' : $status_key,
+        'status' => $planned_category === 'vacation' ? $this->t('On vacation')
+          : ($planned_category ? $this->t('Unavailable')
+            : ($choices[$status_key] ?? $this->t('Not specified'))),
         'location' => $account->get('field_bc_staff_location')->value ?: '',
       ];
     }
