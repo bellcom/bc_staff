@@ -4,11 +4,24 @@ namespace Drupal\bc_staff_absence\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Database\Connection;
+use Drupal\Component\Datetime\TimeInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Registers an absence request for the current employee.
  */
 final class AbsenceForm extends FormBase {
+
+  public function __construct(
+    private readonly Connection $staffDb,
+    private readonly TimeInterface $staffTime,
+  ) {}
+
+  public static function create(ContainerInterface $container): static {
+    return new static($container->get('database'), $container->get('datetime.time'));
+  }
+
 
   /**
    * {@inheritdoc}
@@ -68,8 +81,8 @@ final class AbsenceForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $type = (string) $form_state->getValue('type');
-    $now = \Drupal::time()->getRequestTime();
-    \Drupal::database()->insert('bc_staff_absence')
+    $now = $this->staffTime->getRequestTime();
+    $this->staffDb->insert('bc_staff_absence')
       ->fields([
         'uid' => (int) $this->currentUser()->id(),
         'type' => $type,
