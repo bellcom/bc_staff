@@ -4,29 +4,42 @@
       once('bc-staff-dashboard', '[data-bc-staff-dashboard]', context).forEach((root) => {
         const select = root.querySelector('[data-bc-staff-filter]');
         const cards = [...root.querySelectorAll('[data-bc-staff-card]')];
+        const houseSelect = root.querySelector('[data-bc-staff-house-filter]');
+        const groupSelect = root.querySelector('[data-bc-staff-workgroup-filter]');
         const count = root.querySelector('[data-bc-staff-count]');
         const empty = root.querySelector('[data-bc-staff-empty]');
         const storageKey = 'bc-staff-department';
-        try {
-          const saved = sessionStorage.getItem(storageKey);
-          if (saved && [...select.options].some((option) => option.value === saved)) {
-            select.value = saved;
+        const filters = [
+          [select, storageKey],
+          [houseSelect, 'bc-staff-house'],
+          [groupSelect, 'bc-staff-workgroup'],
+        ];
+        filters.forEach(([control, key]) => {
+          try {
+            const saved = sessionStorage.getItem(key);
+            if (saved && [...control.options].some((option) => option.value === saved)) {
+              control.value = saved;
+            }
+          } catch (error) {
+            // Browser storage is optional.
           }
-        } catch (error) {
-          // Browser storage is optional.
-        }
+        });
         const filter = () => {
           let visible = 0;
           cards.forEach((card) => {
-            const show = !select.value || card.dataset.department === select.value;
+            const show = (!select.value || card.dataset.department === select.value)
+              && (!houseSelect.value || card.dataset.house === houseSelect.value)
+              && (!groupSelect.value || card.dataset.workgroups.split('|').includes(groupSelect.value));
             card.hidden = !show;
             if (show) visible++;
           });
           count.textContent = Drupal.formatPlural(visible, '1 employee', '@count employees');
           empty.hidden = visible > 0;
-          try { sessionStorage.setItem(storageKey, select.value); } catch (error) {}
+          filters.forEach(([control, key]) => {
+            try { sessionStorage.setItem(key, control.value); } catch (error) {}
+          });
         };
-        select.addEventListener('change', filter);
+        filters.forEach(([control]) => control.addEventListener('change', filter));
         filter();
         // Never refresh while the page is hidden.
         window.setInterval(() => {
