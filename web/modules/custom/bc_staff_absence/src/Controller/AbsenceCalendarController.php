@@ -126,8 +126,26 @@ final class AbsenceCalendarController extends ControllerBase {
     $rows = [];
     foreach ($employees as $employee) {
       $cells = [];
-      foreach ($dates as $date_item) {
-        $cells[] = $absences[$employee->id()][$date_item['key']] ?? NULL;
+      $index = 0;
+      while ($index < count($dates)) {
+        $item = $absences[$employee->id()][$dates[$index]['key']] ?? NULL;
+        if (!$item) {
+          $cells[] = ['span' => 1, 'event' => NULL];
+          $index++;
+          continue;
+        }
+        $first = $index;
+        $index++;
+        while ($index < count($dates)
+          && ($absences[$employee->id()][$dates[$index]['key']] ?? NULL) === $item) {
+          $index++;
+        }
+        $cells[] = [
+          'span' => $index - $first,
+          'event' => $item,
+          'from' => $dates[$first]['key'],
+          'to' => $dates[$index - 1]['key'],
+        ];
       }
       $rows[] = [
         'name' => $employee->getDisplayName(),
@@ -145,6 +163,7 @@ final class AbsenceCalendarController extends ControllerBase {
       '#rows' => $rows,
       '#period' => $mode === 'month' ? $anchor->format('F Y') : $start->format('j M') . ' – ' . $end->format('j M Y'),
       '#mode' => $mode,
+      '#today_url' => $url((new \\DateTimeImmutable('today'))->format('Y-m-d'), $mode),
       '#previous' => $url($anchor->modify("-1 $shift")->format('Y-m-d'), $mode),
       '#next' => $url($anchor->modify("+1 $shift")->format('Y-m-d'), $mode),
       '#week_url' => $url($anchor->format('Y-m-d'), 'week'),
