@@ -113,8 +113,8 @@ final class DemoAbsenceSeeder {
         }
       }
       else {
-        // Active demo accounts are deliberately created with unguessable passwords.
-        // A local administrator must explicitly reset a password to test logins.
+        // Give active demo accounts unguessable passwords.
+        // An administrator must reset the password to test a login.
         $account = $users->create([
           'name' => $username,
           'mail' => $username . '@example.invalid',
