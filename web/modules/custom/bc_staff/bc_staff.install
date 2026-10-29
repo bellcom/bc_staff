@@ -76,3 +76,60 @@ function bc_staff_update_11004(): void {
     }
   }
 }
+
+/**
+ * Add employee house/workgroup and location department reference fields.
+ */
+function bc_staff_update_11005(): void {
+  $storage = \Drupal\field\Entity\FieldStorageConfig::load('user.field_bc_staff_house');
+  if (!$storage) {
+    \Drupal\field\Entity\FieldStorageConfig::create([
+      'field_name' => 'field_bc_staff_house',
+      'entity_type' => 'user',
+      'type' => 'entity_reference',
+      'settings' => ['target_type' => 'taxonomy_term'],
+      'cardinality' => 1,
+    ])->save();
+  }
+  foreach ([
+    'field_bc_staff_house' => ['House', 'bc_staff_house', 1],
+    'field_bc_staff_workgroups' => ['Workgroups', 'bc_staff_workgroup', -1],
+  ] as $field => [$label, $vid, $cardinality]) {
+    if (!\Drupal\field\Entity\FieldStorageConfig::load('user.' . $field)) {
+      \Drupal\field\Entity\FieldStorageConfig::create([
+        'field_name' => $field,
+        'entity_type' => 'user',
+        'type' => 'entity_reference',
+        'settings' => ['target_type' => 'taxonomy_term'],
+        'cardinality' => $cardinality,
+      ])->save();
+    }
+    if (!\Drupal\field\Entity\FieldConfig::load('user.user.' . $field)) {
+      \Drupal\field\Entity\FieldConfig::create([
+        'field_name' => $field,
+        'entity_type' => 'user',
+        'bundle' => 'user',
+        'label' => $label,
+        'settings' => ['handler' => 'default:taxonomy_term', 'handler_settings' => ['target_bundles' => [$vid => $vid]]],
+      ])->save();
+    }
+  }
+  if (!\Drupal\field\Entity\FieldStorageConfig::load('taxonomy_term.field_bc_staff_department')) {
+    \Drupal\field\Entity\FieldStorageConfig::create([
+      'field_name' => 'field_bc_staff_department',
+      'entity_type' => 'taxonomy_term',
+      'type' => 'entity_reference',
+      'settings' => ['target_type' => 'taxonomy_term'],
+      'cardinality' => 1,
+    ])->save();
+  }
+  if (!\Drupal\field\Entity\FieldConfig::load('taxonomy_term.bc_staff_location.field_bc_staff_department')) {
+    \Drupal\field\Entity\FieldConfig::create([
+      'field_name' => 'field_bc_staff_department',
+      'entity_type' => 'taxonomy_term',
+      'bundle' => 'bc_staff_location',
+      'label' => 'Responsible department',
+      'settings' => ['handler' => 'default:taxonomy_term', 'handler_settings' => ['target_bundles' => ['bc_staff_department' => 'bc_staff_department']]],
+    ])->save();
+  }
+}
