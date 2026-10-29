@@ -53,7 +53,6 @@ final class AbsenceCalendarController extends ControllerBase {
     $requested_department = $query->get('department');
     $selected_department = $global && is_string($requested_department) && ctype_digit($requested_department)
       ? $requested_department : NULL;
-    $formatter = new \IntlDateFormatter('da_DK', \IntlDateFormatter::NONE, IntlDateFormatter::NONE);
     $mode = $query->get('view') === 'month' ? 'month' : 'week';
     $date = $query->get('date');
     $anchor = is_string($date) && preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)
