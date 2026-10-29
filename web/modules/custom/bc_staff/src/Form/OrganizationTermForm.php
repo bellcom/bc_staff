@@ -34,7 +34,7 @@ final class OrganizationTermForm extends FormBase {
     if (!in_array($vocabulary, $allowed, TRUE)) {
       throw new NotFoundHttpException();
     }
-    $editing = $term ? Term::load($term) : NULL;
+    $editing = $term ? $this->entityTypeManager()->getStorage('taxonomy_term')->load($term) : NULL;
     if ($term !== NULL && (!$editing || $editing->bundle() !== $vocabulary)) {
       throw new NotFoundHttpException();
     }
@@ -74,7 +74,7 @@ final class OrganizationTermForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $vocabulary = (string) $form_state->getValue('vocabulary');
     $id = (int) $form_state->getValue('term_id');
-    $term = $id ? Term::load($id) : NULL;
+    $term = $id ? $this->entityTypeManager()->getStorage('taxonomy_term')->load($id) : NULL;
     if ($id && (!$term || $term->bundle() !== $vocabulary)) {
       throw new NotFoundHttpException();
     }
