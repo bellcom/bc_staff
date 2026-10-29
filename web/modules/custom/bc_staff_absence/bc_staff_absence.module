@@ -20,6 +20,7 @@ function bc_staff_absence_theme(): array {
         'next' => '',
         'week_url' => '',
         'month_url' => '',
+        'today_url' => '',
       ],
       'template' => 'bc-staff-absence-calendar',
     ],

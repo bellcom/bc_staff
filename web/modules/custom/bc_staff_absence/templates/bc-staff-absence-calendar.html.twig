@@ -1,4 +1,4 @@
-<section class="bc-planner">
+<section class="bc-planner bc-planner--{{ mode }}">
   <header class="bc-planner__header">
     <div>
       <p class="bc-planner__eyebrow">{{ 'BC STAFF / PLANNING'|t }}</p>
@@ -6,6 +6,7 @@
       <p>{{ 'View scheduled absence across your team.'|t }}</p>
     </div>
     <div class="bc-planner__controls">
+      <a class="bc-planner__today" href="{{ today_url }}">{{ 'Today'|t }}</a>
       <a class="bc-planner__arrow" href="{{ previous }}" aria-label="{{ 'Previous period'|t }}">‹</a>
       <strong class="bc-planner__period">{{ period }}</strong>
       <a class="bc-planner__arrow" href="{{ next }}" aria-label="{{ 'Next period'|t }}">›</a>
@@ -33,11 +34,18 @@
           <tr>
             <th scope="row" class="bc-planner__name">{{ row.name }}</th>
             {% for cell in row.cells %}
-              <td>
-                {% if cell %}
-                  <span class="bc-planner__event bc-planner__event--{{ cell.category }} {{ cell.pending ? 'is-pending' : '' }}" title="{{ cell.pending ? 'Pending'|t : cell.label }}">
-                    <span class="bc-planner__event-label">{{ cell.pending ? 'Requested'|t : cell.label }}</span>
-                  </span>
+              <td colspan="{{ cell.span }}" class="{{ cell.event ? 'bc-planner__occupied' : 'bc-planner__vacant' }}">
+                {% if cell.event %}
+                  <details class="bc-planner__detail">
+                    <summary class="bc-planner__event bc-planner__event--{{ cell.event.category }} {{ cell.event.pending ? 'is-pending' : '' }}" aria-label="{{ cell.event.pending ? 'Requested'|t : cell.event.label }}: {{ cell.from }} – {{ cell.to }}">
+                      <span class="bc-planner__event-label">{{ cell.event.pending ? 'Requested'|t : cell.event.label }}</span>
+                    </summary>
+                    <div class="bc-planner__popover">
+                      <strong>{{ cell.event.pending ? 'Requested'|t : cell.event.label }}</strong>
+                      <span>{{ cell.from }} – {{ cell.to }}</span>
+                      {% if cell.event.pending %}<span>{{ 'Awaiting approval'|t }}</span>{% endif %}
+                    </div>
+                  </details>
                 {% else %}
                   <span class="bc-planner__free" aria-label="{{ 'No registered absence'|t }}"></span>
                 {% endif %}

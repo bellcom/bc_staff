@@ -36,3 +36,18 @@
 .bc-planner__empty{padding:24px!important;text-align:left!important;color:#62788d}
 .bc-planner :focus-visible{outline:3px solid #2465b4;outline-offset:2px}
 @media(max-width:640px){.bc-planner__header{padding:18px}.bc-planner__table .bc-planner__name{min-width:155px;width:155px;max-width:155px;padding:10px}.bc-planner__legend{padding:16px}}
+
+/* Calendar periods occupy a merged table cell, not one label per day. */
+.bc-planner__today{padding:9px 13px;border:1px solid var(--bc-border);border-radius:9px;color:#234d78;text-decoration:none;font-size:13px;font-weight:750}
+.bc-planner__occupied{position:relative;padding:7px 3px!important}
+.bc-planner__detail{position:relative}
+.bc-planner__detail summary{list-style:none;cursor:pointer;white-space:nowrap;justify-content:flex-start;padding:7px 11px}
+.bc-planner__detail summary::-webkit-details-marker{display:none}
+.bc-planner__event-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bc-planner__detail[open] summary{outline:2px solid #2465b4;outline-offset:1px}
+.bc-planner__popover{position:relative;z-index:4;background:#fff;box-shadow:0 5px 16px rgba(25,50,75,.15);border:1px solid var(--bc-border);border-radius:8px;padding:10px 12px;margin-top:5px;display:flex;flex-direction:column;gap:3px;text-align:left;font-size:12px;min-width:150px}
+.bc-planner--month .bc-planner__table th,.bc-planner--month .bc-planner__table td{min-width:39px;width:39px;padding:7px 2px}
+.bc-planner--month .bc-planner__table .bc-planner__name{min-width:200px;width:200px;max-width:200px}
+.bc-planner--month .bc-planner__event{min-height:28px;font-size:11px}
+.bc-planner--month .bc-planner__weekday{font-size:9px}
+.bc-planner--month .bc-planner__day{font-size:14px}
