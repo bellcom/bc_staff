@@ -6,6 +6,7 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\bc_staff_absence\Access\AbsenceApprovalAccess;
+use Drupal\bc_staff_absence\Form\AbsenceDecisionForm;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -90,7 +91,7 @@ final class AbsenceController extends ControllerBase {
         'to' => $record->end_date,
         'status' => $this->t('Pending'),
         'status_key' => 'pending',
-        'form' => $this->staffFormBuilder->getForm('Drupal\\\\bc_staff_absence\\\\Form\\\\AbsenceDecisionForm', $record->id),
+        'form' => $this->staffFormBuilder->getForm(AbsenceDecisionForm::class, $record->id),
       ];
     }
     return [
