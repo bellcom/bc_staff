@@ -25,11 +25,13 @@ final class DemoAbsenceSeeder {
    *
    * @param array $departments
    *   Department name to taxonomy term ID mapping.
+   * @param array $organization
+   *   Demo house and workgroup term ID mappings.
    *
    * @return array
    *   Counts of created accounts, created absences and skipped accounts.
    */
-  public function seed(array $departments): array {
+  public function seed(array $departments, array $organization): array {
     $users = $this->staffEntities->getStorage('user');
     $people = [
       [
@@ -101,7 +103,7 @@ final class DemoAbsenceSeeder {
     $created_users = 0;
     $skipped = 0;
 
-    foreach ($people as [$username, $display_name, $department, $role, $status, $location]) {
+    foreach ($people as $i => [$username, $display_name, $department, $role, $status, $location]) {
       $matches = $users->loadByProperties(['name' => $username]);
       $account = reset($matches);
       if ($account) {
@@ -131,6 +133,7 @@ final class DemoAbsenceSeeder {
       $account->set('field_bc_staff_department', [
         'target_id' => $departments[$department],
       ]);
+      DemoOrganization::assign($account, $department, $organization, $i);
       $account->save();
       $accounts[$username] = (int) $account->id();
     }

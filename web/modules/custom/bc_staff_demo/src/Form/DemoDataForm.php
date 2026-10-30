@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\bc_staff_demo\Service\DemoAbsenceSeeder;
+use Drupal\bc_staff_demo\Service\DemoOrganization;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -53,7 +54,7 @@ final class DemoDataForm extends ConfirmFormBase {
    * Returns the confirmation description.
    */
   public function getDescription() {
-    return $this->t('Creates four departments, twelve blocked display accounts, and, when BC Staff Absence is enabled, eight active demonstration accounts with vacation and absence scenarios. Existing non-demo accounts remain unchanged.');
+    return $this->t('Creates four departments, demo houses, workgroups and locations, twelve blocked display accounts and, when BC Staff Absence is enabled, eight active demonstration accounts with vacation and absence scenarios. Existing non-demo accounts remain unchanged.');
   }
 
   /**
@@ -108,6 +109,7 @@ final class DemoDataForm extends ConfirmFormBase {
       }
     }
 
+    $organization = DemoOrganization::seed($this->staffEntityTypeManager, $departments);
     $people = [
       ['Anna Madsen', 'present', 'Næstved – Administration', 'Reception'],
       ['Peter Holm', 'meeting', 'Næstved – Administration', 'Meeting room 1'],
@@ -156,10 +158,11 @@ final class DemoDataForm extends ConfirmFormBase {
       $account->set('field_bc_staff_status', $status);
       $account->set('field_bc_staff_location', $location);
       $account->set('field_bc_staff_department', ['target_id' => $departments[$department]]);
+      DemoOrganization::assign($account, $department, $organization, $i);
       $account->save();
     }
     if ($this->staffModuleHandler->moduleExists('bc_staff_absence')) {
-      $counts = $this->demoAbsenceSeeder->seed($departments);
+      $counts = $this->demoAbsenceSeeder->seed($departments, $organization);
       $this->messenger()->addStatus($this->t('Absence scenarios: @users new active demo accounts, @absences new records, @skipped reserved names skipped.', [
         '@users' => $counts['users'],
         '@absences' => $counts['absences'],
