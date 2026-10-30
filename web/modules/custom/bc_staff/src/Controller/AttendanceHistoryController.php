@@ -23,6 +23,7 @@ final class AttendanceHistoryController extends ControllerBase {
 
     $employee_ids = [];
     $names = [];
+    $current_status = [];
     $ids = $users->getQuery()->accessCheck(FALSE)->condition('uid', 0, '>')
       ->condition('status', 1)->execute();
     foreach ($users->loadMultiple($ids) as $employee) {
@@ -35,6 +36,7 @@ final class AttendanceHistoryController extends ControllerBase {
       }
       $uid = (int) $employee->id();
       $employee_ids[] = $uid;
+      $current_status[$uid] = (string) ($employee->get('field_bc_staff_status')->value ?? '');
       $names[$uid] = $employee->hasField('field_bc_staff_display_name')
         && !$employee->get('field_bc_staff_display_name')->isEmpty()
         ? (string) $employee->get('field_bc_staff_display_name')->value
@@ -81,6 +83,7 @@ final class AttendanceHistoryController extends ControllerBase {
       $event = $latest[$uid] ?? NULL;
       $today_rows[] = [
         $name,
+        $current_status[$uid] === 'present' ? $this->t('Present') : $this->t('Not present'),
         $event ? ($event->action === 'in' ? $this->t('Checked in') : $this->t('Checked out')) : $this->t('No registration today'),
         $event ? \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'H:i') : '—',
       ];
@@ -93,7 +96,7 @@ final class AttendanceHistoryController extends ControllerBase {
       'today_heading' => ['#type' => 'html_tag', '#tag' => 'h2', '#value' => $this->t('Today')],
       'today' => [
         '#type' => 'table',
-        '#header' => [$this->t('Employee'), $this->t('Last action today'), $this->t('Time')],
+        '#header' => [$this->t('Employee'), $this->t('Current saved status'), $this->t('Last action today'), $this->t('Time')],
         '#rows' => $today_rows,
         '#empty' => $this->t('No employees.'),
       ],
