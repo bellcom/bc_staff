@@ -41,6 +41,10 @@ final class EmployeeAdminController extends ControllerBase {
     $manager = $this->currentUser()->hasPermission('manage own bc staff department')
       && !$this->currentUser()->hasPermission('administer bc staff employees');
     $leader = $manager ? $storage->load($this->currentUser()->id()) : NULL;
+    $planned = [];
+    if ($this->moduleHandler()->moduleExists('bc_staff_absence')) {
+      $planned = \Drupal::service('bc_staff_absence.planned_status')->forUsers(array_map('intval', $ids));
+    }
     foreach ($storage->loadMultiple($ids) as $user) {
       if ($manager && !EmployeeAccess::canManage($leader, $user)) {
         continue;
@@ -81,6 +85,12 @@ final class EmployeeAdminController extends ControllerBase {
       foreach ($choices as $key => $label) {
         $statuses[$key] = ['key' => $key, 'label' => $label];
       }
+      $planned_category = $planned[$user->id()] ?? NULL;
+      $effective_key = $planned_category ? 'absent' : $status_key;
+      $effective_label = $planned_category === 'vacation'
+        ? $this->t('On vacation')
+        : ($planned_category ? $this->t('Unavailable')
+          : ($choices[$status_key] ?? $this->t('Not specified')));
       $employees[] = [
         'photo_url' => StaffPhoto::url($user, $this->photoUrls, $fallback),
         'name' => $name,
@@ -91,8 +101,8 @@ final class EmployeeAdminController extends ControllerBase {
         'house' => $house,
         'groups' => $groups,
         'active' => $user->isActive(),
-        'status_key' => $status_key,
-        'status' => $choices[$status_key] ?? $this->t('Not specified'),
+        'status_key' => $effective_key,
+        'status' => $effective_label,
         'location' => $user->hasField('field_bc_staff_location')
           ? (string) ($user->get('field_bc_staff_location')->value ?? '') : '',
         'edit_url' => Url::fromRoute('bc_staff.employee_edit', [
@@ -100,6 +110,7 @@ final class EmployeeAdminController extends ControllerBase {
         ])->toString(),
       ];
     }
+    $statuses['absent'] = ['key' => 'absent', 'label' => $this->t('Absent')];
     natcasesort($departments);
     natcasesort($houses);
     natcasesort($workgroups);
