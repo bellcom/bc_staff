@@ -7,6 +7,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\Core\File\FileUrlGeneratorInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -23,6 +24,7 @@ final class EmployeeForm extends FormBase {
     private readonly EntityTypeManagerInterface $staffEntityTypeManager,
     private readonly CurrentRouteMatch $staffRouteMatch,
     private readonly FileSystemInterface $staffFileSystem,
+    private readonly FileUrlGeneratorInterface $staffFileUrlGenerator,
   ) {}
 
   /**
@@ -33,6 +35,7 @@ final class EmployeeForm extends FormBase {
       $container->get('entity_type.manager'),
       $container->get('current_route_match'),
       $container->get('file_system'),
+      $container->get('file_url_generator'),
     );
   }
 
@@ -158,7 +161,7 @@ final class EmployeeForm extends FormBase {
             '#tag' => 'img',
             '#attributes' => [
               'class' => ['bc-editor__photo-preview'],
-              'src' => \Drupal::service('file_url_generator')->generateString($existing_file->getFileUri()),
+              'src' => $this->staffFileUrlGenerator->generateString($existing_file->getFileUri()),
               'alt' => $this->t('Current profile photo'),
             ],
           ];
