@@ -130,6 +130,8 @@ final class EmployeeForm extends FormBase {
     ];
     $form['#attributes']['class'][] = 'bc-org-form';
     $form['#attached']['library'][] = 'bc_staff/organization';
+    $form['#attached']['library'][] = 'bc_staff/employee_editor';
+    $form['#attributes']['data-bc-employee-editor'] = '1';
     $form['enabled'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Active account (can sign in)'),
@@ -150,6 +152,17 @@ final class EmployeeForm extends FormBase {
       $photo_dir = 'public://bc_staff_photos';
       if ($this->staffFileSystem->prepareDirectory($photo_dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
         $existing_fid = $account->get('user_picture')->target_id ?? NULL;
+        if ($existing_fid && ($existing_file = $this->staffEntityTypeManager->getStorage('file')->load($existing_fid))) {
+          $form['photo_preview'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'img',
+            '#attributes' => [
+              'class' => ['bc-editor__photo-preview'],
+              'src' => \Drupal::service('file_url_generator')->generateString($existing_file->getFileUri()),
+              'alt' => $this->t('Current profile photo'),
+            ],
+          ];
+        }
         $form['photo'] = [
           '#type' => 'managed_file',
           '#title' => $this->t('Profile photo'),
@@ -163,19 +176,19 @@ final class EmployeeForm extends FormBase {
         ];
       }
     }
-    $form['tabs'] = [
-      '#type' => 'vertical_tabs',
-      '#default_tab' => 'edit-general',
-    ];
     foreach ([
-      'general' => [$this->t('Basic information'), ['photo', 'display_name', 'name', 'mail']],
+      'general' => [$this->t('Basic information'), ['photo_preview', 'photo', 'display_name', 'name', 'mail']],
       'employment' => [$this->t('Employment'), ['department', 'house', 'workgroups', 'employee_role', 'enabled']],
       'locations' => [$this->t('Locations'), ['location', 'password']],
     ] as $key => [$label, $fields]) {
       $form[$key] = [
         '#type' => 'details',
         '#title' => $label,
-        '#group' => 'tabs',
+        '#open' => TRUE,
+        '#attributes' => [
+          'class' => ['bc-editor__section'],
+          'data-bc-editor-section' => $key,
+        ],
       ];
       foreach ($fields as $field) {
         if (isset($form[$field])) {
