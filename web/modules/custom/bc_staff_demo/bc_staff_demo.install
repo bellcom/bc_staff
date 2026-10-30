@@ -1,0 +1,81 @@
+<?php
+
+/**
+ * @file
+ * Development-only demo data refresh updates.
+ */
+
+/**
+ * Rebuilds illustrative absence scenarios for BC Staff demo accounts.
+ */
+function bc_staff_demo_update_11001(): string {
+  if (!\Drupal::moduleHandler()->moduleExists('bc_staff_absence')) {
+    return 'BC Staff Absence is not enabled; no absence data changed.';
+  }
+
+  $users = \Drupal::entityTypeManager()->getStorage('user');
+  $db = \Drupal::database();
+  $ids = $users->getQuery()
+    ->accessCheck(FALSE)
+    ->condition('uid', 0, '>')
+    ->exists('field_bc_staff_demo')
+    ->execute();
+
+  $accounts = [];
+  foreach ($users->loadMultiple($ids) as $account) {
+    if ($account->hasField('field_bc_staff_demo')
+      && (bool) $account->get('field_bc_staff_demo')->value
+      && str_starts_with($account->getAccountName(), 'bc_demo_')) {
+      $accounts[$account->getAccountName()] = (int) $account->id();
+    }
+  }
+  if (!$accounts) {
+    return 'No marked demo accounts found; no records changed.';
+  }
+
+  // Never delete the absence data belonging to ordinary employees.
+  $db->delete('bc_staff_absence')
+    ->condition('uid', array_values($accounts), 'IN')
+    ->execute();
+
+  $today = new \DateTimeImmutable('today');
+  $date = static fn (int $offset): string => $today
+    ->modify(sprintf('%+d days', $offset))
+    ->format('Y-m-d');
+  $suffixes = [
+    ['manager_naestved', 'course', -2, 0, 'registered'],
+    ['manager_roskilde', 'day_off', 3, 3, 'registered'],
+    ['employee_naestved_1', 'vacation', -1, 3, 'approved'],
+    ['employee_naestved_2', 'vacation', 1, 7, 'pending'],
+    ['employee_naestved_3', 'vacation', -14, -10, 'rejected'],
+    ['employee_naestved_1', 'sick', -17, -15, 'registered'],
+    ['employee_naestved_2', 'child_sick', -9, -9, 'registered'],
+    ['employee_naestved_3', 'course', 6, 7, 'registered'],
+    ['employee_roskilde_1', 'vacation', 2, 6, 'pending'],
+    ['employee_roskilde_2', 'vacation', -2, 1, 'approved'],
+    ['employee_roskilde_3', 'vacation', -12, -8, 'rejected'],
+    ['employee_roskilde_1', 'day_off', 9, 9, 'registered'],
+    ['employee_roskilde_2', 'leave', 12, 14, 'registered'],
+    ['employee_roskilde_3', 'sick', -5, -3, 'registered'],
+  ];
+  $created = 0;
+  $now = \Drupal::time()->getRequestTime();
+  foreach ($suffixes as [$suffix, $type, $from, $to, $state]) {
+    $username = 'bc_demo_' . $suffix;
+    if (!isset($accounts[$username])) {
+      continue;
+    }
+    $db->insert('bc_staff_absence')->fields([
+      'uid' => $accounts[$username],
+      'type' => $type,
+      'state' => $state,
+      'start_date' => $date($from),
+      'end_date' => $date($to),
+      'created' => $now,
+      'changed' => $now,
+    ])->execute();
+    $created++;
+  }
+
+  return "Refreshed {$created} demo absence scenarios for " . count($accounts) . ' fictional accounts.';
+}
