@@ -25,7 +25,6 @@ final class EmployeeAdminController extends ControllerBase {
     return new static($container->get('file_url_generator'));
   }
 
-
   /**
    * Handles listing.
    */
