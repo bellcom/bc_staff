@@ -66,3 +66,13 @@ touch:
   css:
     theme:
       css/touch.css: {}
+
+touch_directory:
+  css:
+    theme:
+      css/touch-directory.css: {}
+  js:
+    js/touch-directory.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
