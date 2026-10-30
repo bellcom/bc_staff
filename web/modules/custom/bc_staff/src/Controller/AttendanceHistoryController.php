@@ -3,6 +3,7 @@
 namespace Drupal\bc_staff\Controller;
 
 use Drupal\bc_staff\Access\EmployeeAccess;
+use Drupal\bc_staff\Utility\StaffPhoto;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
@@ -24,6 +25,9 @@ final class AttendanceHistoryController extends ControllerBase {
     $employee_ids = [];
     $names = [];
     $current_status = [];
+    $photos = [];
+    $departments = [];
+    $locations = [];
     $ids = $users->getQuery()->accessCheck(FALSE)->condition('uid', 0, '>')
       ->condition('status', 1)->execute();
     foreach ($users->loadMultiple($ids) as $employee) {
@@ -37,6 +41,9 @@ final class AttendanceHistoryController extends ControllerBase {
       $uid = (int) $employee->id();
       $employee_ids[] = $uid;
       $current_status[$uid] = (string) ($employee->get('field_bc_staff_status')->value ?? '');
+      $photos[$uid] = StaffPhoto::url($employee, \Drupal::service('file_url_generator'), base_path() . \Drupal::service('extension.list.module')->getPath('bc_staff') . '/assets/avatar.svg');
+      $departments[$uid] = $employee->hasField('field_bc_staff_department') && !$employee->get('field_bc_staff_department')->isEmpty() ? ($employee->get('field_bc_staff_department')->entity?->label() ?? '') : '';
+      $locations[$uid] = $employee->hasField('field_bc_staff_location') ? (string) ($employee->get('field_bc_staff_location')->value ?? '') : '';
       $names[$uid] = $employee->hasField('field_bc_staff_display_name')
         && !$employee->get('field_bc_staff_display_name')->isEmpty()
         ? (string) $employee->get('field_bc_staff_display_name')->value
@@ -67,46 +74,38 @@ final class AttendanceHistoryController extends ControllerBase {
 
     $actor_ids = array_unique(array_map(static fn ($event) => (int) $event->actor_uid, $today_events));
     $actors = $actor_ids ? $users->loadMultiple($actor_ids) : [];
-    $rows = [];
+    $events = [];
     foreach ($today_events as $event) {
-      $rows[] = [
-        $names[$event->uid] ?? $this->t('Unknown'),
-        $event->action === 'in' ? $this->t('Check in') : $this->t('Check out'),
-        \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'd-m-Y H:i'),
-        ($actors[$event->actor_uid] ?? NULL)?->getDisplayName() ?? $this->t('Unknown'),
-        $event->source === 'team_touch' ? $this->t('Team terminal') : $this->t('Personal terminal'),
+      $events[] = [
+        'name' => $names[$event->uid] ?? (string) $this->t('Unknown'),
+        'action' => $event->action,
+        'action_label' => (string) ($event->action === 'in' ? $this->t('Check in') : $this->t('Check out')),
+        'time' => \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'd-m-Y H:i'),
+        'actor' => ($actors[$event->actor_uid] ?? NULL)?->getDisplayName() ?? (string) $this->t('Unknown'),
+        'source' => (string) ($event->source === 'team_touch' ? $this->t('Team terminal') : $this->t('Personal terminal')),
       ];
     }
-
-    $today_rows = [];
+    $employees = [];
     foreach ($names as $uid => $name) {
       $event = $latest[$uid] ?? NULL;
-      $today_rows[] = [
-        $name,
-        $current_status[$uid] === 'present' ? $this->t('Present') : $this->t('Not present'),
-        $event ? ($event->action === 'in' ? $this->t('Checked in') : $this->t('Checked out')) : $this->t('No registration today'),
-        $event ? \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'H:i') : '—',
+      $employees[] = [
+        'name' => $name,
+        'photo' => $photos[$uid],
+        'department' => $departments[$uid],
+        'location' => $locations[$uid],
+        'present' => $current_status[$uid] === 'present',
+        'status' => (string) ($current_status[$uid] === 'present' ? $this->t('Present') : $this->t('Not present')),
+        'action' => $event?->action ?? '',
+        'last_action' => $event ? (string) ($event->action === 'in' ? $this->t('Checked in') : $this->t('Checked out')) : (string) $this->t('No registration today'),
+        'last_time' => $event ? \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'H:i') : '',
       ];
     }
-    usort($today_rows, static fn ($a, $b) => strnatcasecmp((string) $a[0], (string) $b[0]));
+    usort($employees, static fn ($a, $b) => strnatcasecmp($a['name'], $b['name']));
     return [
-      '#type' => 'container',
-      '#attributes' => ['class' => ['bc-attendance-history']],
-      'heading' => ['#type' => 'html_tag', '#tag' => 'h1', '#value' => $this->t('Attendance and history')],
-      'today_heading' => ['#type' => 'html_tag', '#tag' => 'h2', '#value' => $this->t('Today')],
-      'today' => [
-        '#type' => 'table',
-        '#header' => [$this->t('Employee'), $this->t('Current saved status'), $this->t('Last action today'), $this->t('Time')],
-        '#rows' => $today_rows,
-        '#empty' => $this->t('No employees.'),
-      ],
-      'events_heading' => ['#type' => 'html_tag', '#tag' => 'h2', '#value' => $this->t('Recent registrations')],
-      'events' => [
-        '#type' => 'table',
-        '#header' => [$this->t('Employee'), $this->t('Action'), $this->t('Time'), $this->t('Registered by'), $this->t('Source')],
-        '#rows' => $rows,
-        '#empty' => $this->t('No attendance registrations yet.'),
-      ],
+      '#theme' => 'bc_staff_attendance_history',
+      '#employees' => $employees,
+      '#events' => $events,
+      '#attached' => ['library' => ['bc_staff/attendance_history']],
       '#cache' => ['contexts' => ['user', 'user.permissions'], 'max-age' => 0],
     ];
   }
