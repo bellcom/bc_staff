@@ -134,6 +134,7 @@ final class DemoAbsenceSeeder {
         'target_id' => $departments[$department],
       ]);
       DemoOrganization::assign($account, $department, $organization, $i);
+      DemoPortraits::assign($account, $username);
       $account->save();
       $accounts[$username] = (int) $account->id();
     }
