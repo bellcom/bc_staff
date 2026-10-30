@@ -5,6 +5,7 @@ namespace Drupal\bc_staff\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
+use Drupal\bc_staff\Utility\StaffPhoto;
 
 /**
  * BC Staff employee administration.
@@ -16,6 +17,7 @@ final class EmployeeAdminController extends ControllerBase {
    */
   public function listing(): array {
     $employees = [];
+    $fallback = base_path() . $this->moduleHandler()->getModule('bc_staff')->getPath() . '/assets/avatar.svg';
     $departments = [];
     $storage = $this->entityTypeManager()->getStorage('user');
     $ids = $storage->getQuery()
@@ -52,6 +54,7 @@ final class EmployeeAdminController extends ControllerBase {
       }
       $departments[$department] = $department;
       $employees[] = [
+        'photo_url' => StaffPhoto::url($user, \Drupal::service('file_url_generator'), $fallback),
         'name' => $name,
         'login' => $user->getAccountName(),
         'department' => $department,
