@@ -8,6 +8,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Extension\ModuleExtensionList;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
+use Drupal\bc_staff\Utility\StaffPhoto;
 
 /**
  * Displays staff presence cards.
@@ -97,6 +98,7 @@ final class StaffController extends ControllerBase {
         }
       }
       $staff[] = [
+        'photo_url' => StaffPhoto::url($account, $this->staffContainer->get('file_url_generator'), $avatar),
         'name' => $name,
         'is_me' => (int) $account->id() === (int) $this->currentUser()->id(),
         'profile_url' => ((int) $account->id() === (int) $this->currentUser()->id()
