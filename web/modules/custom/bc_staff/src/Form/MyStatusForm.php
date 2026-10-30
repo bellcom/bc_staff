@@ -2,6 +2,7 @@
 
 namespace Drupal\bc_staff\Form;
 
+use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Form\FormBase;
@@ -100,13 +101,7 @@ final class MyStatusForm extends FormBase {
       '#attributes' => ['class' => ['bc-staff-status-buttons']],
     ];
 
-    $locations = [];
-    if ($this->moduleHandler->moduleExists('taxonomy')) {
-      $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree('bc_staff_location');
-      foreach ($terms as $term) {
-        $locations[$term->tid] = $term->name;
-      }
-    }
+    $locations = $this->availableLocations($account);
     if ($locations) {
       $current = (string) ($account->get('field_bc_staff_location')->value ?? '');
       $selected = '';
@@ -116,10 +111,17 @@ final class MyStatusForm extends FormBase {
           break;
         }
       }
+      $choices = ['' => $this->t('Select a location')] + $locations;
+      // A historical free-text value may not match a current location term.
+      // Preserve it on a status-only save unless the user chooses a new one.
+      if ($selected === '' && $current !== '') {
+        $choices['__keep__'] = $this->t('Keep current location: @location', ['@location' => $current]);
+        $selected = '__keep__';
+      }
       $form['location'] = [
         '#type' => 'select',
         '#title' => $this->t('My location'),
-        '#options' => ['' => $this->t('Select a location')] + $locations,
+        '#options' => $choices,
         '#default_value' => $selected,
       ];
     }
@@ -156,18 +158,17 @@ final class MyStatusForm extends FormBase {
       return;
     }
     $location = (string) ($form_state->getValue('location') ?? '');
-    if ($this->moduleHandler->moduleExists('taxonomy')) {
-      $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadTree('bc_staff_location');
-      if ($terms) {
-        $allowed = [];
-        foreach ($terms as $term) {
-          $allowed[$term->tid] = $term->name;
-        }
-        if ($location !== '' && !isset($allowed[$location])) {
-          $this->messenger()->addError($this->t('Invalid location.'));
-          return;
-        }
-        $location = $location === '' ? '' : $allowed[$location];
+    $available = $this->availableLocations($account);
+    if ($available) {
+      if ($location === '__keep__') {
+        $location = (string) ($account->get('field_bc_staff_location')->value ?? '');
+      }
+      elseif ($location !== '' && !isset($available[$location])) {
+        $this->messenger()->addError($this->t('Invalid location.'));
+        return;
+      }
+      else {
+        $location = $location === '' ? '' : $available[$location];
       }
     }
     $account->set('field_bc_staff_status', $status);
@@ -175,6 +176,35 @@ final class MyStatusForm extends FormBase {
     $account->save();
     $this->messenger()->addStatus($this->t('Your status has been updated.'));
     $form_state->setRedirect('bc_staff.mobile');
+  }
+
+  /**
+   * Returns locations shared globally or assigned to the user's department.
+   *
+   * A department-specific location belonging to another department must
+   * never be selectable or accepted on form submission.
+   */
+  private function availableLocations($account): array {
+    if (!$this->moduleHandler->moduleExists('taxonomy')
+      || !$this->entityTypeManager->getStorage('taxonomy_vocabulary')->load('bc_staff_location')) {
+      return [];
+    }
+    $department = (string) (EmployeeAccess::departmentId($account) ?? '');
+    $storage = $this->entityTypeManager->getStorage('taxonomy_term');
+    $locations = [];
+    foreach ($storage->loadTree('bc_staff_location') as $item) {
+      $term = $storage->load($item->tid);
+      if (!$term) {
+        continue;
+      }
+      $owner = $term->hasField('field_bc_staff_department')
+        ? (string) ($term->get('field_bc_staff_department')->target_id ?? '') : '';
+      if ($owner !== '' && $owner !== $department) {
+        continue;
+      }
+      $locations[(string) $item->tid] = $term->label();
+    }
+    return $locations;
   }
 
 }
