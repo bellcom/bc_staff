@@ -11,6 +11,10 @@ use Drupal\Core\Url;
  * Implements hook_preprocess_page().
  */
 function bc_staff_frontend_preprocess_page(array &$variables): void {
+  $route = \Drupal::routeMatch()->getRouteName();
+  $variables['bc_staff_panel'] = $route === 'bc_staff.employee_edit'
+    && \Drupal::request()->query->get('panel') === '1';
+  $variables['bc_staff_user_name'] = \Drupal::currentUser()->getDisplayName();
   $links = [
     'bc_staff.overview' => t('Overview'),
     'bc_staff.mobile' => t('My status'),
