@@ -77,7 +77,7 @@
         frame.addEventListener('load', () => {
           if (drawer.hidden) return;
           try {
-            if (frame.contentWindow.location.pathname.endsWith('/staff/medarbejdere')) {
+            if (frame.contentWindow.location.pathname === root.dataset.listPath) {
               window.location.reload();
             }
           } catch (error) {
