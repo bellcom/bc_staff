@@ -13,3 +13,13 @@
 .bc-org-form .form-managed-file{padding:14px;background:#f6f9fd;border:1px solid #e3ebf4;border-radius:12px}
 .bc-org-form input[type=email],.bc-org-form input[type=password],.bc-org-form input[type=file]{max-width:100%;width:100%;border:1px solid #cbd8e5;border-radius:9px;padding:10px;background:#fff}
 .bc-org-form .form-actions{border-top:1px solid #e2e9f1;margin-top:24px;padding-top:16px}
+
+/* Organization directory controls. */
+.bc-org{max-width:1480px;padding:0}
+.bc-org__tools{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin:0 0 22px}
+.bc-org__tools label{font-size:13px;font-weight:700;color:#45627e}
+.bc-org__tools input{flex:1;min-width:180px;min-height:44px;border:1px solid #d0dfea;border-radius:10px;padding:10px 14px;background:#fff}
+.bc-org__tools span{color:#637991;font-size:12px}
+.bc-org__entry[hidden],.bc-org__empty[hidden]{display:none!important}
+.bc-org__card-head{padding:18px 20px}
+.bc-org__entries{max-height:520px}

@@ -1,1 +1,36 @@
-<section class="bc-org"><header class="bc-org__header"><p class="bc-org__eyebrow">{{ 'BC STAFF / ADMINISTRATION'|t }}</p><h2>{{ 'Organization'|t }}</h2><p>{{ 'Manage your departments, houses, rooms and workgroups.'|t }}</p></header><div class="bc-org__grid">{% for group in groups %}<article class="bc-org__card"><div class="bc-org__card-head"><div><h3>{{ group.label }}</h3><span class="bc-org__count">{{ '@count entries'|t({'@count': group.count}) }}</span></div><a class="bc-org__button" href="{{ group.add_url }}">{{ 'Add entry'|t }}</a></div><div class="bc-org__entries">{% for entry in group.entries %}<div class="bc-org__entry" style="--indent: {{ entry.depth }}"><span class="bc-org__entry-name">{{ entry.name }}</span><a href="{{ entry.edit_url }}">{{ 'Edit'|t }}</a></div>{% else %}<p class="bc-org__empty">{{ 'No entries yet. Add the first entry.'|t }}</p>{% endfor %}</div></article>{% endfor %}</div></section>
+<section class="bc-org" data-bc-org>
+  <header class="bc-org__header">
+    <p class="bc-org__eyebrow">{{ 'BC STAFF / ADMINISTRATION'|t }}</p>
+    <h2>{{ 'Organization'|t }}</h2>
+    <p>{{ 'Manage your departments, houses, rooms and workgroups.'|t }}</p>
+  </header>
+  <div class="bc-org__tools">
+    <label for="bc-org-search">{{ 'Search organization'|t }}</label>
+    <input id="bc-org-search" type="search" placeholder="{{ 'Search departments, houses and locations'|t }}" data-bc-org-search>
+    <span data-bc-org-count aria-live="polite"></span>
+  </div>
+  <div class="bc-org__grid">
+    {% for group in groups %}
+      <article class="bc-org__card" data-bc-org-card>
+        <div class="bc-org__card-head">
+          <div>
+            <h3>{{ group.label }}</h3>
+            <span class="bc-org__count">{{ '@count entries'|t({'@count': group.count}) }}</span>
+          </div>
+          <a class="bc-org__button" href="{{ group.add_url }}">{{ 'Add entry'|t }}</a>
+        </div>
+        <div class="bc-org__entries">
+          {% for entry in group.entries %}
+            <div class="bc-org__entry" style="--indent: {{ entry.depth }}" data-bc-org-entry data-bc-org-name="{{ entry.name|lower }}">
+              <span class="bc-org__entry-name">{{ entry.name }}</span>
+              <a href="{{ entry.edit_url }}">{{ 'Edit'|t }}</a>
+            </div>
+          {% else %}
+            <p class="bc-org__empty">{{ 'No entries yet. Add the first entry.'|t }}</p>
+          {% endfor %}
+          <p class="bc-org__empty" data-bc-org-no-match hidden>{{ 'No matching entries.'|t }}</p>
+        </div>
+      </article>
+    {% endfor %}
+  </div>
+</section>
