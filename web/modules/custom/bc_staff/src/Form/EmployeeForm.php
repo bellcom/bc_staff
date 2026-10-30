@@ -166,6 +166,18 @@ final class EmployeeForm extends FormBase {
             ],
           ];
         }
+        if (!$existing_fid) {
+          $fallback = base_path() . \Drupal::service('extension.list.module')->getPath('bc_staff') . '/assets/avatar.svg';
+          $form['photo_preview'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'img',
+            '#attributes' => [
+              'class' => ['bc-editor__photo-preview'],
+              'src' => $fallback,
+              'alt' => $this->t('Default profile picture'),
+            ],
+          ];
+        }
         $form['photo'] = [
           '#type' => 'managed_file',
           '#title' => $this->t('Profile photo'),
