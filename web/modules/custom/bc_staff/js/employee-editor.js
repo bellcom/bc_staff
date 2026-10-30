@@ -25,6 +25,34 @@
         if (sections.length) {
           sections[0].before(navigation);
         }
+        const photo = form.querySelector('[data-drupal-selector="edit-general-photo"]')
+          || form.querySelector('.form-type-managed-file');
+        if (photo) {
+          photo.classList.add('bc-editor__photo-control');
+          const preview = form.querySelector('.bc-editor__photo-preview');
+          const fileInput = photo.querySelector('input[type="file"]');
+          const remove = photo.querySelector('input[type="submit"][name$="_remove_button"]');
+          if (fileInput) {
+            const choose = document.createElement('button');
+            choose.type = 'button';
+            choose.className = 'bc-editor__choose';
+            choose.textContent = Drupal.t('Change photo');
+            choose.addEventListener('click', () => fileInput.click());
+            fileInput.before(choose);
+            fileInput.addEventListener('change', () => {
+              const file = fileInput.files?.[0];
+              if (file && preview && file.type.startsWith('image/')) {
+                const temporaryUrl = URL.createObjectURL(file);
+                preview.src = temporaryUrl;
+                preview.addEventListener('load', () => URL.revokeObjectURL(temporaryUrl), { once: true });
+              }
+            });
+          }
+          if (remove) {
+            remove.value = Drupal.t('Remove photo');
+            remove.classList.add('bc-editor__remove');
+          }
+        }
         form.addEventListener('invalid', (event) => {
           const section = event.target.closest('[data-bc-editor-section]');
           const index = sections.indexOf(section);
