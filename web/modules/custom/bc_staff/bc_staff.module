@@ -35,6 +35,7 @@ function bc_staff_theme($existing, $type, $theme, $path): array {
         'departments' => [],
         'houses' => [],
         'workgroups' => [],
+        'statuses' => [],
         'avatar' => '',
         'status_url' => '',
         'demo_url' => '',

@@ -57,6 +57,7 @@ final class StaffController extends ControllerBase {
     $houses = [];
     $workgroups = [];
     $planned = [];
+    $statuses = [];
     if ($this->staffModuleHandler->moduleExists('bc_staff_absence')) {
       $planned = $this->staffContainer->get('bc_staff_absence.planned_status')->forUsers(array_map('intval', $ids));
     }
@@ -72,6 +73,9 @@ final class StaffController extends ControllerBase {
       $status_key = $status_field->value;
       $planned_category = $planned[$account->id()] ?? NULL;
       $choices = $status_field->getFieldDefinition()->getSetting('allowed_values');
+      foreach ($choices as $key => $label) {
+        $statuses[$key] = ['key' => $key, 'label' => $label];
+      }
       $name = $account->hasField('field_bc_staff_display_name')
         ? ($account->get('field_bc_staff_display_name')->value ?: $account->getDisplayName())
         : $account->getDisplayName();
@@ -114,6 +118,7 @@ final class StaffController extends ControllerBase {
         'location' => $account->get('field_bc_staff_location')->value ?: '',
       ];
     }
+    $statuses['absent'] = ['key' => 'absent', 'label' => $this->t('Absent')];
     natcasesort($departments);
     natcasesort($houses);
     natcasesort($workgroups);
@@ -133,6 +138,7 @@ final class StaffController extends ControllerBase {
       '#departments' => array_values($departments),
       '#houses' => array_values($houses),
       '#workgroups' => array_values($workgroups),
+      '#statuses' => array_values($statuses),
       '#avatar' => $avatar,
       '#my_name' => $my_name,
       '#my_profile_url' => $this->currentUser()->isAuthenticated()

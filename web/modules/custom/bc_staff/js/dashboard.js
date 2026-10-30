@@ -4,6 +4,9 @@
       once('bc-staff-dashboard', '[data-bc-staff-dashboard]', context).forEach((root) => {
         const select = root.querySelector('[data-bc-staff-filter]');
         const cards = [...root.querySelectorAll('[data-bc-staff-card]')];
+        const search = root.querySelector('[data-bc-staff-search]');
+        const status = root.querySelector('[data-bc-staff-status-filter]');
+        const clear = root.querySelector('[data-bc-staff-clear]');
         const houseSelect = root.querySelector('[data-bc-staff-house-filter]');
         const groupSelect = root.querySelector('[data-bc-staff-workgroup-filter]');
         const count = root.querySelector('[data-bc-staff-count]');
@@ -27,7 +30,9 @@
         const filter = () => {
           let visible = 0;
           cards.forEach((card) => {
-            const show = (!select.value || card.dataset.department === select.value)
+            const show = (!search.value.trim() || card.dataset.search.includes(search.value.trim().toLocaleLowerCase()))
+              && (!status.value || card.dataset.status === status.value)
+              && (!select.value || card.dataset.department === select.value)
               && (!houseSelect.value || card.dataset.house === houseSelect.value)
               && (!groupSelect.value || card.dataset.workgroups.split('|').includes(groupSelect.value));
             card.hidden = !show;
@@ -40,6 +45,14 @@
           });
         };
         filters.forEach(([control]) => control.addEventListener('change', filter));
+        search.addEventListener('input', filter);
+        status.addEventListener('change', filter);
+        clear.addEventListener('click', () => {
+          filters.forEach(([control]) => { control.value = ''; });
+          status.value = '';
+          search.value = '';
+          filter();
+        });
         filter();
         // Never refresh while the page is hidden.
         window.setInterval(() => {

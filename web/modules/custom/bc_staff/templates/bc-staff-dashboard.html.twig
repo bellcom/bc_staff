@@ -1,50 +1,58 @@
-<div class="bc-staff" data-bc-staff-dashboard>
-  <div class="bc-staff__header">
+<div class="bc-staff bc-directory" data-bc-staff-dashboard>
+  <header class="bc-directory__header">
     <div>
-      <p class="bc-staff__eyebrow">BC STAFF</p>
-      <h2>{{ 'Employee overview'|t }}</h2>
-      <p>{{ 'Current status and location. The overview refreshes every 30 seconds.'|t }}</p>
+      <p class="bc-staff__eyebrow">{{ 'BC STAFF / DIRECTORY'|t }}</p>
+      <h2>{{ 'Employees'|t }}</h2>
+      <p>{{ 'Find colleagues, their current status and where they are working.'|t }}</p>
     </div>
     <div class="bc-staff__actions">
-      {% if my_profile_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ my_profile_url }}">{{ 'Signed in as'|t }}: {{ my_name }}</a>{% endif %}
-      {% if status_url %}<a class="bc-staff__action" href="{{ status_url }}">{{ 'My status'|t }}</a>{% endif %}
-      {% if employees_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ employees_url }}">{{ 'Employees'|t }}</a>{% endif %}
-      {% if demo_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ demo_url }}">{{ 'Demo data'|t }}</a>{% endif %}
+      {% if status_url %}<a class="bc-staff__action bc-staff__action--light" href="{{ status_url }}">{{ 'My status'|t }}</a>{% endif %}
+      {% if employees_url %}<a class="bc-staff__action" href="{{ employees_url }}">{{ 'Manage employees'|t }}</a>{% endif %}
     </div>
+  </header>
+  <div class="bc-directory__search">
+    <label for="bc-staff-search">{{ 'Search employees'|t }}</label>
+    <input id="bc-staff-search" data-bc-staff-search type="search" placeholder="{{ 'Search by name, department or house'|t }}">
   </div>
   <div class="bc-staff__toolbar">
-    <label for="bc-staff-department">{{ 'Department'|t }}</label>
-    <select id="bc-staff-department" data-bc-staff-filter>
-      <option value="">{{ 'All departments'|t }}</option>
-      {% for department in departments %}
-        <option value="{{ department }}">{{ department }}</option>
-      {% endfor %}
-    </select>
     <label for="bc-staff-house">{{ 'House'|t }}</label>
     <select id="bc-staff-house" data-bc-staff-house-filter><option value="">{{ 'All houses'|t }}</option>{% for house in houses %}<option value="{{ house }}">{{ house }}</option>{% endfor %}</select>
     <label for="bc-staff-workgroup">{{ 'Workgroup'|t }}</label>
     <select id="bc-staff-workgroup" data-bc-staff-workgroup-filter><option value="">{{ 'All workgroups'|t }}</option>{% for group in workgroups %}<option value="{{ group }}">{{ group }}</option>{% endfor %}</select>
+    <label for="bc-staff-department">{{ 'Department'|t }}</label>
+    <select id="bc-staff-department" data-bc-staff-filter><option value="">{{ 'All departments'|t }}</option>{% for department in departments %}<option value="{{ department }}">{{ department }}</option>{% endfor %}</select>
+    <label for="bc-staff-status">{{ 'Status'|t }}</label>
+    <select id="bc-staff-status" data-bc-staff-status-filter>
+      <option value="">{{ 'All statuses'|t }}</option>
+      {% for status in statuses %}<option value="{{ status.key }}">{{ status.label }}</option>{% endfor %}
+    </select>
+    <button class="bc-directory__clear" type="button" data-bc-staff-clear>{{ 'Clear filters'|t }}</button>
+  </div>
+  <div class="bc-directory__results">
     <span aria-live="polite" data-bc-staff-count></span>
+    <div class="bc-directory__views"><span class="bc-directory__view-active">{{ 'Cards'|t }}</span></div>
   </div>
   <div class="bc-staff__grid">
     {% for person in staff %}
-      <article class="bc-staff__card" data-bc-staff-card data-department="{{ person.department }}" data-house="{{ person.house }}" data-workgroups="{{ person.workgroups|join('|') }}">
-        <div class="bc-staff__person">
-          <img class="bc-staff__avatar" src="{{ person.photo_url }}" alt="" width="64" height="64" loading="lazy">
-          <div>
-            <h3>{% if person.profile_url %}<a href="{{ person.profile_url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if person.is_me %} <small>({{ 'you'|t }})</small>{% endif %}</h3>
-            <p>{{ person.department ?: 'No department'|t }}{% if person.house %} · {{ person.house }}{% endif %}</p>
-          </div>
+      <article class="bc-staff__card" data-bc-staff-card data-department="{{ person.department }}" data-house="{{ person.house }}" data-workgroups="{{ person.workgroups|join('|') }}" data-status="{{ person.status_key }}" data-search="{{ (person.name ~ ' ' ~ person.department ~ ' ' ~ person.house ~ ' ' ~ person.workgroups|join(' '))|lower }}">
+        <div class="bc-directory__photo-wrap">
+          <img class="bc-staff__avatar" src="{{ person.photo_url }}" alt="" width="96" height="96" loading="lazy">
+          <span class="bc-directory__presence bc-directory__presence--{{ person.status_key }}" aria-label="{{ person.status }}"></span>
         </div>
-        <div class="bc-staff__status bc-staff__status--{{ person.status_key }}">
-          <span class="bc-staff__dot" aria-hidden="true"></span>
-          <span>{{ person.status }}</span>
+        <h3>{% if person.profile_url %}<a href="{{ person.profile_url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if person.is_me %} <small>({{ 'you'|t }})</small>{% endif %}</h3>
+        <p class="bc-directory__department">{{ person.department ?: 'No department'|t }}</p>
+        <p class="bc-directory__house">{{ person.house ?: 'No house assigned'|t }}</p>
+        <div class="bc-directory__tags">
+          {% for group in person.workgroups %}<span class="bc-directory__tag">{{ group }}</span>{% endfor %}
         </div>
-        <p class="bc-staff__location"><span aria-hidden="true">⌖</span> {{ person.location ?: 'Not specified'|t }}</p>
+        <div class="bc-directory__footer">
+          <span class="bc-directory__status"><span class="bc-staff__dot bc-directory__dot--{{ person.status_key }}"></span>{{ person.status }}</span>
+          <span class="bc-directory__location">{{ person.location ?: 'Not specified'|t }}</span>
+        </div>
       </article>
     {% else %}
       <p>{{ 'No employees are available in the overview.'|t }}</p>
     {% endfor %}
   </div>
-  <p class="bc-staff__empty" data-bc-staff-empty hidden>{{ 'No employees in the selected department.'|t }}</p>
+  <p class="bc-staff__empty" data-bc-staff-empty hidden>{{ 'No employees match these filters.'|t }}</p>
 </div>
