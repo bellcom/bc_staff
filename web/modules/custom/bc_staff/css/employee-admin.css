@@ -128,3 +128,11 @@ body.bc-employee-drawer-open{overflow:hidden}
 @media(max-width:920px){.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{grid-template-columns:55px 1fr 1fr}.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__tags,.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__details{display:none}}
 @media(max-width:570px){.bc-directory-admin .bc-employees__header{align-items:flex-start}.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.bc-directory-admin .bc-employees__card{min-height:295px;padding:18px 9px}.bc-directory-admin__photo,.bc-directory-admin .bc-employees__avatar{width:82px;height:82px}.bc-directory-admin__photo{height:82px}.bc-directory-admin .bc-employees__toolbar select{min-width:0;max-width:100%}.bc-directory-admin__reset{margin-left:0}.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{grid-template-columns:47px 1fr auto}}
 @media(max-width:390px){.bc-directory-admin .bc-employees__grid{grid-template-columns:1fr}}
+
+/* Final alignment with a full-width directory and cleaner card actions. */
+.bc-directory-admin{max-width:none;width:100%}
+.bc-directory-admin .bc-employees__header{margin-bottom:22px}
+.bc-directory-admin .bc-employees__card{min-height:300px}
+.bc-directory-admin__contacts:empty{display:none}
+.bc-directory-admin .bc-employees__edit{margin-top:13px}
+.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card:hover{transform:none}

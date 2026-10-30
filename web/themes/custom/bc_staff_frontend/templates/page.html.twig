@@ -14,13 +14,6 @@
     <header class="bc-app__header">
       <div class="bc-app__header-inner">
         <span class="bc-app__header-label">{{ 'Employee administration'|t }}</span>
-        {% if bc_staff_navigation %}
-          <nav class="bc-app__navigation" aria-label="{{ 'Staff top navigation'|t }}">
-            {% for item in bc_staff_navigation %}
-              <a href="{{ item.url }}"{{ item.active ? ' aria-current="page"' : '' }}>{{ item.title }}</a>
-            {% endfor %}
-          </nav>
-        {% endif %}
         <span class="bc-app__user">{{ bc_staff_user_name }}</span>
       </div>
     </header>

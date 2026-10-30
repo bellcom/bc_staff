@@ -41,3 +41,11 @@
 .bc-editor__choose{background:#ecf5ff;color:#1265ac;border-color:#c4dff5;border-radius:9px}
 .bc-org-form[data-bc-employee-editor] .form-actions{padding:18px 0;margin-top:20px}
 .bc-org-form[data-bc-employee-editor] .form-actions .button--primary{background:#1267ad;border-radius:9px;padding:11px 19px;color:#fff}
+
+/* Reduce Drupal's raw managed-file upload controls in the editor drawer. */
+.bc-editor__section .bc-editor__photo-control{display:flex;align-items:center;gap:10px;padding:12px;background:#f8fafc!important}
+.bc-editor__photo-control .form-submit{font-size:12px;padding:9px 12px;border-radius:8px}
+.bc-editor__photo-control .file-size{color:#75879b;font-size:12px}
+.bc-editor__photo-control .file{font-size:12px}
+.bc-editor__photo-actions{margin-bottom:14px}
+.bc-org-form[data-bc-employee-editor] .form-item label{font-size:13px}
