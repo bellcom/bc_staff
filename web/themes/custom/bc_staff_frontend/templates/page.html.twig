@@ -1,37 +1,32 @@
-{#
-/**
- * @file
- * Dedicated BC Staff front-end page layout.
- *
- * Staff links are generated with Drupal's route access checks in preprocess.
- */
-#}
-<div class="bc-app">
+{# Dedicated BC Staff portal layout. #}
+<div class="bc-app{{ bc_staff_panel ? ' bc-app--panel' : '' }}">
   <a class="bc-app__skip" href="#main-content">{{ 'Skip to main content'|t }}</a>
-  <header class="bc-app__header">
-    <div class="bc-app__header-inner">
-      <a class="bc-app__brand" href="{{ path('bc_staff.overview') }}" aria-label="{{ 'BC Staff home'|t }}">
-        <span class="bc-app__brand-mark" aria-hidden="true">BC</span>
-        <span>BC Staff</span>
-      </a>
-      {% if bc_staff_navigation %}
-        <nav class="bc-app__navigation" aria-label="{{ 'Staff navigation'|t }}">
-          {% for item in bc_staff_navigation %}
-            <a href="{{ item.url }}"{{ item.active ? ' aria-current="page"' : '' }}>{{ item.title }}</a>
-          {% endfor %}
-        </nav>
-      {% endif %}
-    </div>
-  </header>
+  {% if not bc_staff_panel %}
+    <aside class="bc-app__sidebar">
+      <a class="bc-app__sidebar-brand" href="{{ path('bc_staff.overview') }}"><span class="bc-app__sidebar-mark">BC</span><strong>BC Staff</strong></a>
+      <nav class="bc-app__sidebar-nav" aria-label="{{ 'Staff navigation'|t }}">
+        {% for item in bc_staff_navigation %}
+          <a href="{{ item.url }}" class="{{ item.active ? 'is-active' : '' }}"{{ item.active ? ' aria-current="page"' : '' }}>{{ item.title }}</a>
+        {% endfor %}
+      </nav>
+      <div class="bc-app__sidebar-bottom"><span>BC Staff</span></div>
+    </aside>
+    <header class="bc-app__header">
+      <div class="bc-app__header-inner">
+        <span class="bc-app__header-label">{{ 'Employee administration'|t }}</span>
+        {% if bc_staff_navigation %}
+          <nav class="bc-app__navigation" aria-label="{{ 'Staff top navigation'|t }}">
+            {% for item in bc_staff_navigation %}
+              <a href="{{ item.url }}"{{ item.active ? ' aria-current="page"' : '' }}>{{ item.title }}</a>
+            {% endfor %}
+          </nav>
+        {% endif %}
+        <span class="bc-app__user">{{ bc_staff_user_name }}</span>
+      </div>
+    </header>
+  {% endif %}
   <main id="main-content" class="bc-app__main">
-    {% if page.highlighted %}
-      <div class="bc-app__highlighted">{{ page.highlighted }}</div>
-    {% endif %}
-    {% if page.content %}
-      {{ page.content }}
-    {% endif %}
+    {% if page.highlighted %}<div class="bc-app__highlighted">{{ page.highlighted }}</div>{% endif %}
+    {% if page.content %}{{ page.content }}{% endif %}
   </main>
-  <footer class="bc-app__footer">
-    <span>BC Staff</span>
-  </footer>
 </div>
