@@ -48,3 +48,23 @@ body:has(.bc-app) .dialog-off-canvas-main-canvas{margin:0!important;padding:0!im
 .bc-app--panel .block-system-main-block{margin:0}
 @media(max-width:1050px){.bc-app{grid-template-columns:185px minmax(0,1fr)}.bc-app__navigation{display:none}.bc-app__header-inner{padding:0 16px}}
 @media(max-width:690px){.bc-app{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}.bc-app__sidebar{grid-column:1;grid-row:1;position:relative;height:auto}.bc-app__sidebar-brand{padding:10px 15px}.bc-app__sidebar-nav{flex-direction:row;overflow:auto}.bc-app__sidebar-nav a{white-space:nowrap}.bc-app__sidebar-bottom{display:none}.bc-app__header{grid-column:1;grid-row:2}.bc-app__main{grid-column:1;grid-row:3;padding:15px}.bc-app--panel{display:block}}
+
+/* Unified portal visual language, independent of the Drupal admin theme. */
+body:has(.bc-app){background:#f3f6fb;color:#193450}
+.bc-app{--bc-accent:#1267ad;--bc-soft:#edf5ff;background:#f3f6fb;grid-template-columns:244px minmax(0,1fr);grid-template-rows:76px minmax(0,1fr)}
+.bc-app__sidebar{box-shadow:3px 0 22px rgba(26,58,92,.035);border-color:#e6edf5}
+.bc-app__sidebar-brand{min-height:76px;box-sizing:border-box;background:#1267ad;padding:16px 20px;letter-spacing:-.035em}
+.bc-app__sidebar-mark{width:42px;height:42px;background:rgba(255,255,255,.18);font-weight:800;letter-spacing:0}
+.bc-app__sidebar-nav{gap:7px;padding:22px 14px}
+.bc-app__sidebar-nav a{font-size:14px;padding:13px 16px;border-radius:11px;transition:background .15s,color .15s}
+.bc-app__sidebar-nav a.is-active{background:#eaf4ff;color:#075b9e}
+.bc-app__header{border-bottom:1px solid #e6edf5}
+.bc-app__header-inner{min-height:76px;padding:0 30px}
+.bc-app__header-label{font-size:16px;font-weight:750}
+.bc-app__user{padding:9px 14px;background:#f2f6fa;border-radius:24px}
+.bc-app__main{padding:26px clamp(18px,2.4vw,38px)}
+.bc-app__main .block-system-main-block{width:100%}
+.bc-app--panel{display:block;background:#fff}
+.bc-app--panel .bc-app__main{padding:16px 22px}
+@media(max-width:1050px){.bc-app{grid-template-columns:200px minmax(0,1fr)}}
+@media(max-width:690px){.bc-app{display:grid;grid-template-columns:1fr;grid-template-rows:auto auto minmax(0,1fr)}.bc-app__sidebar{position:relative;height:auto}.bc-app__sidebar-brand{min-height:58px}.bc-app__sidebar-nav{padding:8px;gap:4px}.bc-app__header-inner{min-height:54px}.bc-app__main{padding:16px}.bc-app--panel{display:block}}

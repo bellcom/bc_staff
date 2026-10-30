@@ -309,7 +309,7 @@ final class EmployeeForm extends FormBase {
     if (!$uid && $user->hasField('field_bc_staff_status')) {
       $user->set('field_bc_staff_status', 'absent');
     }
-    if ($uid && $user->hasField('user_picture') && $form_state->hasValue('photo')) {
+    if ($user->hasField('user_picture') && $form_state->hasValue('photo')) {
       $fids = array_filter((array) $form_state->getValue('photo'));
       $fid = $fids ? (int) reset($fids) : NULL;
       if ($fid) {

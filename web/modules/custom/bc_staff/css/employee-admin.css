@@ -80,3 +80,51 @@ body.bc-employee-drawer-open{overflow:hidden}
 .bc-directory-admin__contacts a:hover{color:#0c64b1}
 .bc-directory-admin__contacts a:focus-visible{outline:2px solid #0c64b1;outline-offset:4px}
 .bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__contacts{margin:0;justify-content:flex-start}
+
+/* Single, cohesive employee directory design. Overrides legacy card experiments. */
+.bc-directory-admin{max-width:1440px;margin:0 auto;padding:0;color:#1b3855}
+.bc-directory-admin *{box-sizing:border-box}
+.bc-directory-admin .bc-employees__header{margin:0 0 25px;align-items:center}
+.bc-directory-admin .bc-employees__eyebrow{font-size:11px;color:#3876ad;margin:0 0 8px}
+.bc-directory-admin .bc-employees__header h2{font-size:clamp(26px,2.7vw,36px);font-weight:800;letter-spacing:-.045em;margin:0 0 6px;line-height:1.12}
+.bc-directory-admin .bc-employees__header p:not(.bc-employees__eyebrow){font-size:14px;color:#72859a}
+.bc-directory-admin .bc-employees__button{background:#136ab5;padding:13px 19px;border-radius:10px;box-shadow:0 5px 12px #1267ad25;font-size:13px}
+.bc-directory-admin__search{margin:0 0 12px}
+.bc-directory-admin__search input{border:1px solid #dce5ef;border-radius:11px;min-height:50px;box-shadow:0 2px 8px #264b7010}
+.bc-directory-admin .bc-employees__toolbar{display:flex;align-items:center;gap:9px 12px;margin:0 0 19px}
+.bc-directory-admin .bc-employees__toolbar label{color:#617890}
+.bc-directory-admin .bc-employees__toolbar select{border:1px solid #d7e2ee;border-radius:9px;min-height:40px;background:#fff}
+.bc-directory-admin__reset{margin-left:auto}
+.bc-directory-admin__summary{margin-bottom:15px}
+.bc-directory-admin__switch{border-radius:9px}
+.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.bc-directory-admin .bc-employees__card{background:#fff;border:1px solid #e4ebf4;border-radius:16px;min-width:0;min-height:310px;padding:22px 14px 17px;box-shadow:0 8px 22px rgba(29,58,89,.045);transition:transform .18s,box-shadow .18s,border-color .18s}
+.bc-directory-admin .bc-employees__card:hover{transform:translateY(-2px);box-shadow:0 13px 30px rgba(29,58,89,.085);border-color:#cbdceb}
+.bc-directory-admin__photo{width:108px;height:108px;margin:0 auto 15px}
+.bc-directory-admin .bc-employees__avatar{width:108px;height:108px;display:block;border-radius:50%;object-fit:cover;background:#e8f1f9;box-shadow:0 0 0 4px #f0f5fa}
+.bc-directory-admin__photo>.bc-directory-admin__presence{width:18px;height:18px;right:3px;top:6px;border:3px solid white}
+.bc-directory-admin .bc-employees__card h3{font-size:17px;line-height:1.3;letter-spacing:-.02em;margin:0 0 6px}
+.bc-directory-admin__role{display:block;font-size:11px;color:#8999aa;margin-bottom:7px}
+.bc-directory-admin__house{font-size:12px;color:#526d85;font-weight:700;margin-bottom:5px}
+.bc-directory-admin__department{font-size:12px;color:#77899a}
+.bc-directory-admin__tags{gap:6px;min-height:26px;margin:12px 0 10px}
+.bc-directory-admin__tags span{background:#ecf5ff;color:#24699f;padding:5px 9px;font-size:10px}
+.bc-directory-admin__details{width:100%;margin-top:auto;border-top:1px solid #edf1f6;gap:7px;padding-top:13px}
+.bc-directory-admin__status{font-size:11px;color:#4c657c}
+.bc-directory-admin .bc-employees__status{font-size:10px;padding:5px 8px}
+.bc-directory-admin__contacts{gap:18px;margin:12px 0 1px}
+.bc-directory-admin .bc-employees__edit{padding:9px 16px;border-radius:8px;background:#ebf4ff;color:#1264ab!important;font-size:12px;font-weight:750;margin-top:11px}
+.bc-directory-admin .bc-employees__grid.is-list{display:block}
+.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{display:grid;grid-template-columns:64px minmax(150px,1.3fr) minmax(130px,1fr) minmax(140px,1fr) minmax(150px,1.2fr) auto;gap:12px;min-height:0;padding:13px 17px;margin-bottom:9px;text-align:left;transform:none}
+.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__photo{width:55px;height:55px;margin:0}
+.bc-directory-admin .bc-employees__grid.is-list .bc-employees__avatar{width:55px;height:55px}
+.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__tags{justify-content:flex-start;margin:0}
+.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__details{margin:0;padding:0;border:0}
+.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__contacts{margin:0}
+.bc-directory-admin__drawer{width:min(540px,100vw);border-radius:18px 0 0 18px}
+.bc-directory-admin__drawer header{padding:23px 25px}
+.bc-directory-admin__drawer header h2{font-size:21px}
+@media(max-width:1250px){.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:920px){.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{grid-template-columns:55px 1fr 1fr}.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__tags,.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__details{display:none}}
+@media(max-width:570px){.bc-directory-admin .bc-employees__header{align-items:flex-start}.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.bc-directory-admin .bc-employees__card{min-height:295px;padding:18px 9px}.bc-directory-admin__photo,.bc-directory-admin .bc-employees__avatar{width:82px;height:82px}.bc-directory-admin__photo{height:82px}.bc-directory-admin .bc-employees__toolbar select{min-width:0;max-width:100%}.bc-directory-admin__reset{margin-left:0}.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{grid-template-columns:47px 1fr auto}}
+@media(max-width:390px){.bc-directory-admin .bc-employees__grid{grid-template-columns:1fr}}
