@@ -582,3 +582,12 @@ msgstr "Denne medarbejder kan ikke vælges til indtjekning."
 
 msgid "Attendance updated for @employee."
 msgstr "Fremmøde opdateret for @employee."
+
+msgid "Select In or Out on the employee card."
+msgstr "Vælg Ind eller Ud på medarbejderkortet."
+
+msgid "Ind"
+msgstr "Ind"
+
+msgid "Ud"
+msgstr "Ud"
