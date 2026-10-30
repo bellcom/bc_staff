@@ -46,3 +46,13 @@ employee_admin:
   dependencies:
     - core/drupal
     - core/once
+
+employee_editor:
+  css:
+    theme:
+      css/employee-editor.css: {}
+  js:
+    js/employee-editor.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
