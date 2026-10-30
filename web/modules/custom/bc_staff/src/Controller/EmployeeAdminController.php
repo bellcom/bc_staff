@@ -85,6 +85,8 @@ final class EmployeeAdminController extends ControllerBase {
         'photo_url' => StaffPhoto::url($user, $this->photoUrls, $fallback),
         'name' => $name,
         'login' => $user->getAccountName(),
+        'email' => str_ends_with((string) $user->getEmail(), '@example.invalid')
+          ? '' : (string) $user->getEmail(),
         'department' => $department,
         'house' => $house,
         'groups' => $groups,
