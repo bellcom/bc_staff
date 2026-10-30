@@ -33,6 +33,11 @@
           count.textContent = Drupal.formatPlural(visible, '1 employee', '@count employees');
           empty.hidden = visible > 0;
         };
+        // Deep-link from the organization directory to a specific department.
+        const requestedDepartment = new URLSearchParams(window.location.search).get('department');
+        if (requestedDepartment && [...department.options].some((option) => option.value === requestedDepartment)) {
+          department.value = requestedDepartment;
+        }
         search.addEventListener('input', filter);
         filters.forEach((control) => control.addEventListener('change', filter));
         reset.addEventListener('click', () => {

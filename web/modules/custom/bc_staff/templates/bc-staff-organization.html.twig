@@ -23,6 +23,7 @@
           {% for entry in group.entries %}
             <div class="bc-org__entry" style="--indent: {{ entry.depth }}" data-bc-org-entry data-bc-org-name="{{ entry.name|lower }}">
               <span class="bc-org__entry-name">{{ entry.name }}</span>
+              {% if entry.employee_url %}<a class="bc-org__employee-link" href="{{ entry.employee_url }}">{{ "@count employees"|t({"@count": entry.employee_count}) }}</a>{% endif %}
               <a href="{{ entry.edit_url }}">{{ 'Edit'|t }}</a>
             </div>
           {% else %}
