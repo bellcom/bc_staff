@@ -6,11 +6,25 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\bc_staff\Utility\StaffPhoto;
+use Drupal\Core\File\FileUrlGeneratorInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * BC Staff employee administration.
  */
 final class EmployeeAdminController extends ControllerBase {
+
+  public function __construct(
+    private readonly FileUrlGeneratorInterface $photoUrls,
+  ) {}
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container): static {
+    return new static($container->get('file_url_generator'));
+  }
+
 
   /**
    * Handles listing.
@@ -54,7 +68,7 @@ final class EmployeeAdminController extends ControllerBase {
       }
       $departments[$department] = $department;
       $employees[] = [
-        'photo_url' => StaffPhoto::url($user, \Drupal::service('file_url_generator'), $fallback),
+        'photo_url' => StaffPhoto::url($user, $this->photoUrls, $fallback),
         'name' => $name,
         'login' => $user->getAccountName(),
         'department' => $department,
