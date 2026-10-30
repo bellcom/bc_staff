@@ -627,3 +627,9 @@ msgstr "Personlig terminal"
 
 msgid "No attendance registrations yet."
 msgstr "Ingen fremmøderegistreringer endnu."
+
+msgid "Current saved status"
+msgstr "Aktuel gemt status"
+
+msgid "Not present"
+msgstr "Ikke til stede"
