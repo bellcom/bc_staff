@@ -32,6 +32,9 @@ final class EmployeeAdminController extends ControllerBase {
     $employees = [];
     $fallback = base_path() . $this->moduleHandler()->getModule('bc_staff')->getPath() . '/assets/avatar.svg';
     $departments = [];
+    $houses = [];
+    $workgroups = [];
+    $statuses = [];
     $storage = $this->entityTypeManager()->getStorage('user');
     $ids = $storage->getQuery()
       ->accessCheck(FALSE)->condition('uid', 0, '>')->sort('name')->execute();
@@ -66,6 +69,18 @@ final class EmployeeAdminController extends ControllerBase {
         }
       }
       $departments[$department] = $department;
+      if ($house !== '') {
+        $houses[$house] = $house;
+      }
+      foreach ($groups as $group) {
+        $workgroups[$group] = $group;
+      }
+      $status_key = $user->hasField('field_bc_staff_status')
+        ? (string) ($user->get('field_bc_staff_status')->value ?? '') : '';
+      $choices = $user->get('field_bc_staff_status')->getFieldDefinition()->getSetting('allowed_values');
+      foreach ($choices as $key => $label) {
+        $statuses[$key] = ['key' => $key, 'label' => $label];
+      }
       $employees[] = [
         'photo_url' => StaffPhoto::url($user, $this->photoUrls, $fallback),
         'name' => $name,
@@ -74,16 +89,25 @@ final class EmployeeAdminController extends ControllerBase {
         'house' => $house,
         'groups' => $groups,
         'active' => $user->isActive(),
+        'status_key' => $status_key,
+        'status' => $choices[$status_key] ?? $this->t('Not specified'),
+        'location' => $user->hasField('field_bc_staff_location')
+          ? (string) ($user->get('field_bc_staff_location')->value ?? '') : '',
         'edit_url' => Url::fromRoute('bc_staff.employee_edit', [
           'user' => $user->id(),
         ])->toString(),
       ];
     }
     natcasesort($departments);
+    natcasesort($houses);
+    natcasesort($workgroups);
     return [
       '#theme' => 'bc_staff_employee_admin',
       '#employees' => $employees,
       '#departments' => array_values($departments),
+      '#houses' => array_values($houses),
+      '#workgroups' => array_values($workgroups),
+      '#statuses' => array_values($statuses),
       '#add_url' => Url::fromRoute('bc_staff.employee_add')->toString(),
       '#attached' => ['library' => ['bc_staff/employee_admin']],
       '#cache' => ['contexts' => ['user', 'user.permissions'], 'max-age' => 0],
