@@ -74,6 +74,16 @@
             drawer.focus();
           });
         });
+        frame.addEventListener('load', () => {
+          if (drawer.hidden) return;
+          try {
+            if (frame.contentWindow.location.pathname === root.dataset.listPath) {
+              window.location.reload();
+            }
+          } catch (error) {
+            // Preserve the native edit link fallback if embedding is blocked.
+          }
+        });
         close.addEventListener('click', closeDrawer);
         shade.addEventListener('click', closeDrawer);
         root.addEventListener('keydown', (event) => {
