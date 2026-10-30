@@ -28,7 +28,7 @@ final class OrganizationTermForm extends FormBase {
     $viewer = $this->currentUser();
     $is_manager = $viewer->id() !== '1'
       && !$viewer->hasPermission('administer bc staff employees');
-    $leader = $is_manager ? $this->entityTypeManager()->getStorage('user')->load($viewer->id()) : NULL;
+    $leader = $is_manager ? \Drupal::entityTypeManager()->getStorage('user')->load($viewer->id()) : NULL;
     $department = $is_manager ? EmployeeAccess::departmentId($leader) : NULL;
     if ($is_manager && (!$department || $vocabulary !== 'bc_staff_location')) {
       throw new AccessDeniedHttpException();
@@ -45,7 +45,7 @@ final class OrganizationTermForm extends FormBase {
     if (!in_array($vocabulary, $allowed, TRUE)) {
       throw new NotFoundHttpException();
     }
-    $editing = $term ? $this->entityTypeManager()->getStorage('taxonomy_term')->load($term) : NULL;
+    $editing = $term ? \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($term) : NULL;
     if ($term !== NULL && (!$editing || $editing->bundle() !== $vocabulary)) {
       throw new NotFoundHttpException();
     }
@@ -63,12 +63,12 @@ final class OrganizationTermForm extends FormBase {
       '#default_value' => $editing ? $editing->label() : '',
     ];
     $options = [0 => $this->t('Top level')];
-    foreach ($this->entityTypeManager()->getStorage('taxonomy_term')->loadTree($vocabulary) as $item) {
+    foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vocabulary) as $item) {
       if ($editing && (int) $item->tid === (int) $editing->id()) {
         continue;
       }
       if ($is_manager) {
-        $candidate = $this->entityTypeManager()->getStorage('taxonomy_term')->load($item->tid);
+        $candidate = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($item->tid);
         if (!$candidate || (string) ($candidate->get('field_bc_staff_department')->target_id ?? '') !== $department) {
           continue;
         }
@@ -77,7 +77,7 @@ final class OrganizationTermForm extends FormBase {
     }
     if ($vocabulary === 'bc_staff_location') {
       $department_options = ['' => $this->t('Unassigned')];
-      foreach ($this->entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_department') as $item) {
+      foreach (\Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('bc_staff_department') as $item) {
         $department_options[$item->tid] = $item->name;
       }
       $form['department'] = [
@@ -111,14 +111,14 @@ final class OrganizationTermForm extends FormBase {
   public function submitForm(array &$form, FormStateInterface $form_state): void {
     $vocabulary = (string) $form_state->getValue('vocabulary');
     $id = (int) $form_state->getValue('term_id');
-    $term = $id ? $this->entityTypeManager()->getStorage('taxonomy_term')->load($id) : NULL;
+    $term = $id ? \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($id) : NULL;
     if ($id && (!$term || $term->bundle() !== $vocabulary)) {
       throw new NotFoundHttpException();
     }
     $term = $term ?: Term::create(['vid' => $vocabulary]);
     $scope = $form_state->get('bc_staff_scope_department');
     if ($scope) {
-      $leader = $this->entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
+      $leader = \Drupal::entityTypeManager()->getStorage('user')->load($this->currentUser()->id());
       if ($vocabulary !== 'bc_staff_location' || EmployeeAccess::departmentId($leader) !== $scope
         || ($id && (string) ($term->get('field_bc_staff_department')->target_id ?? '') !== $scope)) {
         throw new AccessDeniedHttpException();
@@ -136,7 +136,7 @@ final class OrganizationTermForm extends FormBase {
           return;
         }
         $visited[$ancestor_id] = TRUE;
-        $ancestor = $this->entityTypeManager()->getStorage('taxonomy_term')->load($ancestor_id);
+        $ancestor = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($ancestor_id);
         if (!$ancestor || $ancestor->bundle() !== $vocabulary) {
           throw new AccessDeniedHttpException();
         }
@@ -144,7 +144,7 @@ final class OrganizationTermForm extends FormBase {
       }
     }
     if ($parent) {
-      $parent_term = $this->entityTypeManager()->getStorage('taxonomy_term')->load($parent);
+      $parent_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($parent);
       if (!$parent_term || $parent_term->bundle() !== $vocabulary
         || ($scope && (string) ($parent_term->get('field_bc_staff_department')->target_id ?? '') !== $scope)) {
         throw new AccessDeniedHttpException();
@@ -153,7 +153,7 @@ final class OrganizationTermForm extends FormBase {
     $term->setName(trim((string) $form_state->getValue('name')));
     if ($vocabulary === 'bc_staff_location' && $term->hasField('field_bc_staff_department')) {
       $department = $scope ?: $form_state->getValue('department');
-      $selected = $department ? $this->entityTypeManager()->getStorage('taxonomy_term')->load($department) : NULL;
+      $selected = $department ? \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($department) : NULL;
       if ($department && (!$selected || $selected->bundle() !== 'bc_staff_department')) {
         throw new AccessDeniedHttpException();
       }
