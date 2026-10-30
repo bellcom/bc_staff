@@ -528,3 +528,15 @@ msgstr "Opret organisationsenhed"
 
 msgid "Edit organization entry"
 msgstr "Rediger organisationsenhed"
+
+msgid "1 entry"
+msgstr "1 enhed"
+
+msgid "1 employee"
+msgstr "1 medarbejder"
+
+msgid "On vacation"
+msgstr "På ferie"
+
+msgid "Request approved."
+msgstr "Anmodningen er godkendt."
