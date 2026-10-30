@@ -27,3 +27,17 @@
 .bc-editor__photo-control.has-existing-photo{background:transparent!important;padding:0!important}
 .bc-editor__photo-control input[type=file]{max-width:100%}
 .bc-editor__choose:disabled{opacity:.55;cursor:not-allowed}
+
+/* The editor uses the same visual vocabulary as the staff directory. */
+.bc-org-form[data-bc-employee-editor]{font-size:14px;color:#24435f}
+.bc-editor__tabs{gap:21px;margin-bottom:24px}
+.bc-editor__tabs button{padding:14px 3px;font-size:13px}
+.bc-editor__tabs button.is-active{color:#1269b6;border-bottom-color:#1269b6}
+.bc-editor__section .form-item{margin-bottom:19px}
+.bc-editor__section label{font-weight:700;color:#355572}
+.bc-editor__section input[type=text],.bc-editor__section input[type=email],.bc-editor__section input[type=password],.bc-editor__section select{min-height:47px;border-color:#d4e0ed;border-radius:9px}
+.bc-editor__photo-preview{width:116px;height:116px;border:5px solid #f0f6fb;box-shadow:0 0 0 1px #dfe9f3;object-fit:cover}
+.bc-editor__section .form-managed-file{background:#f6f9fd;border:1px dashed #d0dfed;border-radius:11px;padding:14px}
+.bc-editor__choose{background:#ecf5ff;color:#1265ac;border-color:#c4dff5;border-radius:9px}
+.bc-org-form[data-bc-employee-editor] .form-actions{padding:18px 0;margin-top:20px}
+.bc-org-form[data-bc-employee-editor] .form-actions .button--primary{background:#1267ad;border-radius:9px;padding:11px 19px;color:#fff}
