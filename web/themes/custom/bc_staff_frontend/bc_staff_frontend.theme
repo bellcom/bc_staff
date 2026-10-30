@@ -20,6 +20,7 @@ function bc_staff_frontend_preprocess_page(array &$variables): void {
     'bc_staff.mobile' => t('My status'),
     'bc_staff.touch' => t('Check in / Check out'),
     'bc_staff.managed_touch' => t('Team check-in terminal'),
+    'bc_staff.attendance_history' => t('Attendance and history'),
     'bc_staff.employee_list' => t('Employees'),
     'bc_staff.organization' => t('Organization'),
   ];

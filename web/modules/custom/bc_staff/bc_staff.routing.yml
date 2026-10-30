@@ -117,3 +117,13 @@ bc_staff.managed_touch:
     _title: 'Team check-in terminal'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
+
+bc_staff.attendance_history:
+  path: '/staff/fremmoede'
+  options:
+    _admin_route: FALSE
+  defaults:
+    _controller: '\Drupal\bc_staff\Controller\AttendanceHistoryController::listing'
+    _title: 'Attendance and history'
+  requirements:
+    _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'

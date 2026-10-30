@@ -82,8 +82,7 @@ final class TouchCheckInForm extends FormBase {
       $this->messenger()->addError($this->t('Invalid action.'));
       return;
     }
-    $account->set('field_bc_staff_status', $trigger === 'check_in' ? 'present' : 'absent');
-    $account->save();
+    \Drupal\bc_staff\Service\AttendanceRecorder::record($account, $trigger === 'check_in' ? 'in' : 'out', (int) $this->currentUser()->id(), 'self_touch');
     $this->messenger()->addStatus($trigger === 'check_in'
       ? $this->t('You are checked in.') : $this->t('You are checked out.'));
     $form_state->setRedirect('bc_staff.touch');

@@ -139,3 +139,41 @@ function bc_staff_update_11005(): void {
     ])->save();
   }
 }
+
+
+/**
+ * Implements hook_schema().
+ */
+function bc_staff_schema(): array {
+  return [
+    'bc_staff_attendance' => [
+      'description' => 'Immutable check-in and check-out audit events.',
+      'fields' => [
+        'id' => ['type' => 'serial', 'not null' => TRUE],
+        'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+        'actor_uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+        'action' => ['type' => 'varchar', 'length' => 3, 'not null' => TRUE],
+        'created' => ['type' => 'int', 'not null' => TRUE],
+        'previous_status' => ['type' => 'varchar', 'length' => 32, 'not null' => FALSE],
+        'source' => ['type' => 'varchar', 'length' => 24, 'not null' => TRUE],
+      ],
+      'primary key' => ['id'],
+      'indexes' => [
+        'employee_time' => ['uid', 'created'],
+        'time' => ['created'],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Install the attendance audit table on existing installations.
+ */
+function bc_staff_update_11006(): string {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('bc_staff_attendance')) {
+    $definition = bc_staff_schema()['bc_staff_attendance'];
+    $schema->createTable('bc_staff_attendance', $definition);
+  }
+  return 'BC Staff attendance history table is ready.';
+}
