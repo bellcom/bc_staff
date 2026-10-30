@@ -1,5 +1,7 @@
 bc_staff.overview:
   path: '/staff'
+  options:
+    _admin_route: FALSE
   defaults:
     _controller: '\Drupal\bc_staff\Controller\StaffController::overview'
     _title: 'Staff overview'
@@ -7,6 +9,8 @@ bc_staff.overview:
     _permission: 'view bc staff overview'
 bc_staff.my_status:
   path: '/staff/min-status'
+  options:
+    _admin_route: FALSE
   defaults:
     _form: '\Drupal\bc_staff\Form\MyStatusForm'
     _title: 'My status'
@@ -14,6 +18,8 @@ bc_staff.my_status:
     _permission: 'update own bc staff status'
 bc_staff.mobile:
   path: '/staff/mobil'
+  options:
+    _admin_route: FALSE
   defaults:
     _form: '\Drupal\bc_staff\Form\MyStatusForm'
     _title: 'My status – mobile'
@@ -22,6 +28,8 @@ bc_staff.mobile:
 
 bc_staff.employee_list:
   path: '/staff/medarbejdere'
+  options:
+    _admin_route: FALSE
   defaults:
     _controller: '\Drupal\bc_staff\Controller\EmployeeAdminController::listing'
     _title: 'BC Staff employees'
@@ -29,6 +37,8 @@ bc_staff.employee_list:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
 bc_staff.employee_add:
   path: '/staff/medarbejdere/ny'
+  options:
+    _admin_route: FALSE
   defaults:
     _form: '\Drupal\bc_staff\Form\EmployeeForm'
     _title: 'Add employee'
@@ -36,6 +46,8 @@ bc_staff.employee_add:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
 bc_staff.employee_edit:
   path: '/staff/medarbejdere/{user}/rediger'
+  options:
+    _admin_route: FALSE
   defaults:
     _form: '\Drupal\bc_staff\Form\EmployeeForm'
     _title: 'Edit employee'
@@ -45,6 +57,8 @@ bc_staff.employee_edit:
 
 bc_staff.login:
   path: '/staff/login'
+  options:
+    _admin_route: FALSE
   defaults:
     _controller: '\Drupal\bc_staff\Controller\StaffLoginController::page'
     _title: 'BC Staff login'
@@ -53,6 +67,8 @@ bc_staff.login:
 
 bc_staff.organization:
   path: '/staff/organisation'
+  options:
+    _admin_route: FALSE
   defaults:
     _controller: '\Drupal\bc_staff\Controller\OrganizationController::overview'
     _title: 'Organization'
@@ -61,6 +77,8 @@ bc_staff.organization:
 
 bc_staff.organization_add:
   path: '/staff/organisation/{vocabulary}/ny'
+  options:
+    _admin_route: FALSE
   defaults:
     _form: '\Drupal\bc_staff\Form\OrganizationTermForm'
     _title: 'Add organization entry'
@@ -70,6 +88,8 @@ bc_staff.organization_add:
 
 bc_staff.organization_edit:
   path: '/staff/organisation/{vocabulary}/{term}/rediger'
+  options:
+    _admin_route: FALSE
   defaults:
     _form: '\Drupal\bc_staff\Form\OrganizationTermForm'
     _title: 'Edit organization entry'

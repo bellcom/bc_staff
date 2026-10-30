@@ -8,4 +8,4 @@ services:
     class: Drupal\bc_staff\Theme\StaffThemeNegotiator
     arguments: ['@theme_handler']
     tags:
-      - { name: theme_negotiator, priority: 20 }
+      - { name: theme_negotiator, priority: 1000 }
