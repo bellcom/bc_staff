@@ -128,11 +128,38 @@ final class EmployeeForm extends FormBase {
         '#default_value' => $key === 'house' ? ($existing[0] ?? '') : $existing,
       ];
     }
+    // Keep the existing string field for compatibility with dashboards and
+    // status screens, but only store names selected from taxonomy.
+    $current_location = (string) $value('field_bc_staff_location');
+    $location_options = ['' => $this->t('Select a location')];
+    $selected_location = '';
+    $term_storage = $this->staffEntityTypeManager->getStorage('taxonomy_term');
+    if ($this->staffEntityTypeManager->getStorage('taxonomy_vocabulary')->load('bc_staff_location')) {
+      foreach ($term_storage->loadTree('bc_staff_location') as $entry) {
+        $location_term = $term_storage->load($entry->tid);
+        if (!$location_term) {
+          continue;
+        }
+        $owner = $location_term->hasField('field_bc_staff_department')
+          ? (string) ($location_term->get('field_bc_staff_department')->target_id ?? '') : '';
+        $location_options[(string) $entry->tid] = $location_term->label();
+        if ($selected_location === '' && $current_location === $location_term->label()
+          && ($owner === '' || $owner === (string) ($manager ? $leader_department : ($account?->get('field_bc_staff_department')->target_id ?? '')))) {
+          $selected_location = (string) $entry->tid;
+        }
+      }
+    }
+    if ($current_location !== '' && $selected_location === '') {
+      $location_options['__keep__'] = $this->t('Keep current location: @location', ['@location' => $current_location]);
+      $selected_location = '__keep__';
+    }
     $form['location'] = [
-      '#type' => 'textfield',
+      '#type' => 'select',
       '#title' => $this->t('Current location'),
-      '#default_value' => $value('field_bc_staff_location'),
-      '#maxlength' => 128,
+      '#options' => $location_options,
+      '#default_value' => $selected_location,
+      '#attributes' => ['data-bc-staff-location-select' => '1'],
+      '#description' => $this->t('Choose a shared location or one assigned to the employee department.'),
     ];
     $form['#attributes']['class'][] = 'bc-org-form';
     $form['#attached']['library'][] = 'bc_staff/organization';
@@ -249,6 +276,25 @@ final class EmployeeForm extends FormBase {
     if ($department && (!$term || $term->bundle() !== 'bc_staff_department')) {
       $form_state->setErrorByName('department', $this->t('Invalid department.'));
     }
+    $location_id = (string) ($form_state->getValue('location') ?? '');
+    if ($location_id !== '' && $location_id !== '__keep__') {
+      $location = ctype_digit($location_id)
+        ? $this->staffEntityTypeManager->getStorage('taxonomy_term')->load($location_id) : NULL;
+      $owner = $location && $location->hasField('field_bc_staff_department')
+        ? (string) ($location->get('field_bc_staff_department')->target_id ?? '') : '';
+      if (!$location || $location->bundle() !== 'bc_staff_location'
+        || ($owner !== '' && $owner !== (string) $department)) {
+        $form_state->setErrorByName('location', $this->t('Invalid location for the selected department.'));
+      }
+    }
+    if ($location_id === '__keep__') {
+      $uid = $form_state->get('bc_staff_uid');
+      $existing = $uid ? $storage->load($uid) : NULL;
+      if (!$existing || !$existing->hasField('field_bc_staff_location')
+        || (string) ($existing->get('field_bc_staff_location')->value ?? '') === '') {
+        $form_state->setErrorByName('location', $this->t('Invalid location.'));
+      }
+    }
   }
 
   /**
@@ -286,12 +332,15 @@ final class EmployeeForm extends FormBase {
     else {
       $user->removeRole('bc_staff_employee');
     }
-    foreach ([
-      'field_bc_staff_display_name' => 'display_name',
-      'field_bc_staff_location' => 'location',
-    ] as $field => $input) {
-      if ($user->hasField($field)) {
-        $user->set($field, $form_state->getValue($input));
+    if ($user->hasField('field_bc_staff_display_name')) {
+      $user->set('field_bc_staff_display_name', $form_state->getValue('display_name'));
+    }
+    if ($user->hasField('field_bc_staff_location')) {
+      $location_id = (string) ($form_state->getValue('location') ?? '');
+      if ($location_id !== '__keep__') {
+        $location_term = $location_id !== ''
+          ? $this->staffEntityTypeManager->getStorage('taxonomy_term')->load($location_id) : NULL;
+        $user->set('field_bc_staff_location', $location_term?->label() ?? '');
       }
     }
     if ($user->hasField('field_bc_staff_department')) {
