@@ -30,7 +30,7 @@
     {% for person in staff %}
       <article class="bc-staff__card" data-bc-staff-card data-department="{{ person.department }}" data-house="{{ person.house }}" data-workgroups="{{ person.workgroups|join('|') }}">
         <div class="bc-staff__person">
-          <img class="bc-staff__avatar" src="{{ avatar }}" alt="" width="64" height="64" loading="lazy">
+          <img class="bc-staff__avatar" src="{{ person.photo_url }}" alt="" width="64" height="64" loading="lazy">
           <div>
             <h3>{% if person.profile_url %}<a href="{{ person.profile_url }}">{{ person.name }}</a>{% else %}{{ person.name }}{% endif %}{% if person.is_me %} <small>({{ 'you'|t }})</small>{% endif %}</h3>
             <p>{{ person.department ?: 'No department'|t }}{% if person.house %} · {{ person.house }}{% endif %}</p>
