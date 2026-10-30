@@ -73,3 +73,10 @@ body.bc-employee-drawer-open{overflow:hidden}
 @media(max-width:1190px){.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:790px){.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:430px){.bc-directory-admin .bc-employees__grid{grid-template-columns:1fr}}
+
+/* Compact staff contact actions, using real account data only. */
+.bc-directory-admin__contacts{display:flex;align-items:center;justify-content:center;gap:20px;margin:6px 0 2px;min-height:23px}
+.bc-directory-admin__contacts a{display:inline-flex;align-items:center;justify-content:center;color:#334f6d;text-decoration:none}
+.bc-directory-admin__contacts a:hover{color:#0c64b1}
+.bc-directory-admin__contacts a:focus-visible{outline:2px solid #0c64b1;outline-offset:4px}
+.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__contacts{margin:0;justify-content:flex-start}
