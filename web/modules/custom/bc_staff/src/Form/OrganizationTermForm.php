@@ -125,6 +125,24 @@ final class OrganizationTermForm extends FormBase {
       }
     }
     $parent = (int) $form_state->getValue('parent');
+    // A term cannot become its own parent or be moved underneath a child.
+    // Validate the complete ancestry server-side, not just the select options.
+    if ($parent && $id) {
+      $visited = [];
+      $ancestor_id = $parent;
+      while ($ancestor_id) {
+        if ($ancestor_id === $id || isset($visited[$ancestor_id])) {
+          $this->messenger()->addError($this->t('Invalid parent: circular organization hierarchy.'));
+          return;
+        }
+        $visited[$ancestor_id] = TRUE;
+        $ancestor = $this->entityTypeManager()->getStorage('taxonomy_term')->load($ancestor_id);
+        if (!$ancestor || $ancestor->bundle() !== $vocabulary) {
+          throw new AccessDeniedHttpException();
+        }
+        $ancestor_id = (int) ($ancestor->get('parent')->target_id ?? 0);
+      }
+    }
     if ($parent) {
       $parent_term = $this->entityTypeManager()->getStorage('taxonomy_term')->load($parent);
       if (!$parent_term || $parent_term->bundle() !== $vocabulary
