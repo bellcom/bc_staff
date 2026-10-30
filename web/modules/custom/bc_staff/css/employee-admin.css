@@ -67,3 +67,53 @@ body.bc-employee-drawer-open{overflow:hidden}
 @media(max-width:1250px){.bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:950px){.bc-employees__grid.is-list .bc-employees__card{grid-template-columns:1fr 1fr}.bc-employees__grid.is-list .bc-directory-admin__tags{display:none}}
 @media(max-width:690px){.bc-employees__grid{grid-template-columns:1fr}.bc-employees__card{padding:17px}.bc-employees__toolbar select{max-width:100%;min-width:0}.bc-directory-admin__reset{margin-left:0}.bc-employees__grid.is-list .bc-employees__card{grid-template-columns:1fr}.bc-person__top{gap:12px}}
+
+
+/* Mockup-matched employee tiles; existing administrative functionality retained. */
+.bc-directory-admin{max-width:none}
+.bc-employees__header{margin-bottom:12px}
+.bc-employees__header h2{font-size:25px}
+.bc-directory-admin__search{margin-bottom:8px}
+.bc-directory-admin__search label{display:none}
+.bc-directory-admin__search input{min-height:39px}
+.bc-employees__toolbar{margin-bottom:12px}
+.bc-directory-admin__summary{margin-bottom:12px}
+.bc-employees__grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;align-items:stretch}
+.bc-employees__card{
+  position:relative;display:flex;flex-direction:column;text-align:center;
+  border:1px solid #dfe7f1;border-radius:8px;background:#fff;
+  padding:0 10px 10px;overflow:hidden;box-shadow:0 3px 10px rgba(31,66,100,.075);
+}
+.bc-employees__card::before{
+  content:"";position:absolute;top:0;left:0;right:0;height:34px;background:#087bfa;
+}
+.bc-person__top{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:0;margin:14px 0 8px}
+.bc-directory-admin__photo{width:70px;height:70px;margin:0 0 4px}
+.bc-employees__avatar{width:70px;height:70px;border:3px solid #fff;box-shadow:0 2px 5px #16365520}
+.bc-directory-admin__photo>.bc-directory-admin__presence{bottom:2px;right:-1px;width:13px;height:13px;border-width:2px}
+.bc-person__identity h3{font-size:14px;line-height:1.2;letter-spacing:0;margin:0 0 3px;color:#24354a}
+.bc-directory-admin__role{font-size:10px;line-height:1.2;margin:0 0 4px;max-width:100%;color:#75859b}
+.bc-person__availability{font-size:10px;gap:5px}
+.bc-person__availability .bc-directory-admin__presence{width:8px;height:8px}
+.bc-person__meta{width:100%;border:0;padding:2px 0 2px;margin:0}
+.bc-person__meta-row{grid-template-columns:68px minmax(0,1fr);gap:5px;margin:0 0 4px;font-size:10px;line-height:1.4;text-align:left}
+.bc-person__meta-row>span{color:#71829a}
+.bc-person__meta-row>strong{color:#3a4b64;font-weight:650}
+.bc-directory-admin__tags{justify-content:center;gap:4px;margin:6px 0 8px}
+.bc-directory-admin__tags span{padding:4px 7px;font-size:9px;color:#46627f;background:#eef3fa;border-radius:4px}
+.bc-person__footer{margin-top:auto;padding-top:7px;gap:6px;border-top:1px solid #e9eef5}
+.bc-employees__status{font-size:9px;padding:5px 7px}
+.bc-person__actions{gap:5px}
+.bc-person__mail{width:26px;height:26px;border:0;border-radius:4px;background:#eff3fa}
+.bc-person__mail svg{width:14px;height:14px}
+.bc-employees__edit{min-height:26px;background:#e9f2fd;color:#1366b6!important;border-radius:5px;padding:6px 8px;font-size:10px}
+.bc-employees__grid.is-list .bc-employees__card{overflow:visible}
+.bc-employees__grid.is-list .bc-employees__card::before{display:none}
+.bc-employees__grid.is-list .bc-person__top{flex-direction:row;gap:10px;margin:0;text-align:left}
+.bc-employees__grid.is-list .bc-person__meta{margin:0}
+.bc-employees__grid.is-list .bc-directory-admin__photo,.bc-employees__grid.is-list .bc-employees__avatar{width:48px;height:48px}
+.bc-employees__grid.is-list .bc-directory-admin__tags{justify-content:flex-start}
+@media(max-width:1390px){.bc-employees__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:1040px){.bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:640px){.bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.bc-employees__card{padding:0 7px 8px}.bc-person__meta-row{grid-template-columns:1fr}.bc-person__meta-row>span{display:none}}
+@media(max-width:390px){.bc-employees__grid{grid-template-columns:1fr}}
