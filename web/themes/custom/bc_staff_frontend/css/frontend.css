@@ -17,3 +17,34 @@ body{background:#f5f8fc;color:var(--bc-ink)}
 .bc-app .messages{margin-bottom:1rem}
 .bc-app .bc-staff-login{margin-top:clamp(1rem,4vw,3rem)}
 @media(max-width:650px){.bc-app__header-inner{align-items:stretch}.bc-app__navigation{width:100%}.bc-app__navigation a{flex:1;text-align:center;min-width:max-content}}
+
+/* BC Staff portal shell. Hide Drupal's administration furniture on staff UI. */
+body:has(.bc-app) #toolbar-administration,
+body:has(.bc-app) .gin-toolbar-bar,
+body:has(.bc-app) #gin-toolbar-bar,
+body:has(.bc-app) .gin-sidebar,
+body:has(.bc-app) #toolbar-item-administration-tray,
+body:has(.bc-app) .gin-secondary-toolbar{display:none!important}
+body:has(.bc-app){margin:0!important;padding:0!important;margin-left:0!important;padding-left:0!important;padding-top:0!important}
+body:has(.bc-app) .dialog-off-canvas-main-canvas{margin:0!important;padding:0!important}
+.bc-app{display:grid;grid-template-columns:230px minmax(0,1fr);grid-template-rows:65px 1fr;min-height:100vh;background:#f8fafc}
+.bc-app__sidebar{grid-column:1;grid-row:1/span 2;position:sticky;top:0;align-self:start;height:100vh;display:flex;flex-direction:column;background:#fff;border-right:1px solid #e3eaf1;z-index:20}
+.bc-app__sidebar-brand{display:flex;align-items:center;gap:11px;background:#0963b2;color:#fff!important;text-decoration:none;padding:22px 18px;font-size:24px}
+.bc-app__sidebar-mark{display:grid;place-items:center;background:#fff2;width:40px;height:40px;border-radius:10px;font-size:15px}
+.bc-app__sidebar-nav{display:flex;flex-direction:column;gap:5px;padding:14px 9px;overflow:auto}
+.bc-app__sidebar-nav a{padding:12px 14px;border-radius:9px;text-decoration:none;color:#203753;font-weight:600;font-size:14px}
+.bc-app__sidebar-nav a:hover,.bc-app__sidebar-nav a.is-active{background:#e7f2ff;color:#0963b2}
+.bc-app__sidebar-bottom{margin-top:auto;padding:19px;border-top:1px solid #e3eaf1;color:#6c8196}
+.bc-app__header{grid-column:2;grid-row:1;background:#fff}
+.bc-app__header-inner{max-width:none;padding:0 24px;min-height:65px;justify-content:space-between;flex-wrap:nowrap}
+.bc-app__header-label{color:#1f3e5b;font-weight:650;white-space:nowrap;font-size:14px}
+.bc-app__navigation{justify-content:center;flex-wrap:nowrap;overflow:auto;gap:4px}
+.bc-app__navigation a{font-size:13px;padding:12px 9px;white-space:nowrap}
+.bc-app__user{white-space:nowrap;font-size:13px;font-weight:750;color:#243e57}
+.bc-app__main{grid-column:2;grid-row:2;max-width:none;box-sizing:border-box;width:100%;padding:26px clamp(16px,2.4vw,35px)}
+.bc-app--panel{display:block;min-height:100vh;background:#fff}
+.bc-app--panel .bc-app__main{padding:12px 22px}
+.bc-app--panel .bc-org-form{box-shadow:none;border:0;padding:8px;max-width:none}
+.bc-app--panel .block-system-main-block{margin:0}
+@media(max-width:1050px){.bc-app{grid-template-columns:185px minmax(0,1fr)}.bc-app__navigation{display:none}.bc-app__header-inner{padding:0 16px}}
+@media(max-width:690px){.bc-app{grid-template-columns:1fr;grid-template-rows:auto auto 1fr}.bc-app__sidebar{grid-column:1;grid-row:1;position:relative;height:auto}.bc-app__sidebar-brand{padding:10px 15px}.bc-app__sidebar-nav{flex-direction:row;overflow:auto}.bc-app__sidebar-nav a{white-space:nowrap}.bc-app__sidebar-bottom{display:none}.bc-app__header{grid-column:1;grid-row:2}.bc-app__main{grid-column:1;grid-row:3;padding:15px}.bc-app--panel{display:block}}
