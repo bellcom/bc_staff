@@ -6,6 +6,7 @@ use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -144,18 +145,44 @@ final class EmployeeForm extends FormBase {
       '#required' => !$account,
       '#description' => $this->t('When editing, leave the field blank to keep the existing password.'),
     ];
-    if ($account) {
-      $form['photo'] = [
-        '#type' => 'item',
-        '#title' => $this->t('Profile photo'),
-        '#markup' => $this->t('Edit the profile photo through the Drupal user form.'),
-        '#description' => $this->t('BC Staff uses the existing account profile photo.'),
+    if ($account && $account->hasField('user_picture')) {
+      $file_system = \Drupal::service('file_system');
+      $photo_dir = 'public://bc_staff_photos';
+      if ($file_system->prepareDirectory($photo_dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+        $existing_fid = $account->get('user_picture')->target_id ?? NULL;
+        $form['photo'] = [
+          '#type' => 'managed_file',
+          '#title' => $this->t('Profile photo'),
+          '#description' => $this->t('Upload JPG, PNG or WebP, maximum 2 MB. Remove the uploaded photo to use the default avatar.'),
+          '#upload_location' => $photo_dir,
+          '#upload_validators' => [
+            'FileExtension' => ['extensions' => 'jpg jpeg png webp'],
+            'FileSizeLimit' => ['fileLimit' => 2097152],
+          ],
+          '#default_value' => $existing_fid ? [(int) $existing_fid] : [],
+        ];
+      }
+    }
+    $form['tabs'] = [
+      '#type' => 'vertical_tabs',
+      '#default_tab' => 'edit-general',
+    ];
+    foreach ([
+      'general' => [$this->t('Basic information'), ['photo', 'display_name', 'name', 'mail']],
+      'employment' => [$this->t('Employment'), ['department', 'house', 'workgroups', 'employee_role', 'enabled']],
+      'locations' => [$this->t('Locations'), ['location', 'password']],
+    ] as $key => [$label, $fields]) {
+      $form[$key] = [
+        '#type' => 'details',
+        '#title' => $label,
+        '#group' => 'tabs',
       ];
-      $form['photo_link'] = [
-        '#type' => 'link',
-        '#title' => $this->t('Manage photo and account settings'),
-        '#url' => Url::fromRoute('entity.user.edit_form', ['user' => $account->id()]),
-      ];
+      foreach ($fields as $field) {
+        if (isset($form[$field])) {
+          $form[$key][$field] = $form[$field];
+          unset($form[$field]);
+        }
+      }
     }
     $form['actions']['submit'] = ['#type' => 'submit', '#value' => $this->t('Save employee')];
     return $form;
@@ -250,6 +277,18 @@ final class EmployeeForm extends FormBase {
     }
     if (!$uid && $user->hasField('field_bc_staff_status')) {
       $user->set('field_bc_staff_status', 'absent');
+    }
+    if ($uid && $user->hasField('user_picture') && $form_state->hasValue('photo')) {
+      $fids = array_filter((array) $form_state->getValue('photo'));
+      $fid = $fids ? (int) reset($fids) : NULL;
+      if ($fid) {
+        $file = $this->staffEntityTypeManager->getStorage('file')->load($fid);
+        if ($file) {
+          $file->setPermanent();
+          $file->save();
+        }
+      }
+      $user->set('user_picture', $fid ? ['target_id' => $fid] : NULL);
     }
     $user->save();
     $this->messenger()->addStatus($this->t('The employee was saved.'));
