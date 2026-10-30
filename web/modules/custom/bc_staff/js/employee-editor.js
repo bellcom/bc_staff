@@ -40,10 +40,13 @@
           if (preview) preview.after(actions);
           else photo.before(actions);
           const sync = () => {
-            const input = photo.querySelector('input[type="file"]');
-            const remove = photo.querySelector('input[type="submit"][name$="_remove_button"]');
+            const currentPhoto = form.querySelector('[data-drupal-selector="edit-general-photo"]')
+              || form.querySelector('.form-type-managed-file') || photo;
+            currentPhoto.classList.add('bc-editor__photo-control');
+            const input = currentPhoto.querySelector('input[type="file"]');
+            const remove = currentPhoto.querySelector('input[type="submit"][name$="_remove_button"]');
             choose.disabled = !input && !remove;
-            photo.classList.toggle('has-existing-photo', Boolean(remove));
+            currentPhoto.classList.toggle('has-existing-photo', Boolean(remove));
             if (remove) {
               remove.value = Drupal.t('Remove photo');
               remove.classList.add('bc-editor__remove');
@@ -77,7 +80,7 @@
               input.click();
             }
           });
-          observer.observe(photo, { childList: true, subtree: true });
+          observer.observe(form, { childList: true, subtree: true });
           sync();
         }
         form.addEventListener('invalid', (event) => {
