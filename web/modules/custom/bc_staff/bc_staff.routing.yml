@@ -97,3 +97,13 @@ bc_staff.organization_edit:
     _custom_access: '\Drupal\bc_staff\Access\OrganizationAccess::access'
     vocabulary: 'bc_staff_department|bc_staff_house|bc_staff_location|bc_staff_workgroup'
     term: '\d+'
+
+bc_staff.touch:
+  path: '/staff/touch'
+  options:
+    _admin_route: FALSE
+  defaults:
+    _form: '\Drupal\bc_staff\Form\TouchCheckInForm'
+    _title: 'Check in / Check out'
+  requirements:
+    _permission: 'update own bc staff status'
