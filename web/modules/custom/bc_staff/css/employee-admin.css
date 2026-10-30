@@ -53,3 +53,23 @@
 body.bc-employee-drawer-open{overflow:hidden}
 @media(max-width:980px){.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{grid-template-columns:50px 1fr 1fr}.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__tags,.bc-directory-admin .bc-employees__grid.is-list .bc-directory-admin__details{display:none}}
 @media(max-width:640px){.bc-directory-admin{padding:14px}.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.bc-directory-admin .bc-employees__card{padding:14px 9px}.bc-directory-admin .bc-employees__toolbar select{max-width:none}.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{grid-template-columns:46px 1fr auto}}
+
+/* Compact, mockup-aligned employee cards. */
+.bc-directory-admin{max-width:none;padding:16px 18px}
+.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.bc-directory-admin .bc-employees__card{min-height:0;padding:16px 10px 12px;border:1px solid #e6edf4;box-shadow:0 4px 12px rgba(19,45,74,.045);border-radius:8px}
+.bc-directory-admin__photo{width:90px;height:90px;margin-bottom:10px}
+.bc-directory-admin .bc-employees__avatar{width:90px;height:90px}
+.bc-directory-admin .bc-employees__card h3{font-size:15px;font-weight:800;margin-bottom:4px}
+.bc-directory-admin__role{display:none}
+.bc-directory-admin__house,.bc-directory-admin__department{font-size:11px;margin:0 0 3px}
+.bc-directory-admin__tags{margin:8px 0;min-height:22px;gap:4px}
+.bc-directory-admin__tags span{font-size:10px;padding:4px 7px}
+.bc-directory-admin__details{padding-top:8px;gap:5px}
+.bc-directory-admin .bc-employees__edit{margin-top:9px;font-size:12px;padding:7px 11px}
+.bc-directory-admin__drawer{width:min(460px,100vw)}
+.bc-directory-admin__drawer-note{display:none}
+.bc-directory-admin__drawer iframe{min-height:0}
+@media(max-width:1190px){.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:790px){.bc-directory-admin .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.bc-directory-admin .bc-employees__grid{grid-template-columns:1fr}}
