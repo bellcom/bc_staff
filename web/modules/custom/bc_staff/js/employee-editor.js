@@ -2,6 +2,27 @@
   Drupal.behaviors.bcStaffEmployeeEditor = {
     attach(context) {
       once('bc-editor', '[data-bc-employee-editor]', context).forEach((form) => {
+        // Show only shared locations and locations belonging to the selected
+        // department. This is a usability filter; PHP validates on submit.
+        const locationSelect = form.querySelector('[data-bc-staff-location-select]');
+        const departmentSelect = form.querySelector('[name="department"]');
+        if (locationSelect && departmentSelect) {
+          let owners = {};
+          try { owners = JSON.parse(locationSelect.dataset.bcLocationOwners || '{}'); }
+          catch (error) { owners = {}; }
+          const applyLocationScope = () => {
+            const departmentId = String(departmentSelect.value || '');
+            for (const option of locationSelect.options) {
+              const owner = owners[option.value] || '';
+              const allowed = !owner || owner === departmentId;
+              option.hidden = !allowed;
+              option.disabled = !allowed;
+            }
+            if (locationSelect.selectedOptions[0]?.disabled) locationSelect.value = '';
+          };
+          departmentSelect.addEventListener('change', applyLocationScope);
+          applyLocationScope();
+        }
         const sections = [...form.querySelectorAll('[data-bc-editor-section]')];
         const navigation = document.createElement('nav');
         navigation.className = 'bc-editor__tabs';
