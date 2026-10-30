@@ -25,6 +25,8 @@ final class DemoAbsenceSeeder {
    *
    * @param array $departments
    *   Department name to taxonomy term ID mapping.
+   * @param array $organization
+   *   Demo house and workgroup term ID mappings.
    *
    * @return array
    *   Counts of created accounts, created absences and skipped accounts.
