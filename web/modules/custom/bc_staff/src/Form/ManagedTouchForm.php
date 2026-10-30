@@ -135,7 +135,7 @@ final class ManagedTouchForm extends FormBase {
       return;
     }
     $employee = \Drupal::entityTypeManager()->getStorage('user')->load($uid);
-    \Drupal\\bc_staff\\Service\\AttendanceRecorder::record($employee, $action, (int) $this->currentUser()->id(), 'team_touch');
+    \Drupal\bc_staff\Service\AttendanceRecorder::record($employee, $action, (int) $this->currentUser()->id(), 'team_touch');
     $this->messenger()->addStatus($this->t('Attendance updated for @employee.', [
       '@employee' => $employee->getDisplayName(),
     ]));
