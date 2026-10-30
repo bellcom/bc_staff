@@ -8,6 +8,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\File\FileUrlGeneratorInterface;
+use Drupal\Core\Extension\ModuleExtensionList;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -25,6 +26,7 @@ final class EmployeeForm extends FormBase {
     private readonly CurrentRouteMatch $staffRouteMatch,
     private readonly FileSystemInterface $staffFileSystem,
     private readonly FileUrlGeneratorInterface $staffFileUrlGenerator,
+    private readonly ModuleExtensionList $staffModuleList,
   ) {}
 
   /**
@@ -36,6 +38,7 @@ final class EmployeeForm extends FormBase {
       $container->get('current_route_match'),
       $container->get('file_system'),
       $container->get('file_url_generator'),
+      $container->get('extension.list.module'),
     );
   }
 
@@ -163,6 +166,18 @@ final class EmployeeForm extends FormBase {
               'class' => ['bc-editor__photo-preview'],
               'src' => $this->staffFileUrlGenerator->generateString($existing_file->getFileUri()),
               'alt' => $this->t('Current profile photo'),
+            ],
+          ];
+        }
+        if (!$existing_fid) {
+          $fallback = base_path() . $this->staffModuleList->getPath('bc_staff') . '/assets/avatar.svg';
+          $form['photo_preview'] = [
+            '#type' => 'html_tag',
+            '#tag' => 'img',
+            '#attributes' => [
+              'class' => ['bc-editor__photo-preview'],
+              'src' => $fallback,
+              'alt' => $this->t('Default profile picture'),
             ],
           ];
         }
