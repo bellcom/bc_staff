@@ -28,6 +28,24 @@ final class OrganizationController extends ControllerBase {
       && !$viewer->hasPermission('administer bc staff employees');
     $manager = $is_manager ? $this->entityTypeManager()->getStorage('user')->load($viewer->id()) : NULL;
     $manager_department = $is_manager ? EmployeeAccess::departmentId($manager) : NULL;
+    // Count employees by department using the same eligible accounts as the
+    // employee directory, without exposing privileged Drupal accounts.
+    $department_counts = [];
+    $user_storage = $this->entityTypeManager()->getStorage('user');
+    $user_ids = $user_storage->getQuery()
+      ->accessCheck(FALSE)->condition('uid', 0, '>')
+      ->exists('field_bc_staff_department')
+      ->exists('field_bc_staff_status')
+      ->execute();
+    foreach ($user_storage->loadMultiple($user_ids) as $user) {
+      if ((int) $user->id() === 1 || $user->hasRole('administrator')) {
+        continue;
+      }
+      $department_id = (int) ($user->get('field_bc_staff_department')->target_id ?? 0);
+      if ($department_id) {
+        $department_counts[$department_id] = ($department_counts[$department_id] ?? 0) + 1;
+      }
+    }
     foreach ($vocabularies as $vid => $label) {
       if ($is_manager && $vid !== 'bc_staff_location') {
         continue;
@@ -47,6 +65,8 @@ final class OrganizationController extends ControllerBase {
         $entries[] = [
           'name' => $term->name,
           'depth' => (int) $term->depth,
+          'employee_count' => $vid === 'bc_staff_department' ? ($department_counts[(int) $term->tid] ?? 0) : NULL,
+          'employee_url' => $vid === 'bc_staff_department' ? Url::fromRoute('bc_staff.employee_list', [], ['query' => ['department' => $term->name]])->toString() : NULL,
           'edit_url' => Url::fromRoute('bc_staff.organization_edit', [
             'vocabulary' => $vid,
             'term' => $term->tid,
