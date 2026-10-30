@@ -21,6 +21,9 @@ function bc_staff_theme($existing, $type, $theme, $path): array {
       'variables' => [
         'employees' => [],
         'departments' => [],
+        'houses' => [],
+        'workgroups' => [],
+        'statuses' => [],
         'add_url' => '',
       ],
       'template' => 'bc-staff-employee-admin',

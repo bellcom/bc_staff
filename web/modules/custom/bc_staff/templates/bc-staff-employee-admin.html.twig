@@ -1,1 +1,57 @@
-<section class="bc-employees" data-bc-employees><header class="bc-employees__header"><div><p class="bc-employees__eyebrow">{{ 'BC STAFF / ADMINISTRATION'|t }}</p><h2>{{ 'Employees'|t }}</h2><p>{{ 'Manage employee accounts, departments, houses and workgroups.'|t }}</p></div><a class="bc-employees__button" href="{{ add_url }}">{{ 'Add employee'|t }}</a></header><div class="bc-employees__toolbar"><label for="bc-employees-search">{{ 'Search'|t }}</label><input id="bc-employees-search" type="search" placeholder="{{ 'Name or login'|t }}" data-bc-employee-search><label for="bc-employees-department">{{ 'Department'|t }}</label><select id="bc-employees-department" data-bc-employee-department><option value="">{{ 'All departments'|t }}</option>{% for department in departments %}<option value="{{ department }}">{{ department }}</option>{% endfor %}</select><span data-bc-employee-count aria-live="polite"></span></div><div class="bc-employees__grid">{% for employee in employees %}<article class="bc-employees__card" data-bc-employee-card data-department="{{ employee.department }}" data-search="{{ (employee.name ~ ' ' ~ employee.login)|lower }}"><div class="bc-employees__card-title"><img class="bc-employees__avatar" src="{{ employee.photo_url }}" alt="" width="48" height="48" loading="lazy"><div><h3>{{ employee.name }}</h3><p>{{ employee.login }}</p></div><span class="bc-employees__status {{ employee.active ? 'is-active' : 'is-blocked' }}">{{ employee.active ? 'Active'|t : 'Blocked'|t }}</span></div><div class="bc-employees__details"><div><small>{{ 'Department'|t }}</small><strong>{{ employee.department }}</strong></div><div><small>{{ 'House'|t }}</small><strong>{{ employee.house ?: 'Not assigned'|t }}</strong></div>{% if employee.groups %}<div class="bc-employees__groups"><small>{{ 'Workgroups'|t }}</small><strong>{{ employee.groups|join(', ') }}</strong></div>{% endif %}</div><a class="bc-employees__edit" href="{{ employee.edit_url }}">{{ 'Edit employee'|t }}</a></article>{% else %}<p>{{ 'No employees.'|t }}</p>{% endfor %}</div><p class="bc-employees__empty" data-bc-employee-empty hidden>{{ 'No employees match these filters.'|t }}</p></section>
+<section class="bc-employees bc-directory-admin" data-bc-employees>
+  <header class="bc-employees__header">
+    <div><p class="bc-employees__eyebrow">{{ 'BC STAFF / ADMINISTRATION'|t }}</p><h2>{{ 'Employees'|t }}</h2><p>{{ 'Find and manage employees, houses, and workgroups.'|t }}</p></div>
+    <a class="bc-employees__button" href="{{ add_url }}">+ {{ 'New employee'|t }}</a>
+  </header>
+  <div class="bc-directory-admin__search">
+    <label for="bc-employees-search">{{ 'Search employees'|t }}</label>
+    <input id="bc-employees-search" type="search" placeholder="{{ 'Search by name, login, house or department'|t }}" data-bc-employee-search>
+  </div>
+  <div class="bc-employees__toolbar">
+    <label for="bc-employees-house">{{ 'House'|t }}</label>
+    <select id="bc-employees-house" data-bc-employee-house><option value="">{{ 'All houses'|t }}</option>{% for house in houses %}<option value="{{ house }}">{{ house }}</option>{% endfor %}</select>
+    <label for="bc-employees-group">{{ 'Workgroup'|t }}</label>
+    <select id="bc-employees-group" data-bc-employee-group><option value="">{{ 'All workgroups'|t }}</option>{% for group in workgroups %}<option value="{{ group }}">{{ group }}</option>{% endfor %}</select>
+    <label for="bc-employees-department">{{ 'Department'|t }}</label>
+    <select id="bc-employees-department" data-bc-employee-department><option value="">{{ 'All departments'|t }}</option>{% for department in departments %}<option value="{{ department }}">{{ department }}</option>{% endfor %}</select>
+    <label for="bc-employees-status">{{ 'Status'|t }}</label>
+    <select id="bc-employees-status" data-bc-employee-status><option value="">{{ 'All statuses'|t }}</option>{% for status in statuses %}<option value="{{ status.key }}">{{ status.label }}</option>{% endfor %}</select>
+    <button class="bc-directory-admin__reset" type="button" data-bc-employee-reset>{{ 'Clear filters'|t }}</button>
+  </div>
+  <div class="bc-directory-admin__summary">
+    <span data-bc-employee-count aria-live="polite"></span>
+    <div class="bc-directory-admin__switch" role="group" aria-label="{{ 'View mode'|t }}">
+      <button type="button" class="is-active" data-bc-employee-view="cards" aria-pressed="true">{{ 'Cards'|t }}</button>
+      <button type="button" data-bc-employee-view="list" aria-pressed="false">{{ 'Table'|t }}</button>
+    </div>
+  </div>
+  <div class="bc-employees__grid" data-bc-employee-grid>
+    {% for employee in employees %}
+      <article class="bc-employees__card" data-bc-employee-card data-department="{{ employee.department }}" data-house="{{ employee.house }}" data-groups="{{ employee.groups|join('|') }}" data-status="{{ employee.status_key }}" data-search="{{ (employee.name ~ ' ' ~ employee.login ~ ' ' ~ employee.department ~ ' ' ~ employee.house ~ ' ' ~ employee.groups|join(' '))|lower }}">
+        <div class="bc-directory-admin__photo">
+          <img class="bc-employees__avatar" src="{{ employee.photo_url }}" alt="" width="96" height="96" loading="lazy">
+          <span class="bc-directory-admin__presence bc-directory-admin__presence--{{ employee.status_key }}"></span>
+        </div>
+        <h3>{{ employee.name }}</h3>
+        <p class="bc-directory-admin__role">{{ employee.login }}</p>
+        <p class="bc-directory-admin__house">{{ employee.house ?: 'No house assigned'|t }}</p>
+        <p class="bc-directory-admin__department">{{ employee.department }}</p>
+        <div class="bc-directory-admin__tags">{% for group in employee.groups %}<span>{{ group }}</span>{% endfor %}</div>
+        <div class="bc-directory-admin__details">
+          <span class="bc-directory-admin__status"><i class="bc-directory-admin__presence bc-directory-admin__presence--{{ employee.status_key }}"></i>{{ employee.status }}</span>
+          <span class="bc-employees__status {{ employee.active ? 'is-active' : 'is-blocked' }}">{{ employee.active ? 'Active'|t : 'Blocked'|t }}</span>
+        </div>
+        <a class="bc-employees__edit" href="{{ employee.edit_url }}" data-bc-employee-edit data-employee-name="{{ employee.name }}">{{ 'Edit employee'|t }}</a>
+      </article>
+    {% else %}
+      <p>{{ 'No employees.'|t }}</p>
+    {% endfor %}
+  </div>
+  <p class="bc-employees__empty" data-bc-employee-empty hidden>{{ 'No employees match these filters.'|t }}</p>
+  <div class="bc-directory-admin__shade" data-bc-employee-shade hidden></div>
+  <aside class="bc-directory-admin__drawer" data-bc-employee-drawer hidden role="dialog" aria-modal="true" aria-label="{{ 'Edit employee'|t }}" tabindex="-1">
+    <header><h2 data-bc-employee-drawer-title>{{ 'Edit employee'|t }}</h2><button type="button" data-bc-employee-close aria-label="{{ 'Close'|t }}">×</button></header>
+    <p class="bc-directory-admin__drawer-note">{{ 'Changes are saved using the existing BC Staff employee form.'|t }}</p>
+    <iframe data-bc-employee-frame title="{{ 'Edit employee'|t }}" loading="lazy"></iframe>
+  </aside>
+</section>
