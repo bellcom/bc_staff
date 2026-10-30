@@ -9,6 +9,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\bc_staff_demo\Service\DemoAbsenceSeeder;
 use Drupal\bc_staff_demo\Service\DemoOrganization;
+use Drupal\bc_staff_demo\Service\DemoPortraits;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -159,7 +160,11 @@ final class DemoDataForm extends ConfirmFormBase {
       $account->set('field_bc_staff_location', $location);
       $account->set('field_bc_staff_department', ['target_id' => $departments[$department]]);
       DemoOrganization::assign($account, $department, $organization, $i);
+      DemoPortraits::assign($account, $username);
       $account->save();
+    }
+    if (!DemoPortraits::available()) {
+      $this->messenger()->addWarning($this->t('Optional demo portraits are not installed. Copy the portrait package into bc_staff_demo/assets/portraits.'));
     }
     if ($this->staffModuleHandler->moduleExists('bc_staff_absence')) {
       $counts = $this->demoAbsenceSeeder->seed($departments, $organization);
