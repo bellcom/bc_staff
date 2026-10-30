@@ -7,7 +7,6 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\File\FileSystemInterface;
-use Drupal\Core\Url;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -23,6 +22,7 @@ final class EmployeeForm extends FormBase {
   public function __construct(
     private readonly EntityTypeManagerInterface $staffEntityTypeManager,
     private readonly CurrentRouteMatch $staffRouteMatch,
+    private readonly FileSystemInterface $staffFileSystem,
   ) {}
 
   /**
@@ -32,6 +32,7 @@ final class EmployeeForm extends FormBase {
     return new static(
       $container->get('entity_type.manager'),
       $container->get('current_route_match'),
+      $container->get('file_system'),
     );
   }
 
@@ -146,9 +147,8 @@ final class EmployeeForm extends FormBase {
       '#description' => $this->t('When editing, leave the field blank to keep the existing password.'),
     ];
     if ($account && $account->hasField('user_picture')) {
-      $file_system = \Drupal::service('file_system');
       $photo_dir = 'public://bc_staff_photos';
-      if ($file_system->prepareDirectory($photo_dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
+      if ($this->staffFileSystem->prepareDirectory($photo_dir, FileSystemInterface::CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS)) {
         $existing_fid = $account->get('user_picture')->target_id ?? NULL;
         $form['photo'] = [
           '#type' => 'managed_file',
