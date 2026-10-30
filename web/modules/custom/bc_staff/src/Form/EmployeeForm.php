@@ -133,6 +133,7 @@ final class EmployeeForm extends FormBase {
     $current_location = (string) $value('field_bc_staff_location');
     $location_options = ['' => $this->t('Select a location')];
     $selected_location = '';
+    $location_owners = [];
     $term_storage = $this->staffEntityTypeManager->getStorage('taxonomy_term');
     if ($this->staffEntityTypeManager->getStorage('taxonomy_vocabulary')->load('bc_staff_location')) {
       foreach ($term_storage->loadTree('bc_staff_location') as $entry) {
@@ -143,6 +144,7 @@ final class EmployeeForm extends FormBase {
         $owner = $location_term->hasField('field_bc_staff_department')
           ? (string) ($location_term->get('field_bc_staff_department')->target_id ?? '') : '';
         $location_options[(string) $entry->tid] = $location_term->label();
+        $location_owners[(string) $entry->tid] = $owner;
         if ($selected_location === '' && $current_location === $location_term->label()
           && ($owner === '' || $owner === (string) ($manager ? $leader_department : ($account?->get('field_bc_staff_department')->target_id ?? '')))) {
           $selected_location = (string) $entry->tid;
@@ -158,7 +160,10 @@ final class EmployeeForm extends FormBase {
       '#title' => $this->t('Current location'),
       '#options' => $location_options,
       '#default_value' => $selected_location,
-      '#attributes' => ['data-bc-staff-location-select' => '1'],
+      '#attributes' => [
+        'data-bc-staff-location-select' => '1',
+        'data-bc-location-owners' => json_encode($location_owners, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT),
+      ],
       '#description' => $this->t('Choose a shared location or one assigned to the employee department.'),
     ];
     $form['#attributes']['class'][] = 'bc-org-form';
