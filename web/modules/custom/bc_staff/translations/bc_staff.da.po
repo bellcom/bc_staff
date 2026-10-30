@@ -223,9 +223,6 @@ msgstr "Intet hus tilknyttet"
 msgid "Employee administration"
 msgstr "Medarbejderadministration"
 
-msgid "Login username"
-msgstr "Loginbrugernavn"
-
 msgid "Email"
 msgstr "E-mail"
 
@@ -247,8 +244,299 @@ msgstr "Godkendelse af fravær"
 msgid "Team calendar"
 msgstr "Teamkalender"
 
-msgid "Save employee"
-msgstr "Gem medarbejder"
-
 msgid "Employee edit sections"
 msgstr "Redigering af medarbejder"
+
+msgid "BC STAFF / ADMINISTRATION"
+msgstr "BC STAFF / ADMINISTRATION"
+
+msgid "BC STAFF / PLANNING"
+msgstr "BC STAFF / PLANLÆGNING"
+
+msgid "BC STAFF / ABSENCE"
+msgstr "BC STAFF / FRAVÆR"
+
+msgid "Search by name, login, house or department"
+msgstr "Søg efter navn, login, hus eller afdeling"
+
+msgid "Search organization"
+msgstr "Søg i organisationen"
+
+msgid "Search departments, houses and locations"
+msgstr "Søg efter afdelinger, huse og lokationer"
+
+msgid "Manage your departments, houses, rooms and workgroups."
+msgstr "Administrer afdelinger, huse, lokaler og arbejdsgrupper."
+
+msgid "Departments"
+msgstr "Afdelinger"
+
+msgid "Houses"
+msgstr "Huse"
+
+msgid "Workgroups"
+msgstr "Arbejdsgrupper"
+
+msgid "Locations and rooms"
+msgstr "Lokationer og lokaler"
+
+msgid "Add entry"
+msgstr "Opret enhed"
+
+msgid "Edit"
+msgstr "Rediger"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Parent"
+msgstr "Overordnet enhed"
+
+msgid "Top level"
+msgstr "Øverste niveau"
+
+msgid "Unassigned"
+msgstr "Ikke tilknyttet"
+
+msgid "Responsible department"
+msgstr "Ansvarlig afdeling"
+
+msgid "Own department"
+msgstr "Egen afdeling"
+
+msgid "Save changes"
+msgstr "Gem ændringer"
+
+msgid "Use a parent to represent a location within a building or room hierarchy."
+msgstr "Vælg en overordnet enhed for at oprette et hierarki af bygninger og lokaler."
+
+msgid "Organization entry saved."
+msgstr "Organisationsenheden er gemt."
+
+msgid "Invalid parent: circular organization hierarchy."
+msgstr "Ugyldig overordnet enhed: Hierarkiet må ikke være cirkulært."
+
+msgid "No entries yet. Add the first entry."
+msgstr "Ingen enheder endnu. Opret den første enhed."
+
+msgid "No matching entries."
+msgstr "Ingen enheder matcher søgningen."
+
+msgid "@count entries"
+msgstr "@count enheder"
+
+msgid "@count employees"
+msgstr "@count medarbejdere"
+
+msgid "Current location"
+msgstr "Aktuel lokation"
+
+msgid "Choose a shared location or one assigned to the employee department."
+msgstr "Vælg en fælles lokation eller en lokation, der tilhører medarbejderens afdeling."
+
+msgid "Keep current location: @location"
+msgstr "Behold nuværende lokation: @location"
+
+msgid "Active account (can sign in)"
+msgstr "Aktiv konto (kan logge ind)"
+
+msgid "BC Staff Employee"
+msgstr "BC Staff-medarbejder"
+
+msgid "New password (optional)"
+msgstr "Ny adgangskode (valgfri)"
+
+msgid "Password"
+msgstr "Adgangskode"
+
+msgid "When editing, leave the field blank to keep the existing password."
+msgstr "Lad feltet være tomt for at beholde den eksisterende adgangskode."
+
+msgid "Invalid location for the selected department."
+msgstr "Lokationen tilhører ikke den valgte afdeling."
+
+msgid "Invalid organization selection."
+msgstr "Ugyldigt valg af organisatorisk enhed."
+
+msgid "This value is already used by another account."
+msgstr "Denne værdi bruges allerede af en anden konto."
+
+msgid "Invalid department."
+msgstr "Ugyldig afdeling."
+
+msgid "The employee could not be saved."
+msgstr "Medarbejderen kunne ikke gemmes."
+
+msgid "The employee was saved."
+msgstr "Medarbejderen er gemt."
+
+msgid "View mode"
+msgstr "Visning"
+
+msgid "Changes are saved using the existing BC Staff employee form."
+msgstr "Ændringer gemmes via BC Staff-medarbejderformularen."
+
+msgid "Send email"
+msgstr "Send e-mail"
+
+msgid "No employees match these filters."
+msgstr "Ingen medarbejdere matcher filtrene."
+
+msgid "Team availability"
+msgstr "Teamets tilgængelighed"
+
+msgid "View scheduled absence across your team."
+msgstr "Se planlagt fravær for dit team."
+
+msgid "Review vacation requests"
+msgstr "Behandl ferieansøgninger"
+
+msgid "Today"
+msgstr "I dag"
+
+msgid "Previous period"
+msgstr "Forrige periode"
+
+msgid "Next period"
+msgstr "Næste periode"
+
+msgid "Calendar view"
+msgstr "Kalendervisning"
+
+msgid "Week"
+msgstr "Uge"
+
+msgid "Month"
+msgstr "Måned"
+
+msgid "Apply filter"
+msgstr "Anvend filter"
+
+msgid "Team calendar, scroll horizontally to see all dates"
+msgstr "Teamkalender. Rul vandret for at se alle datoer."
+
+msgid "Employee"
+msgstr "Medarbejder"
+
+msgid "Requested"
+msgstr "Anmodet"
+
+msgid "Awaiting approval"
+msgstr "Afventer godkendelse"
+
+msgid "Planned absence (approved or registered)"
+msgstr "Planlagt fravær (godkendt eller registreret)"
+
+msgid "No registered absence"
+msgstr "Intet registreret fravær"
+
+msgid "No staff in your team."
+msgstr "Ingen medarbejdere i dit team."
+
+msgid "Vacation"
+msgstr "Ferie"
+
+msgid "Course"
+msgstr "Kursus"
+
+msgid "Unavailable"
+msgstr "Ikke tilgængelig"
+
+msgid "Requested (not approved)"
+msgstr "Anmodet (endnu ikke godkendt)"
+
+msgid "Register absence"
+msgstr "Registrer fravær"
+
+msgid "No pending requests"
+msgstr "Ingen afventende anmodninger"
+
+msgid "No absence records"
+msgstr "Ingen fraværsregistreringer"
+
+msgid "Your team has no requests awaiting approval."
+msgstr "Dit team har ingen anmodninger, der afventer godkendelse."
+
+msgid "Your absence history will appear here."
+msgstr "Din fraværshistorik vises her."
+
+msgid "My absence"
+msgstr "Mit fravær"
+
+msgid "Review your registered absence and requests."
+msgstr "Se dine registreringer og fraværsanmodninger."
+
+msgid "Review pending requests from your team."
+msgstr "Behandl afventende anmodninger fra dit team."
+
+msgid "Child sick day"
+msgstr "Barns sygedag"
+
+msgid "Sickness"
+msgstr "Sygdom"
+
+msgid "Day off"
+msgstr "Fridag"
+
+msgid "Leave"
+msgstr "Orlov"
+
+msgid "Other absence"
+msgstr "Andet fravær"
+
+msgid "Pending"
+msgstr "Afventer"
+
+msgid "Approved"
+msgstr "Godkendt"
+
+msgid "Rejected"
+msgstr "Afvist"
+
+msgid "Registered"
+msgstr "Registreret"
+
+msgid "Unknown"
+msgstr "Ukendt"
+
+msgid "Absence type"
+msgstr "Fraværstype"
+
+msgid "Leave of absence"
+msgstr "Orlov"
+
+msgid "Start date"
+msgstr "Startdato"
+
+msgid "End date"
+msgstr "Slutdato"
+
+msgid "The end date must not precede the start date."
+msgstr "Slutdatoen må ikke ligge før startdatoen."
+
+msgid "Absence registered."
+msgstr "Fraværet er registreret."
+
+msgid "Skip to main content"
+msgstr "Gå til hovedindhold"
+
+msgid "Staff navigation"
+msgstr "Medarbejdernavigation"
+
+msgid "Add organization entry"
+msgstr "Opret organisationsenhed"
+
+msgid "Edit organization entry"
+msgstr "Rediger organisationsenhed"
+
+msgid "1 entry"
+msgstr "1 enhed"
+
+msgid "1 employee"
+msgstr "1 medarbejder"
+
+msgid "On vacation"
+msgstr "På ferie"
+
+msgid "Request approved."
+msgstr "Anmodningen er godkendt."
