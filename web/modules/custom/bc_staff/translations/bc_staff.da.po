@@ -633,3 +633,15 @@ msgstr "Aktuel gemt status"
 
 msgid "Not present"
 msgstr "Ikke til stede"
+
+msgid "ATTENDANCE"
+msgstr "FREMMØDE"
+
+msgid "Daily presence and recent check-ins."
+msgstr "Dagens fremmøde og seneste ind- og udtjekninger."
+
+msgid "Checked in today"
+msgstr "Tjekket ind i dag"
+
+msgid "Recent events"
+msgstr "Seneste hændelser"

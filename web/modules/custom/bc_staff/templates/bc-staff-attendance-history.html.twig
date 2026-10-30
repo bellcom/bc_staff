@@ -1,0 +1,48 @@
+<section class="bc-employees bc-directory-admin bc-attendance" data-bc-attendance>
+  <header class="bc-employees__header">
+    <div><p class="bc-employees__eyebrow">BC STAFF / {{ 'ATTENDANCE'|t }}</p><h2>{{ 'Attendance and history'|t }}</h2><p>{{ 'Daily presence and recent check-ins.'|t }}</p></div>
+  </header>
+  <div class="bc-attendance__stats">
+    <div><strong>{{ employees|length }}</strong><span>{{ 'Employees'|t }}</span></div>
+    <div><strong>{{ employees|filter(e => e.present)|length }}</strong><span>{{ 'Present'|t }}</span></div>
+    <div><strong>{{ employees|filter(e => e.action == 'in')|length }}</strong><span>{{ 'Checked in today'|t }}</span></div>
+    <div><strong>{{ events|length }}</strong><span>{{ 'Recent events'|t }}</span></div>
+  </div>
+  <div class="bc-directory-admin__search">
+    <label for="bc-attendance-search">{{ 'Search employees'|t }}</label>
+    <input id="bc-attendance-search" type="search" placeholder="{{ 'Search employees'|t }}" data-bc-attendance-search>
+  </div>
+  <div class="bc-employees__grid" data-bc-attendance-grid>
+    {% for person in employees %}
+      <article class="bc-employees__card" data-bc-attendance-card data-name="{{ (person.name ~ ' ' ~ person.department)|lower }}">
+        <div class="bc-person__top">
+          <div class="bc-directory-admin__photo">
+            <img class="bc-employees__avatar" src="{{ person.photo }}" alt="" width="80" height="80" loading="lazy">
+            <span class="bc-directory-admin__presence bc-directory-admin__presence--{{ person.present ? 'present' : 'absent' }}" aria-hidden="true"></span>
+          </div>
+          <div class="bc-person__identity"><h3>{{ person.name }}</h3><p class="bc-directory-admin__role">{{ person.department }}</p><span class="bc-person__availability">{{ person.status }}</span></div>
+        </div>
+        <div class="bc-person__meta">
+          <div class="bc-person__meta-row"><span>{{ 'Location'|t }}</span><strong>{{ person.location ?: '—' }}</strong></div>
+          <div class="bc-person__meta-row"><span>{{ 'Today'|t }}</span><strong>{{ person.last_action }}</strong></div>
+          <div class="bc-person__meta-row"><span>{{ 'Time'|t }}</span><strong>{{ person.last_time ?: '—' }}</strong></div>
+        </div>
+      </article>
+    {% else %}
+      <p>{{ 'No employees.'|t }}</p>
+    {% endfor %}
+  </div>
+  <h2 class="bc-attendance__section-title">{{ 'Recent registrations'|t }}</h2>
+  <div class="bc-attendance__events">
+    {% for event in events %}
+      <article class="bc-attendance__event">
+        <span class="bc-attendance__event-icon bc-attendance__event-icon--{{ event.action }}">{{ event.action == 'in' ? '↓' : '↑' }}</span>
+        <div class="bc-attendance__event-person"><strong>{{ event.name }}</strong><small>{{ event.actor }} · {{ event.source }}</small></div>
+        <span class="bc-attendance__event-action">{{ event.action_label }}</span>
+        <time>{{ event.time }}</time>
+      </article>
+    {% else %}
+      <p class="bc-attendance__empty">{{ 'No attendance registrations yet.'|t }}</p>
+    {% endfor %}
+  </div>
+</section>

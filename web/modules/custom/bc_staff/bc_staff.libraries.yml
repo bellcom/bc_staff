@@ -76,3 +76,14 @@ touch_directory:
   dependencies:
     - core/drupal
     - core/once
+
+attendance_history:
+  css:
+    theme:
+      css/employee-admin.css: {}
+      css/attendance-history.css: {}
+  js:
+    js/attendance-history.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
