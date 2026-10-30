@@ -567,3 +567,18 @@ msgstr "Min status og lokation"
 
 msgid "Invalid action."
 msgstr "Ugyldig handling."
+
+msgid "Team check-in terminal"
+msgstr "Teamterminal til ind- og udtjekning"
+
+msgid "Choose employee"
+msgstr "Vælg medarbejder"
+
+msgid "- Select employee -"
+msgstr "- Vælg medarbejder -"
+
+msgid "This employee is not available for check-in."
+msgstr "Denne medarbejder kan ikke vælges til indtjekning."
+
+msgid "Attendance updated for @employee."
+msgstr "Fremmøde opdateret for @employee."
