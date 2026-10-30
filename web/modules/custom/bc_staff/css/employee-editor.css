@@ -49,3 +49,27 @@
 .bc-editor__photo-control .file{font-size:12px}
 .bc-editor__photo-actions{margin-bottom:14px}
 .bc-org-form[data-bc-employee-editor] .form-item label{font-size:13px}
+
+/* Polished photo editor. Keep Drupal managed_file controls fully functional. */
+.bc-editor__section .bc-editor__photo-control{
+  padding:12px 14px!important;background:#f5f8fc!important;
+  border:1px solid #e1eaf4!important;border-radius:12px!important;
+  gap:12px;min-height:62px
+}
+.bc-editor__photo-control .file,.bc-editor__photo-control .file-link{
+  display:inline-flex;align-items:center;min-width:0;max-width:100%;
+  font-size:12px;overflow-wrap:anywhere;color:#526b85
+}
+.bc-editor__photo-control .file-size{font-size:12px;color:#7890a5}
+.bc-editor__photo-control input[type=submit],.bc-editor__photo-control .bc-editor__remove{
+  border:1px solid #f1cbd0!important;background:#fff4f5!important;
+  color:#9f3646!important;border-radius:9px!important;
+  padding:9px 12px!important;font-size:12px!important;
+  font-weight:700;box-shadow:none!important;margin:0
+}
+.bc-editor__photo-actions{margin:8px 0 14px}
+.bc-editor__choose{padding:10px 16px;border-radius:9px}
+.bc-editor__section .description{font-size:12px;color:#788ba0;line-height:1.55}
+.bc-editor__section .form-item{margin-bottom:17px}
+.bc-editor__photo-preview{margin:9px 0 14px}
+.bc-editor__section .form-managed-file .description{margin-top:8px}

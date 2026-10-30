@@ -136,3 +136,15 @@ body.bc-employee-drawer-open{overflow:hidden}
 .bc-directory-admin__contacts:empty{display:none}
 .bc-directory-admin .bc-employees__edit{margin-top:13px}
 .bc-directory-admin .bc-employees__grid.is-list .bc-employees__card:hover{transform:none}
+
+/* Compact balanced directory cards: no artificial empty vertical space. */
+.bc-directory-admin .bc-employees__grid{align-items:start}
+.bc-directory-admin .bc-employees__card{min-height:0;gap:0;padding:18px 15px 16px;border-radius:15px}
+.bc-directory-admin__photo{margin-bottom:12px}
+.bc-directory-admin .bc-employees__card h3{margin-bottom:3px}
+.bc-directory-admin__role{margin-bottom:5px}
+.bc-directory-admin__house,.bc-directory-admin__department{line-height:1.35}
+.bc-directory-admin__tags{margin:9px 0 8px;min-height:0}
+.bc-directory-admin__details{margin-top:9px;padding-top:11px}
+.bc-directory-admin .bc-employees__edit{margin-top:12px}
+.bc-directory-admin .bc-employees__grid.is-list .bc-employees__card{min-height:0}

@@ -153,3 +153,102 @@ msgstr "Lokation: @location"
 msgid "Update my BC Staff status"
 msgstr "Ændr min status i BC Staff"
 
+
+msgid "Basic information"
+msgstr "Grundoplysninger"
+
+msgid "Employment"
+msgstr "Ansættelse"
+
+msgid "Locations"
+msgstr "Lokationer"
+
+msgid "Profile photo"
+msgstr "Profilbillede"
+
+msgid "Change photo"
+msgstr "Skift billede"
+
+msgid "Remove photo"
+msgstr "Fjern billede"
+
+msgid "Current profile photo"
+msgstr "Nuværende profilbillede"
+
+msgid "Default profile picture"
+msgstr "Standardprofilbillede"
+
+msgid "Upload JPG, PNG or WebP, maximum 2 MB. Remove the uploaded photo to use the default avatar."
+msgstr "Upload JPG, PNG eller WebP, højst 2 MB. Fjern billedet for at bruge standardbilledet."
+
+msgid "Search employees"
+msgstr "Søg medarbejdere"
+
+msgid "New employee"
+msgstr "Ny medarbejder"
+
+msgid "Find and manage employees, houses, and workgroups."
+msgstr "Find og administrer medarbejdere, huse og arbejdsgrupper."
+
+msgid "House"
+msgstr "Hus"
+
+msgid "All houses"
+msgstr "Alle huse"
+
+msgid "Workgroup"
+msgstr "Arbejdsgruppe"
+
+msgid "All workgroups"
+msgstr "Alle arbejdsgrupper"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "All statuses"
+msgstr "Alle statusser"
+
+msgid "Clear filters"
+msgstr "Ryd filtre"
+
+msgid "Cards"
+msgstr "Kort"
+
+msgid "Table"
+msgstr "Tabel"
+
+msgid "No house assigned"
+msgstr "Intet hus tilknyttet"
+
+msgid "Employee administration"
+msgstr "Medarbejderadministration"
+
+msgid "Login username"
+msgstr "Loginbrugernavn"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Close"
+msgstr "Luk"
+
+msgid "Overview"
+msgstr "Overblik"
+
+msgid "Organization"
+msgstr "Organisation"
+
+msgid "Absence"
+msgstr "Fravær"
+
+msgid "Absence approvals"
+msgstr "Godkendelse af fravær"
+
+msgid "Team calendar"
+msgstr "Teamkalender"
+
+msgid "Save employee"
+msgstr "Gem medarbejder"
+
+msgid "Employee edit sections"
+msgstr "Redigering af medarbejder"
