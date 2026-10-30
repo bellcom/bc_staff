@@ -65,7 +65,9 @@
             event.preventDefault();
             previousFocus = link;
             title.textContent = link.dataset.employeeName;
-            frame.src = link.href;
+            const panelUrl = new URL(link.href, window.location.href);
+            panelUrl.searchParams.set('panel', '1');
+            frame.src = panelUrl.toString();
             shade.hidden = false;
             drawer.hidden = false;
             document.body.classList.add('bc-employee-drawer-open');
