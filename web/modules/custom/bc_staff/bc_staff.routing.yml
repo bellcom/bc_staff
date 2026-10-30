@@ -107,3 +107,13 @@ bc_staff.touch:
     _title: 'Check in / Check out'
   requirements:
     _permission: 'update own bc staff status'
+
+bc_staff.managed_touch:
+  path: '/staff/touch/team'
+  options:
+    _admin_route: FALSE
+  defaults:
+    _form: '\Drupal\bc_staff\Form\ManagedTouchForm'
+    _title: 'Team check-in terminal'
+  requirements:
+    _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
