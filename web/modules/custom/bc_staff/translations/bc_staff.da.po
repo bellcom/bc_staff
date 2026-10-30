@@ -540,3 +540,30 @@ msgstr "På ferie"
 
 msgid "Request approved."
 msgstr "Anmodningen er godkendt."
+
+msgid "Check in / Check out"
+msgstr "Ind- og udtjekning"
+
+msgid "Check in"
+msgstr "Tjek ind"
+
+msgid "Check out"
+msgstr "Tjek ud"
+
+msgid "Not checked in"
+msgstr "Ikke tjekket ind"
+
+msgid "Signed in as @name"
+msgstr "Logget ind som @name"
+
+msgid "You are checked in."
+msgstr "Du er tjekket ind."
+
+msgid "You are checked out."
+msgstr "Du er tjekket ud."
+
+msgid "My status and location"
+msgstr "Min status og lokation"
+
+msgid "Invalid action."
+msgstr "Ugyldig handling."
