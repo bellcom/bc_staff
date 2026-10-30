@@ -591,3 +591,39 @@ msgstr "Ind"
 
 msgid "Ud"
 msgstr "Ud"
+
+msgid "Attendance and history"
+msgstr "Fremmøde og historik"
+
+msgid "Last action today"
+msgstr "Seneste handling i dag"
+
+msgid "Time"
+msgstr "Tidspunkt"
+
+msgid "No registration today"
+msgstr "Ingen registrering i dag"
+
+msgid "Checked in"
+msgstr "Tjekket ind"
+
+msgid "Checked out"
+msgstr "Tjekket ud"
+
+msgid "Recent registrations"
+msgstr "Seneste registreringer"
+
+msgid "Registered by"
+msgstr "Registreret af"
+
+msgid "Source"
+msgstr "Kilde"
+
+msgid "Team terminal"
+msgstr "Teamterminal"
+
+msgid "Personal terminal"
+msgstr "Personlig terminal"
+
+msgid "No attendance registrations yet."
+msgstr "Ingen fremmøderegistreringer endnu."
