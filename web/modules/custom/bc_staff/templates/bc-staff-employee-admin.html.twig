@@ -28,27 +28,33 @@
   <div class="bc-employees__grid" data-bc-employee-grid>
     {% for employee in employees %}
       <article class="bc-employees__card" data-bc-employee-card data-department="{{ employee.department }}" data-house="{{ employee.house }}" data-groups="{{ employee.groups|join('|') }}" data-status="{{ employee.status_key }}" data-search="{{ (employee.name ~ ' ' ~ employee.login ~ ' ' ~ employee.department ~ ' ' ~ employee.house ~ ' ' ~ employee.groups|join(' '))|lower }}">
-        <div class="bc-directory-admin__photo">
-          <img class="bc-employees__avatar" src="{{ employee.photo_url }}" alt="" width="96" height="96" loading="lazy">
-          <span class="bc-directory-admin__presence bc-directory-admin__presence--{{ employee.status_key }}"></span>
+        <div class="bc-person__top">
+          <div class="bc-directory-admin__photo">
+            <img class="bc-employees__avatar" src="{{ employee.photo_url }}" alt="" width="80" height="80" loading="lazy">
+            <span class="bc-directory-admin__presence bc-directory-admin__presence--{{ employee.status_key }}" aria-hidden="true"></span>
+          </div>
+          <div class="bc-person__identity">
+            <h3>{{ employee.name }}</h3>
+            <p class="bc-directory-admin__role">{{ employee.login }}</p>
+            <span class="bc-person__availability"><i class="bc-directory-admin__presence bc-directory-admin__presence--{{ employee.status_key }}" aria-hidden="true"></i>{{ employee.status }}</span>
+          </div>
         </div>
-        <h3>{{ employee.name }}</h3>
-        <p class="bc-directory-admin__role">{{ employee.login }}</p>
-        <p class="bc-directory-admin__house">{{ employee.house ?: 'No house assigned'|t }}</p>
-        <p class="bc-directory-admin__department">{{ employee.department }}</p>
+        <div class="bc-person__meta">
+          <div class="bc-person__meta-row"><span>{{ 'House'|t }}</span><strong>{{ employee.house ?: 'No house assigned'|t }}</strong></div>
+          <div class="bc-person__meta-row"><span>{{ 'Department'|t }}</span><strong>{{ employee.department }}</strong></div>
+        </div>
         <div class="bc-directory-admin__tags">{% for group in employee.groups %}<span>{{ group }}</span>{% endfor %}</div>
-        <div class="bc-directory-admin__details">
-          <span class="bc-directory-admin__status"><i class="bc-directory-admin__presence bc-directory-admin__presence--{{ employee.status_key }}"></i>{{ employee.status }}</span>
+        <div class="bc-person__footer">
           <span class="bc-employees__status {{ employee.active ? 'is-active' : 'is-blocked' }}">{{ employee.active ? 'Active'|t : 'Blocked'|t }}</span>
+          <div class="bc-person__actions">
+            {% if employee.email %}
+              <a class="bc-person__mail" href="mailto:{{ employee.email }}" aria-label="{{ 'Email @name'|t({'@name': employee.name}) }}" title="{{ 'Send email'|t }}">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 7 9-7"/></svg>
+              </a>
+            {% endif %}
+            <a class="bc-employees__edit" href="{{ employee.edit_url }}" data-bc-employee-edit data-employee-name="{{ employee.name }}">{{ 'Edit employee'|t }}</a>
+          </div>
         </div>
-        <div class="bc-directory-admin__contacts">
-          {% if employee.email %}
-            <a href="mailto:{{ employee.email }}" aria-label="{{ 'Email @name'|t({'@name': employee.name}) }}" title="{{ 'Send email'|t }}">
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 7 9-7"/></svg>
-            </a>
-          {% endif %}
-        </div>
-        <a class="bc-employees__edit" href="{{ employee.edit_url }}" data-bc-employee-edit data-employee-name="{{ employee.name }}">{{ 'Edit employee'|t }}</a>
       </article>
     {% else %}
       <p>{{ 'No employees.'|t }}</p>
