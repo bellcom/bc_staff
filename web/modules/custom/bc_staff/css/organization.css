@@ -23,3 +23,7 @@
 .bc-org__entry[hidden],.bc-org__empty[hidden]{display:none!important}
 .bc-org__card-head{padding:18px 20px}
 .bc-org__entries{max-height:520px}
+
+.bc-org__employee-link{margin-left:auto;color:#1267ad!important;font-size:12px;font-weight:700;text-decoration:none;white-space:nowrap}
+.bc-org__employee-link:hover{text-decoration:underline}
+@media(max-width:650px){.bc-org__entry{flex-wrap:wrap}.bc-org__employee-link{margin-left:0}}
