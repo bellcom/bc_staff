@@ -4,8 +4,6 @@ namespace Drupal\bc_staff\Controller;
 
 use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\Core\Datetime\DrupalDateTime;
-use Drupal\Core\Url;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 /**
@@ -73,7 +71,7 @@ final class AttendanceHistoryController extends ControllerBase {
         $names[$event->uid] ?? $this->t('Unknown'),
         $event->action === 'in' ? $this->t('Check in') : $this->t('Check out'),
         \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'd-m-Y H:i'),
-        $actors[$event->actor_uid]?->getDisplayName() ?? $this->t('Unknown'),
+        ($actors[$event->actor_uid] ?? NULL)?->getDisplayName() ?? $this->t('Unknown'),
         $event->source === 'team_touch' ? $this->t('Team terminal') : $this->t('Personal terminal'),
       ];
     }
