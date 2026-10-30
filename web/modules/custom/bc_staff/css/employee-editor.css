@@ -1,0 +1,13 @@
+.bc-org-form[data-bc-employee-editor]{border:0;box-shadow:none;padding:8px;background:#fff;max-width:100%;border-radius:0}
+.bc-editor__tabs{display:flex;gap:16px;overflow:auto;border-bottom:1px solid #e2eaf2;margin:0 0 22px}
+.bc-editor__tabs button{background:transparent;border:0;border-bottom:3px solid transparent;border-radius:0;color:#5e7186;font-weight:650;padding:13px 4px;white-space:nowrap;cursor:pointer;font-size:13px}
+.bc-editor__tabs button.is-active{color:#0967be;border-bottom-color:#0967be}
+.bc-editor__section{border:0;padding:0;margin:0;background:transparent}
+.bc-editor__section>summary{display:none}
+.bc-editor__section[open]{display:block}
+.bc-editor__section:not([open]){display:none}
+.bc-editor__section .form-item{margin-bottom:20px}
+.bc-editor__section input[type=text],.bc-editor__section input[type=email],.bc-editor__section input[type=password],.bc-editor__section select{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #cad7e5;border-radius:8px;padding:10px 12px;background:#fff}
+.bc-editor__photo-preview{display:block;object-fit:cover;width:100px;height:100px;border-radius:50%;margin:8px 0 17px}
+.bc-editor__section .form-managed-file{border-radius:12px;padding:16px;background:#f8fafc}
+.bc-org-form[data-bc-employee-editor] .form-actions{position:sticky;bottom:0;background:#fff;padding:16px 0;margin:14px 0 0;border-top:1px solid #dfe9f2;z-index:1}
