@@ -1,1 +1,41 @@
 .bc-staff{font-family:system-ui,-apple-system,sans-serif;max-width:1440px;margin:0 auto;color:#16283e}.bc-staff__header{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;margin:16px 0 25px}.bc-staff__eyebrow{letter-spacing:.18em;font-size:12px;font-weight:800;color:#3769a4;margin:0 0 6px}.bc-staff__header h2{font-size:clamp(25px,3vw,38px);margin:0 0 6px}.bc-staff__header p{margin:0;color:#516276}.bc-staff__actions{display:flex;gap:10px}.bc-staff__action{background:#164878;color:#fff!important;text-decoration:none;padding:12px 18px;border-radius:10px;font-weight:650;min-height:44px;display:inline-flex;align-items:center}.bc-staff__action--light{background:#e7eef6;color:#164878!important}.bc-staff__toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 25px}.bc-staff__toolbar label{font-weight:700}.bc-staff__toolbar select{border:1px solid #b8c8d8;border-radius:9px;min-height:46px;padding:8px 14px;max-width:100%;background:white;color:#16283e}.bc-staff__toolbar [data-bc-staff-count]{margin-left:auto;color:#516276}.bc-staff__grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,270px),1fr));gap:16px}.bc-staff__card{background:#fff;border:1px solid #dfe6ed;border-radius:15px;padding:20px;box-shadow:0 4px 18px rgba(15,40,70,.06)}.bc-staff__person{display:flex;align-items:center;gap:14px;min-height:68px}.bc-staff__avatar{width:64px;height:64px;border-radius:50%;background:#d9e7f4;object-fit:cover;flex-shrink:0}.bc-staff__person h3{font-size:18px;line-height:1.35;margin:0 0 3px;color:#16283e}.bc-staff__person p{font-size:13px;margin:0;color:#637287}.bc-staff__status{display:flex;align-items:center;gap:9px;font-weight:700;margin:18px 0 9px}.bc-staff__dot{width:12px;height:12px;border-radius:50%;background:#7c8792}.bc-staff__status--present .bc-staff__dot{background:#208453}.bc-staff__status--meeting .bc-staff__dot{background:#e3a42c}.bc-staff__status--break .bc-staff__dot{background:#4e9dca}.bc-staff__status--away .bc-staff__dot{background:#bd7336}.bc-staff__status--remote .bc-staff__dot{background:#7968bd}.bc-staff__status--absent .bc-staff__dot{background:#7c8792}.bc-staff__location{color:#536479;font-size:14px;margin:0}.bc-staff__empty{padding:24px;text-align:center;color:#536479}[data-bc-staff-card][hidden]{display:none!important}@media(max-width:640px){.bc-staff__toolbar [data-bc-staff-count]{margin-left:0;width:100%}.bc-staff__card{padding:16px}.bc-staff__grid{gap:10px}}
+
+/* Photo-forward employee directory. */
+.bc-directory{max-width:1400px;padding:20px 12px}
+.bc-directory__header{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;margin:12px 0 24px}
+.bc-directory__header h2{font-size:clamp(28px,3vw,40px);margin:0 0 8px}
+.bc-directory__header p{color:#60748b;margin:0}
+.bc-directory__search{margin-bottom:14px}
+.bc-directory__search label{display:block;font-weight:700;margin-bottom:8px}
+.bc-directory__search input{box-sizing:border-box;width:100%;min-height:48px;background:#fff;border:1px solid #cbd8e6;border-radius:10px;padding:12px 16px;color:#193552}
+.bc-directory .bc-staff__toolbar{padding:0;display:flex;gap:10px 14px;margin-bottom:16px}
+.bc-directory .bc-staff__toolbar label{font-size:13px}
+.bc-directory .bc-staff__toolbar select{min-height:42px;max-width:220px}
+.bc-directory__clear{min-height:42px;border:1px solid #cbd8e6;border-radius:9px;padding:8px 15px;background:#fff;cursor:pointer;color:#183e66}
+.bc-directory__results{display:flex;justify-content:space-between;align-items:center;margin:8px 0 17px;color:#61748a}
+.bc-directory__view-active{display:inline-flex;background:#185b98;color:#fff;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:750}
+.bc-directory .bc-staff__grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,215px),1fr));gap:16px}
+.bc-directory .bc-staff__card{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:265px;padding:19px 16px 14px;border-radius:13px}
+.bc-directory__photo-wrap{position:relative;width:98px;height:98px;margin:0 auto 13px}
+.bc-directory .bc-staff__avatar{width:96px;height:96px;object-fit:cover;border-radius:50%;background:#e4edf6}
+.bc-directory__presence{position:absolute;right:3px;top:4px;width:13px;height:13px;border-radius:50%;border:2px solid #fff;background:#84909d}
+.bc-directory__presence--present{background:#20a25a}
+.bc-directory__presence--meeting{background:#e4a52c}
+.bc-directory__presence--break{background:#4e9dca}
+.bc-directory__presence--away{background:#b87936}
+.bc-directory__presence--remote{background:#7b68bd}
+.bc-directory .bc-staff__card h3{font-size:17px;line-height:1.25;margin:0 0 5px;color:#193552}
+.bc-directory .bc-staff__card h3 a{color:inherit;text-decoration:none}
+.bc-directory__department,.bc-directory__house{font-size:12px;color:#65798c;margin:0 0 4px;overflow-wrap:anywhere}
+.bc-directory__tags{display:flex;justify-content:center;gap:5px;flex-wrap:wrap;min-height:27px;margin:11px 0}
+.bc-directory__tag{border-radius:100px;padding:5px 10px;background:#e4f1ff;color:#225d99;font-size:11px;font-weight:650}
+.bc-directory__footer{display:flex;flex-direction:column;gap:6px;align-items:center;width:100%;border-top:1px solid #e8edf3;padding-top:12px;margin-top:auto;font-size:12px;color:#65798c}
+.bc-directory__status{display:inline-flex;align-items:center;gap:6px;font-weight:700;color:#223a51}
+.bc-directory__status .bc-staff__dot{width:9px;height:9px}
+.bc-directory__dot--present{background:#208453!important}
+.bc-directory__dot--meeting{background:#e3a42c!important}
+.bc-directory__dot--break{background:#4e9dca!important}
+.bc-directory__dot--away{background:#bd7336!important}
+.bc-directory__dot--remote{background:#7968bd!important}
+.bc-directory__location{overflow-wrap:anywhere}
+@media(max-width:640px){.bc-directory{padding:12px 4px}.bc-directory .bc-staff__toolbar select{max-width:100%;flex:1 1 180px}.bc-directory .bc-staff__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.bc-directory .bc-staff__card{padding:14px 9px}.bc-directory .bc-staff__card h3{font-size:15px}}
