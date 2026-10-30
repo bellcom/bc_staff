@@ -27,6 +27,10 @@ final class StaffStatusProvider {
       ->condition('status', 1)
       ->sort('name')
       ->execute();
+    $planned = [];
+    if (\Drupal::moduleHandler()->moduleExists('bc_staff_absence')) {
+      $planned = \Drupal::service('bc_staff_absence.planned_status')->forUsers(array_map('intval', $ids));
+    }
     $staff = [];
     foreach ($storage->loadMultiple($ids) as $account) {
       if (!$account->hasField('field_bc_staff_status')
@@ -56,11 +60,16 @@ final class StaffStatusProvider {
         && !$account->get('field_bc_staff_location')->isEmpty()) {
         $location = (string) $account->get('field_bc_staff_location')->value;
       }
+      $planned_category = $planned[$account->id()] ?? NULL;
+      $effective_status = $planned_category ? 'absent' : $status;
+      $effective_label = $planned_category === 'vacation'
+        ? (string) t('On vacation')
+        : ($planned_category ? (string) t('Unavailable') : (string) $allowed[$status]);
       $staff[] = [
         'name' => $name,
         'department' => $department,
-        'status' => $status,
-        'status_label' => (string) $allowed[$status],
+        'status' => $effective_status,
+        'status_label' => $effective_label,
         'location' => $location,
       ];
     }
