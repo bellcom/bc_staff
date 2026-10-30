@@ -30,28 +30,58 @@
         if (photo) {
           photo.classList.add('bc-editor__photo-control');
           const preview = form.querySelector('.bc-editor__photo-preview');
-          const fileInput = photo.querySelector('input[type="file"]');
-          const remove = photo.querySelector('input[type="submit"][name$="_remove_button"]');
-          if (fileInput) {
-            const choose = document.createElement('button');
-            choose.type = 'button';
-            choose.className = 'bc-editor__choose';
-            choose.textContent = Drupal.t('Change photo');
-            choose.addEventListener('click', () => fileInput.click());
-            fileInput.before(choose);
-            fileInput.addEventListener('change', () => {
-              const file = fileInput.files?.[0];
-              if (file && preview && file.type.startsWith('image/')) {
+          const actions = document.createElement('div');
+          actions.className = 'bc-editor__photo-actions';
+          const choose = document.createElement('button');
+          choose.type = 'button';
+          choose.className = 'bc-editor__choose';
+          choose.textContent = Drupal.t('Change photo');
+          actions.append(choose);
+          if (preview) preview.after(actions);
+          else photo.before(actions);
+          const sync = () => {
+            const currentPhoto = form.querySelector('[data-drupal-selector="edit-general-photo"]')
+              || form.querySelector('.form-type-managed-file') || photo;
+            currentPhoto.classList.add('bc-editor__photo-control');
+            const input = currentPhoto.querySelector('input[type="file"]');
+            const remove = currentPhoto.querySelector('input[type="submit"][name$="_remove_button"]');
+            choose.disabled = !input && !remove;
+            currentPhoto.classList.toggle('has-existing-photo', Boolean(remove));
+            if (remove) {
+              remove.value = Drupal.t('Remove photo');
+              remove.classList.add('bc-editor__remove');
+            }
+            if (input && !input.dataset.bcPhotoPreview) {
+              input.dataset.bcPhotoPreview = '1';
+              input.addEventListener('change', () => {
+                const file = input.files?.[0];
+                if (!file || !preview || !file.type.startsWith('image/')) return;
                 const temporaryUrl = URL.createObjectURL(file);
                 preview.src = temporaryUrl;
                 preview.addEventListener('load', () => URL.revokeObjectURL(temporaryUrl), { once: true });
-              }
-            });
-          }
-          if (remove) {
-            remove.value = Drupal.t('Remove photo');
-            remove.classList.add('bc-editor__remove');
-          }
+              });
+            }
+            return { input, remove };
+          };
+          choose.addEventListener('click', () => {
+            const { input, remove } = sync();
+            if (input) input.click();
+            else if (remove) {
+              // Drupal must remove the current managed file before it can
+              // accept a replacement. Open the chooser after its AJAX rebuild.
+              photo.dataset.bcChooseAfterRemove = '1';
+              remove.click();
+            }
+          });
+          const observer = new MutationObserver(() => {
+            const { input } = sync();
+            if (input && photo.dataset.bcChooseAfterRemove === '1') {
+              delete photo.dataset.bcChooseAfterRemove;
+              input.click();
+            }
+          });
+          observer.observe(form, { childList: true, subtree: true });
+          sync();
         }
         form.addEventListener('invalid', (event) => {
           const section = event.target.closest('[data-bc-editor-section]');
