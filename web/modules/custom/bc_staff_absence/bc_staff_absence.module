@@ -54,3 +54,13 @@ function bc_staff_absence_page_attachments(array &$page): void {
     $page['#attached']['library'][] = 'bc_staff_absence/calendar';
   }
 }
+
+/**
+ * Implements hook_mail().
+ */
+function bc_staff_absence_mail($key, &$message, $params): void {
+  if ($key === 'notification') {
+    $message['subject'] = $params['subject'];
+    $message['body'][] = $params['body'];
+  }
+}
