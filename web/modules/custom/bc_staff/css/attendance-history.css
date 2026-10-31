@@ -26,3 +26,12 @@
 .bc-staff-absence-form table{width:100%;font-size:12px;margin-bottom:15px}
 
 .bc-attendance__missing-link{display:inline-flex;margin-top:7px;padding:6px 9px;border-radius:7px;background:#e9f2fd;color:#1366b6;font-size:11px;text-decoration:none;font-weight:700}
+
+/* Aligned compact date controls and navigation actions. */
+.bc-attendance__report-filter{display:flex;align-items:flex-end;gap:10px 12px;flex-wrap:wrap}
+.bc-attendance__report-filter label{display:flex;flex-direction:column;justify-content:flex-end;gap:6px;margin:0;line-height:1.25;font-size:12px}
+.bc-attendance__report-filter input[type=date]{box-sizing:border-box;width:158px;height:42px;min-height:42px;margin:0;padding:0 12px}
+.bc-attendance__report-filter .bc-attendance__export,
+.bc-attendance__report-filter>a:not(.bc-attendance__export){box-sizing:border-box;height:42px;min-height:42px;margin:0;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;line-height:1.2;white-space:nowrap;border-radius:9px}
+.bc-attendance__report-head,.bc-attendance__report-row{grid-template-columns:minmax(145px,1.6fr) minmax(95px,1fr) repeat(4,minmax(83px,1fr)) minmax(170px,1.5fr)}
+@media(max-width:800px){.bc-attendance__report-head{display:none}.bc-attendance__report-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
