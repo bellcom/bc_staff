@@ -135,7 +135,7 @@ final class MyProfileForm extends FormBase {
     $account->set('user_picture', $fid ? ['target_id' => $fid] : NULL);
     $account->save();
     $this->messenger()->addStatus($this->t('Profile photo updated.'));
-    $form_state->setRedirect('bc_staff.my_profile');
+    $form_state->setRedirect('bc_staff.my_profile', [], ['query' => ['panel' => '1']]);
   }
 
 }
