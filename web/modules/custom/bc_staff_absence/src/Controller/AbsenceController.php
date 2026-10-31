@@ -36,7 +36,7 @@ final class AbsenceController extends ControllerBase {
    */
   public function listing(): array {
     $records = $this->staffDb->select('bc_staff_absence', 'a')
-      ->fields('a', ['type', 'start_date', 'end_date', 'state'])
+      ->fields('a', ['id', 'type', 'start_date', 'end_date', 'state'])
       ->condition('uid', (int) $this->currentUser()->id())
       ->orderBy('start_date', 'DESC')
       ->execute()->fetchAll();
@@ -48,6 +48,7 @@ final class AbsenceController extends ControllerBase {
         'to' => $record->end_date,
         'status' => $this->statusLabel($record->state),
         'status_key' => $record->state,
+        'cancel_url' => $record->state === 'pending' ? Url::fromRoute('bc_staff_absence.cancel', ['absence' => $record->id])->toString() : '',
       ];
     }
     return [
@@ -128,6 +129,7 @@ final class AbsenceController extends ControllerBase {
       'pending' => $this->t('Pending'),
       'approved' => $this->t('Approved'),
       'rejected' => $this->t('Rejected'),
+      'cancelled' => $this->t('Withdrawn'),
       'registered' => $this->t('Registered'),
       default => $this->t('Unknown'),
     };
