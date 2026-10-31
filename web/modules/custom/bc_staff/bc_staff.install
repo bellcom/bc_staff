@@ -146,6 +146,20 @@ function bc_staff_update_11005(): void {
  */
 function bc_staff_schema(): array {
   return [
+    'bc_staff_attendance_correction' => [
+      'description' => 'Immutable attendance correction history; latest correction per event takes effect.',
+      'fields' => [
+        'id' => ['type' => 'serial', 'not null' => TRUE],
+        'event_id' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+        'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+        'actor_uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+        'corrected_at' => ['type' => 'int', 'not null' => TRUE],
+        'reason' => ['type' => 'text', 'not null' => TRUE],
+        'created' => ['type' => 'int', 'not null' => TRUE],
+      ],
+      'primary key' => ['id'],
+      'indexes' => ['event_id' => ['event_id'], 'uid' => ['uid']],
+    ],
     'bc_staff_attendance' => [
       'description' => 'Immutable check-in and check-out audit events.',
       'fields' => [
@@ -192,4 +206,15 @@ function bc_staff_update_11007(): string {
     $role->save();
   }
   return 'BC Staff administrators can now approve absence requests.';
+}
+
+/**
+ * Adds append-only corrections to attendance events.
+ */
+function bc_staff_update_11008(): string {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('bc_staff_attendance_correction')) {
+    $schema->createTable('bc_staff_attendance_correction', bc_staff_schema()['bc_staff_attendance_correction']);
+  }
+  return 'Attendance correction history is ready.';
 }
