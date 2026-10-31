@@ -35,3 +35,28 @@
 .bc-attendance__report-filter>a:not(.bc-attendance__export){box-sizing:border-box;height:42px;min-height:42px;margin:0;display:inline-flex;align-items:center;justify-content:center;padding:0 14px;line-height:1.2;white-space:nowrap;border-radius:9px}
 .bc-attendance__report-head,.bc-attendance__report-row{grid-template-columns:minmax(145px,1.6fr) minmax(95px,1fr) repeat(4,minmax(83px,1fr)) minmax(170px,1.5fr)}
 @media(max-width:800px){.bc-attendance__report-head{display:none}.bc-attendance__report-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* Responsive attendance report: never cut off correction actions. */
+.bc-attendance,.bc-attendance__events,.bc-attendance__report-row,.bc-attendance__report-head{min-width:0;max-width:100%;box-sizing:border-box}
+.bc-attendance__report-head,.bc-attendance__report-row{
+  grid-template-columns:minmax(100px,1.5fr) minmax(85px,.95fr) repeat(4,minmax(65px,.8fr)) minmax(135px,1.5fr);
+  gap:9px;
+}
+.bc-attendance__report-row>.bc-attendance__cell{min-width:0;overflow-wrap:anywhere}
+.bc-attendance__cell--actions{display:flex;gap:6px 10px;flex-wrap:wrap;align-items:center}
+.bc-attendance__cell--actions a{white-space:normal;overflow-wrap:anywhere}
+@media(max-width:1150px){
+  .bc-attendance__report-head{display:none}
+  .bc-attendance__report-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 20px;padding:16px}
+  .bc-attendance__report-row>.bc-attendance__cell{display:flex;flex-direction:column;align-items:flex-start;gap:5px}
+  .bc-attendance__report-row>.bc-attendance__cell::before{content:attr(data-label);font-size:11px;font-weight:650;color:#718399}
+  .bc-attendance__report-row>.bc-attendance__cell--actions{grid-column:1/-1;border-top:1px solid #e6edf4;padding-top:10px}
+}
+@media(max-width:540px){
+  .bc-attendance__report-row{grid-template-columns:1fr 1fr;gap:12px}
+  .bc-attendance__report-row>.bc-attendance__cell:first-child,.bc-attendance__report-row>.bc-attendance__cell--actions{grid-column:1/-1}
+  .bc-attendance__stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .bc-attendance__stats>div{min-width:0;padding:12px}
+  .bc-attendance__report-filter label{flex:1 1 140px;min-width:0}
+  .bc-attendance__report-filter input[type=date]{width:100%;min-width:0}
+}
