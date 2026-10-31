@@ -55,6 +55,19 @@ function bc_staff_absence_schema(): array {
     'primary key' => ['id'],
     'indexes' => ['absence_time' => ['absence_id', 'created']],
   ];
+  $schema['bc_staff_notification'] = [
+    'description' => 'Per-user in-app workflow notifications.',
+    'fields' => [
+      'id' => ['type' => 'serial', 'not null' => TRUE],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'message' => ['type' => 'varchar', 'length' => 255, 'not null' => TRUE],
+      'target' => ['type' => 'varchar', 'length' => 64, 'not null' => TRUE],
+      'created' => ['type' => 'int', 'not null' => TRUE],
+      'read_at' => ['type' => 'int', 'not null' => FALSE],
+    ],
+    'primary key' => ['id'],
+    'indexes' => ['user_unread' => ['uid', 'read_at'], 'created' => ['created']],
+  ];
   return $schema;
 }
 
@@ -69,4 +82,15 @@ function bc_staff_absence_update_11001(): string {
     }
   }
   return 'Approved vacation change requests and audit tables are ready.';
+}
+
+/**
+ * Add in-app notifications for BC Staff vacation workflows.
+ */
+function bc_staff_absence_update_11002(): string {
+  $schema = \Drupal::database()->schema();
+  if (!$schema->tableExists('bc_staff_notification')) {
+    $schema->createTable('bc_staff_notification', bc_staff_absence_schema()['bc_staff_notification']);
+  }
+  return 'BC Staff in-app notifications are ready.';
 }
