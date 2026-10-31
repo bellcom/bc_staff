@@ -14,7 +14,16 @@
     <header class="bc-app__header">
       <div class="bc-app__header-inner">
         <span class="bc-app__header-label">{{ 'Employee administration'|t }}</span>
-        <span class="bc-app__user">{{ bc_staff_user_name }}</span>
+        {% if bc_staff_user_login %}
+          <div class="bc-app__user" aria-label="{{ 'Signed in user'|t }}">
+            <span class="bc-app__user-avatar" aria-hidden="true">{{ bc_staff_user_name|first|upper }}</span>
+            <span class="bc-app__user-details">
+              <strong>{{ bc_staff_user_name }}</strong>
+              <small>{{ bc_staff_user_role }}{% if bc_staff_user_department %} · {{ bc_staff_user_department }}{% endif %}</small>
+              <small class="bc-app__user-login">{{ bc_staff_user_login }}</small>
+            </span>
+          </div>
+        {% endif %}
       </div>
     </header>
   {% endif %}

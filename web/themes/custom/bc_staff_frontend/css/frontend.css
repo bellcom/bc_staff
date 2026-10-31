@@ -68,3 +68,12 @@ body:has(.bc-app){background:#f3f6fb;color:#193450}
 .bc-app--panel .bc-app__main{padding:16px 22px}
 @media(max-width:1050px){.bc-app{grid-template-columns:200px minmax(0,1fr)}}
 @media(max-width:690px){.bc-app{display:grid;grid-template-columns:1fr;grid-template-rows:auto auto minmax(0,1fr)}.bc-app__sidebar{position:relative;height:auto}.bc-app__sidebar-brand{min-height:58px}.bc-app__sidebar-nav{padding:8px;gap:4px}.bc-app__header-inner{min-height:54px}.bc-app__main{padding:16px}.bc-app--panel{display:block}}
+
+/* Compact authenticated identity in the staff portal header. */
+.bc-app__user{display:flex;align-items:center;gap:11px;white-space:normal;padding:7px 12px;border:1px solid #e1eaf3;border-radius:14px;max-width:min(430px,65vw)}
+.bc-app__user-avatar{display:grid;place-items:center;flex:none;width:38px;height:38px;border-radius:50%;background:#d9eafd;color:#1267ad;font-size:18px;font-weight:800}
+.bc-app__user-details{display:flex;flex-direction:column;gap:1px;min-width:0;line-height:1.3}
+.bc-app__user-details strong{font-size:13px;color:#203753;overflow-wrap:anywhere}
+.bc-app__user-details small{font-size:11px;color:#607891;overflow-wrap:anywhere}
+.bc-app__user-login{font-size:10px!important;color:#8295a8!important}
+@media(max-width:690px){.bc-app__user{max-width:100%;margin-left:auto}.bc-app__header-label{font-size:13px}}
