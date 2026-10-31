@@ -147,3 +147,10 @@ body:has(.bc-app) .messages--warning,
 body:has(.bc-app) .messages--error{border-left-color:#dce7f3!important}
 body:has(.bc-app) .messages__content{width:100%}
 body:has(.bc-app) .messages__list{margin-top:0;margin-bottom:0}
+
+/* Place the status icon at the same inset as the header profile avatar. */
+body:has(.bc-app) .messages,
+body:has(.bc-app) [data-drupal-messages] .messages {
+  background-position: 16px center !important;
+  padding-left: 58px !important;
+}
