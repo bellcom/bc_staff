@@ -1,10 +1,9 @@
 <section class="bc-employees bc-directory-admin bc-attendance">
   <header class="bc-employees__header"><div><p class="bc-employees__eyebrow">BC STAFF / {{ 'ATTENDANCE'|t }}</p><h2>{{ 'Attendance report'|t }}</h2><p>{{ 'Daily and period attendance registrations.'|t }}</p></div></header>
-  <form method="get" class="bc-attendance__report-filter">
+  <form method="get" class="bc-attendance__report-filter" data-bc-attendance-report-filter>
     <label>{{ 'From date'|t }} <input type="date" name="from" value="{{ from }}" required></label>
     <label>{{ 'To date'|t }} <input type="date" name="to" value="{{ to }}" required></label>
-    <a class="bc-attendance__export" href="{{ path('bc_staff.attendance_export', {}, {'query': {'from': from, 'to': to}}) }}">{{ 'Download CSV'|t }}</a>
-    <button type="submit">{{ 'Show report'|t }}</button>
+    <a class="bc-attendance__export" data-bc-attendance-export href="{{ path('bc_staff.attendance_export', {}, {'query': {'from': from, 'to': to}}) }}">{{ 'Download CSV'|t }}</a>
     <a href="{{ path('bc_staff.attendance_history') }}">{{ 'Attendance and history'|t }}</a>
   </form>
   <div class="bc-attendance__stats">
