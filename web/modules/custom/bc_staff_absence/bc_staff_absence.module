@@ -10,6 +10,10 @@
  */
 function bc_staff_absence_theme(): array {
   return [
+    'bc_staff_notifications' => [
+      'variables' => ['items' => []],
+      'template' => 'bc-staff-notifications',
+    ],
     'bc_staff_absence_dashboard' => [
       'variables' => [
         'heading' => '',
@@ -47,7 +51,7 @@ function bc_staff_absence_theme(): array {
  */
 function bc_staff_absence_page_attachments(array &$page): void {
   $route = Drupal::routeMatch()->getRouteName();
-  if (in_array($route, ['bc_staff_absence.list', 'bc_staff_absence.review', 'bc_staff_absence.add'], TRUE)) {
+  if (in_array($route, ['bc_staff_absence.list', 'bc_staff_absence.review', 'bc_staff_absence.add', 'bc_staff_absence.notifications'], TRUE)) {
     $page['#attached']['library'][] = 'bc_staff_absence/dashboard';
   }
   if ($route === 'bc_staff_absence.calendar') {

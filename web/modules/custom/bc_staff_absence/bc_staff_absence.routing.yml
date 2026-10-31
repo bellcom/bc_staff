@@ -56,3 +56,19 @@ bc_staff_absence.approved_change:
   requirements:
     _user_is_logged_in: 'TRUE'
     absence: '\d+'
+
+bc_staff_absence.notifications:
+  path: '/staff/notifikationer'
+  defaults:
+    _controller: '\Drupal\bc_staff_absence\Controller\NotificationController::listing'
+    _title: 'Notifikationer'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+
+bc_staff_absence.notification_open:
+  path: '/staff/notifikationer/{notification}'
+  defaults:
+    _controller: '\Drupal\bc_staff_absence\Controller\NotificationController::open'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    notification: '\d+'
