@@ -87,3 +87,18 @@ Rebuilding demo data seeds a 15-minute correction for
 
 Only complete same-day in/out pairs count towards hours; missing punches
 remain flagged. This is registered presence time, not payroll-ready work time.
+
+### Guaranteed attendance scenarios after update 11004
+
+- `bc_demo_employee_naestved_3` (Ida Nørgaard): checked in yesterday,
+  never checked out; visible as **Check-out missing** on `/staff/fremmoede`.
+- `bc_demo_employee_roskilde_2` (Alma Friis): previous-day missing
+  checkout; visible when logged in as an authorized Roskilde manager or admin.
+- `bc_demo_employee_naestved_1` (Laura Birk): two complete workdays,
+  one checkout corrected 15 minutes earlier, shown in the period report.
+- `bc_demo_employee_roskilde_2`: also has an older complete workday for
+  comparison in the date-range report.
+
+Use a period of at least the last 4 days on `/staff/fremmoede/rapport`.
+Rebuild repeatedly at `/admin/config/bc-staff/demo`; all generated data
+for marked fictional demo accounts is reset.
