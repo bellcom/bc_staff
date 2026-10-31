@@ -79,6 +79,9 @@ final class ApprovedVacationDecisionForm extends FormBase {
       ])->execute();
     }
     unset($transaction);
+    if ($updated) {
+      \Drupal\bc_staff_absence\Service\AbsenceNotifier::employee((int) $absence->uid, $change->kind . '_' . $action);
+    }
     $this->messenger()->addStatus($this->t('Request updated.'));
     $form_state->setRedirect('bc_staff_absence.review');
   }
