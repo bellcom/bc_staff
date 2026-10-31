@@ -645,3 +645,9 @@ msgstr "Tjekket ind i dag"
 
 msgid "Recent events"
 msgstr "Seneste hændelser"
+
+msgid "Check-out missing"
+msgstr "Mulig glemt udtjekning"
+
+msgid "Last check-in: @time"
+msgstr "Seneste indtjekning: @time"
