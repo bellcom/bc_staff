@@ -11,3 +11,4 @@ permissions:
   - 'view bc staff overview'
   - 'update own bc staff status'
   - 'administer bc staff employees'
+  - 'manage all bc staff absences'
