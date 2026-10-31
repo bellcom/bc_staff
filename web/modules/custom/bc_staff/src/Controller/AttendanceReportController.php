@@ -117,6 +117,34 @@ final class AttendanceReportController extends ControllerBase {
     ];
   }
 
+
+  /**
+   * Downloads the same scoped report in an Excel-compatible CSV format.
+   */
+  public function export(): \Symfony\Component\HttpFoundation\StreamedResponse {
+    $report = $this->listing();
+    if (!isset($report['#entries'])) {
+      throw new \Symfony\Component\HttpKernel\Exception\BadRequestHttpException('Invalid date range.');
+    }
+    $rows = $report['#entries'];
+    $response = new \Symfony\Component\HttpFoundation\StreamedResponse(static function () use ($rows): void {
+      $out = fopen('php://output', 'wb');
+      fwrite($out, "\xEF\xBB\xBF");
+      fputcsv($out, ['Medarbejder', 'Dato', 'Første indtjekning', 'Sidste udtjekning', 'Ind', 'Ud', 'Registrerede timer', 'Ufuldstændig'], ';');
+      foreach ($rows as $row) {
+        $name = (string) $row['name'];
+        if (preg_match('/^[=+@\-\t\r]/u', $name)) { $name = "'" . $name; }
+        fputcsv($out, [$name, $row['date'], $row['first'], $row['last'],
+          $row['in'], $row['out'], $row['duration'], $row['incomplete'] ? 'Ja' : 'Nej'], ';');
+      }
+      fclose($out);
+    });
+    $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
+    $response->headers->set('Content-Disposition', 'attachment; filename="bc-staff-fremmoede.csv"');
+    $response->headers->set('Cache-Control', 'private, no-store');
+    return $response;
+  }
+
   private function parseDate(mixed $value): ?\DateTimeImmutable {
     if (!is_string($value) || !preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) { return NULL; }
     $date = \DateTimeImmutable::createFromFormat('!Y-m-d', $value);
