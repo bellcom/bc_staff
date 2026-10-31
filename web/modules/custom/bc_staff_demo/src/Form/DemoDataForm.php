@@ -10,6 +10,7 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\bc_staff_demo\Service\DemoAbsenceSeeder;
 use Drupal\bc_staff_demo\Service\DemoOrganization;
 use Drupal\bc_staff_demo\Service\DemoPortraits;
+use Drupal\bc_staff_demo\Service\DemoScenarioRefresh;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -55,7 +56,7 @@ final class DemoDataForm extends ConfirmFormBase {
    * Returns the confirmation description.
    */
   public function getDescription() {
-    return $this->t('Creates four departments, demo houses, workgroups and locations, twelve blocked display accounts and, when BC Staff Absence is enabled, eight active demonstration accounts with vacation and absence scenarios. Existing non-demo accounts remain unchanged.');
+    return $this->t('Refreshes fictional demo staff, organization, attendance history, vacation approvals and change requests. Existing demo scenarios are replaced; ordinary accounts remain unchanged.');
   }
 
   /**
@@ -180,6 +181,12 @@ final class DemoDataForm extends ConfirmFormBase {
     $this->messenger()->addStatus($this->t('Demo data ready: @new new employees and @updated updated employees.', [
       '@new' => $created,
       '@updated' => $updated,
+    ]));
+    $result = DemoScenarioRefresh::refresh();
+    $this->messenger()->addStatus($this->t('Demo scenarios rebuilt: @absences absences, @changes change requests and @attendance attendance events.', [
+      '@absences' => $result['absences'],
+      '@changes' => $result['changes'],
+      '@attendance' => $result['attendance'],
     ]));
     $form_state->setRedirect('bc_staff.overview');
   }
