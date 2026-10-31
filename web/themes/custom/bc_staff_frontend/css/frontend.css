@@ -169,3 +169,16 @@ body:has(.bc-app) [data-drupal-messages] .messages button[aria-label]{
   transform:translateY(-50%)!important;
   margin:0!important;
 }
+
+/* Shared responsive safeguards across the BC Staff frontend. */
+.bc-app,.bc-app__main,.bc-app__main .block-system-main-block{min-width:0}
+.bc-app__main :is(.bc-employees,.bc-directory,.bc-absence,.bc-organization,.bc-attendance,.bc-staff__grid){max-width:100%;min-width:0;box-sizing:border-box}
+.bc-app__main :is(.bc-employees__card,.bc-absence__item,.bc-attendance__event,.bc-directory__filters){min-width:0}
+.bc-app__main :is(.bc-employees__card,.bc-absence__item,.bc-attendance__event) :is(p,strong,span,a){overflow-wrap:anywhere}
+.bc-app__main :is(table){max-width:100%}
+@media(max-width:700px){
+ .bc-app__main{padding:14px 12px}
+ .bc-app__main :is(.bc-employees__header,.bc-directory__header,.bc-absence__head){gap:10px}
+ .bc-app__main :is(.bc-employees__toolbar,.bc-directory__filters){max-width:100%}
+ .bc-app__main :is(input,select,textarea){max-width:100%;box-sizing:border-box}
+}
