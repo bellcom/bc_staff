@@ -24,3 +24,5 @@
 .bc-staff-absence-form input[type=datetime-local],.bc-staff-absence-form textarea{border:1px solid #cbd9e8;border-radius:8px;padding:9px 12px;max-width:100%}
 .bc-staff-absence-form input[type=submit]{background:#1267ad;color:#fff;border:0;border-radius:8px;padding:9px 14px;font-weight:700}
 .bc-staff-absence-form table{width:100%;font-size:12px;margin-bottom:15px}
+
+.bc-attendance__missing-link{display:inline-flex;margin-top:7px;padding:6px 9px;border-radius:7px;background:#e9f2fd;color:#1366b6;font-size:11px;text-decoration:none;font-weight:700}
