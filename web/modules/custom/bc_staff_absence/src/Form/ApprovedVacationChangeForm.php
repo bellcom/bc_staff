@@ -94,6 +94,7 @@ final class ApprovedVacationChangeForm extends FormBase {
       'created' => $now,
     ])->execute();
     unset($transaction);
+    \Drupal\bc_staff_absence\Service\AbsenceNotifier::reviewers((int) $this->currentUser()->id(), 'change');
     $this->messenger()->addStatus($this->t('Change request submitted for approval.'));
     $form_state->setRedirect('bc_staff_absence.list');
   }
