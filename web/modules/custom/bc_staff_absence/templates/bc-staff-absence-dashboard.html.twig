@@ -29,6 +29,13 @@
         {% if not review and item.cancel_url %}
           <div class="bc-absence__actions">{% if item.edit_url %}<a class="bc-absence__add" href="{{ item.edit_url }}">{{ 'Edit request'|t }}</a>{% endif %}<a class="bc-absence__add" href="{{ item.cancel_url }}">{{ 'Withdraw request'|t }}</a></div>
         {% endif %}
+        {% if not review and item.history %}
+          <details class="bc-absence__history"><summary>{{ 'History'|t }}</summary>
+            <ul>{% for entry in item.history %}
+              <li><strong>{{ entry.label }}</strong> · {{ entry.actor }} · {{ entry.time }}</li>
+            {% endfor %}</ul>
+          </details>
+        {% endif %}
         {% if review and item.form %}
           <div class="bc-absence__actions">{{ item.form }}</div>
         {% endif %}
