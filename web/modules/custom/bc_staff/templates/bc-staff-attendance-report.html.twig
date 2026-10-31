@@ -11,10 +11,11 @@
     <div><strong>{{ entries|length }}</strong><span>{{ 'Employee days with registrations'|t }}</span></div>
     <div><strong>{{ events }}</strong><span>{{ 'Registrations in period'|t }}</span></div>
   </div>
+  <div class="bc-attendance__report-total">{{ 'Paired working hours'|t }}: <strong>{{ hours }}</strong></div>
   <div class="bc-attendance__events">
-    <div class="bc-attendance__report-head"><span>{{ 'Employee'|t }}</span><span>{{ 'Date'|t }}</span><span>{{ 'First check-in'|t }}</span><span>{{ 'Last check-out'|t }}</span><span>{{ 'In / Out'|t }}</span></div>
+    <div class="bc-attendance__report-head"><span>{{ 'Employee'|t }}</span><span>{{ 'Date'|t }}</span><span>{{ 'First check-in'|t }}</span><span>{{ 'Last check-out'|t }}</span><span>{{ 'In / Out'|t }}</span><span>{{ 'Hours'|t }}</span><span>{{ 'Correction'|t }}</span></div>
     {% for item in entries %}
-      <div class="bc-attendance__report-row"><strong>{{ item.name }}</strong><span>{{ item.date }}</span><span>{{ item.first ?: '—' }}</span><span>{{ item.last ?: '—' }}</span><span>{{ item['in'] }} / {{ item['out'] }}</span></div>
+      <div class="bc-attendance__report-row"><strong>{{ item.name }}</strong><span>{{ item.date }}</span><span>{{ item.first ?: '—' }}</span><span>{{ item.last ?: '—' }}</span><span>{{ item['in'] }} / {{ item['out'] }}</span><span>{{ item.duration }}{% if item.incomplete %} · {{ 'Incomplete'|t }}{% endif %}</span><span>{% for link in item.correction_links %}<a href="{{ link.url }}">{{ link.label }}</a>{% if not loop.last %} · {% endif %}{% endfor %}</span></div>
     {% else %}
       <p class="bc-attendance__empty">{{ 'No registrations during this period.'|t }}</p>
     {% endfor %}
