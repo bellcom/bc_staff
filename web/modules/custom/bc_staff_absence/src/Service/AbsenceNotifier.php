@@ -26,6 +26,7 @@ final class AbsenceNotifier {
         || !AbsenceApprovalAccess::canReview($manager, $manager, $employee)) {
         continue;
       }
+      self::notify($manager, $event, 'bc_staff_absence.review');
       self::send($manager, $event, [
         '@employee' => $employee->getDisplayName(),
       ], 'bc_staff_absence.review');
@@ -38,7 +39,29 @@ final class AbsenceNotifier {
   public static function employee(int $uid, string $event): void {
     $account = \Drupal::entityTypeManager()->getStorage('user')->load($uid);
     if ($account instanceof UserInterface && $account->isActive()) {
+      self::notify($account, $event, 'bc_staff_absence.list');
       self::send($account, $event, [], 'bc_staff_absence.list');
+    }
+  }
+
+  private static function notify(UserInterface $recipient, string $event, string $route): void {
+    $titles = [
+      'new' => 'Ny ferieansøgning',
+      'changed' => 'Ferieansøgning ændret',
+      'change' => 'Ferieændring afventer godkendelse',
+      'approved' => 'Din ferieansøgning er godkendt',
+      'rejected' => 'Din ferieansøgning er afvist',
+      'dates_approved' => 'Din ferieændring er godkendt',
+      'dates_rejected' => 'Din ferieændring er afvist',
+      'cancel_approved' => 'Din ferieannullering er godkendt',
+      'cancel_rejected' => 'Din ferieannullering er afvist',
+    ];
+    $db = \Drupal::database();
+    if (isset($titles[$event]) && $db->schema()->tableExists('bc_staff_notification')) {
+      $db->insert('bc_staff_notification')->fields([
+        'uid' => (int) $recipient->id(), 'message' => $titles[$event],
+        'target' => $route, 'created' => \Drupal::time()->getCurrentTime(),
+      ])->execute();
     }
   }
 
