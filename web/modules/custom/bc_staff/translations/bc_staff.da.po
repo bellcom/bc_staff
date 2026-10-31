@@ -651,3 +651,6 @@ msgstr "Mulig glemt udtjekning"
 
 msgid "Last check-in: @time"
 msgstr "Seneste indtjekning: @time"
+
+msgid "Not checked out"
+msgstr "Ikke tjekket ud"
