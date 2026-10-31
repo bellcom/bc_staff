@@ -12,7 +12,7 @@ use Drupal\Core\Url;
  */
 function bc_staff_frontend_preprocess_page(array &$variables): void {
   $route = \Drupal::routeMatch()->getRouteName();
-  $variables['bc_staff_panel'] = $route === 'bc_staff.employee_edit'
+  $variables['bc_staff_panel'] = in_array($route, ['bc_staff.employee_edit', 'bc_staff.my_profile'], TRUE)
     && \Drupal::request()->query->get('panel') === '1';
   $current_user = \Drupal::currentUser();
   $variables['bc_staff_user_name'] = $current_user->getDisplayName();

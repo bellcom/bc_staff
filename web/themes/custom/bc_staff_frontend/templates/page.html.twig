@@ -15,17 +15,22 @@
       <div class="bc-app__header-inner">
         <span class="bc-app__header-label">{{ 'Employee administration'|t }}</span>
         {% if bc_staff_user_login %}
-          <div class="bc-app__user" aria-label="{{ 'Signed in user'|t }}">
+          <a class="bc-app__user" href="{{ path('bc_staff.my_profile') }}" data-bc-self-profile aria-label="{{ 'My profile'|t }}">
             <span class="bc-app__user-avatar" aria-hidden="true">{{ bc_staff_user_name|first|upper }}</span>
             <span class="bc-app__user-details">
               <strong>{{ bc_staff_user_name }}</strong>
               <small>{{ bc_staff_user_role }}{% if bc_staff_user_department %} · {{ bc_staff_user_department }}{% endif %}</small>
               <small class="bc-app__user-login">{{ bc_staff_user_login }}</small>
             </span>
-          </div>
+          </a>
         {% endif %}
       </div>
     </header>
+    <div class="bc-directory-admin__shade" data-bc-self-shade hidden></div>
+    <aside class="bc-directory-admin__drawer" data-bc-self-drawer hidden role="dialog" aria-modal="true" aria-label="{{ 'My profile'|t }}" tabindex="-1">
+      <header><h2>{{ 'My profile'|t }}</h2><button type="button" data-bc-self-close aria-label="{{ 'Close'|t }}">×</button></header>
+      <iframe data-bc-self-frame title="{{ 'My profile'|t }}"></iframe>
+    </aside>
   {% endif %}
   <main id="main-content" class="bc-app__main">
     {% if page.highlighted %}<div class="bc-app__highlighted">{{ page.highlighted }}</div>{% endif %}

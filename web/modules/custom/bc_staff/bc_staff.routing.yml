@@ -127,3 +127,13 @@ bc_staff.attendance_history:
     _title: 'Attendance and history'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
+
+bc_staff.my_profile:
+  path: '/staff/min-profil'
+  options:
+    _admin_route: FALSE
+  defaults:
+    _form: '\Drupal\bc_staff\Form\MyProfileForm'
+    _title: 'My profile'
+  requirements:
+    _user_is_logged_in: 'TRUE'
