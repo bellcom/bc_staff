@@ -47,3 +47,12 @@ bc_staff_absence.edit:
   requirements:
     _user_is_logged_in: 'TRUE'
     absence: '\d+'
+
+bc_staff_absence.approved_change:
+  path: '/staff/fravaer/{absence}/aendring'
+  defaults:
+    _form: '\Drupal\bc_staff_absence\Form\ApprovedVacationChangeForm'
+    _title: 'Request vacation change'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    absence: '\d+'

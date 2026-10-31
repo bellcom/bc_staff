@@ -25,5 +25,48 @@ function bc_staff_absence_schema(): array {
     'primary key' => ['id'],
     'indexes' => ['uid_dates' => ['uid', 'start_date', 'end_date'], 'state' => ['state']],
   ];
+  $schema['bc_staff_absence_change'] = [
+    'description' => 'Pending alterations or cancellation of approved vacation.',
+    'fields' => [
+      'id' => ['type' => 'serial', 'not null' => TRUE],
+      'absence_id' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'kind' => ['type' => 'varchar', 'length' => 16, 'not null' => TRUE],
+      'start_date' => ['type' => 'varchar', 'length' => 10, 'not null' => FALSE],
+      'end_date' => ['type' => 'varchar', 'length' => 10, 'not null' => FALSE],
+      'state' => ['type' => 'varchar', 'length' => 16, 'not null' => TRUE],
+      'created' => ['type' => 'int', 'not null' => TRUE],
+      'changed' => ['type' => 'int', 'not null' => TRUE],
+      'reviewed_by' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => FALSE],
+    ],
+    'primary key' => ['id'],
+    'indexes' => ['absence_state' => ['absence_id', 'state'], 'uid' => ['uid']],
+  ];
+  $schema['bc_staff_absence_audit'] = [
+    'description' => 'Append-only audit log for absence workflow decisions.',
+    'fields' => [
+      'id' => ['type' => 'serial', 'not null' => TRUE],
+      'absence_id' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'actor_uid' => ['type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE],
+      'action' => ['type' => 'varchar', 'length' => 40, 'not null' => TRUE],
+      'details' => ['type' => 'text', 'not null' => TRUE],
+      'created' => ['type' => 'int', 'not null' => TRUE],
+    ],
+    'primary key' => ['id'],
+    'indexes' => ['absence_time' => ['absence_id', 'created']],
+  ];
   return $schema;
+}
+
+/**
+ * Install change requests and audit trail without changing existing absences.
+ */
+function bc_staff_absence_update_11001(): string {
+  $schema = \Drupal::database()->schema();
+  foreach (['bc_staff_absence_change', 'bc_staff_absence_audit'] as $table) {
+    if (!$schema->tableExists($table)) {
+      $schema->createTable($table, bc_staff_absence_schema()[$table]);
+    }
+  }
+  return 'Approved vacation change requests and audit tables are ready.';
 }

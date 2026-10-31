@@ -711,3 +711,57 @@ msgstr "Du har allerede registreret fravær på en eller flere af disse datoer."
 
 msgid "Request updated."
 msgstr "Ansøgningen er opdateret."
+
+msgid "Request vacation change"
+msgstr "Anmod om ændring af ferie"
+
+msgid "Request type"
+msgstr "Type af anmodning"
+
+msgid "Change vacation dates"
+msgstr "Ændr feriedatoer"
+
+msgid "Cancel approved vacation"
+msgstr "Annuller godkendt ferie"
+
+msgid "Submit change request"
+msgstr "Send ændringsanmodning"
+
+msgid "Change request submitted for approval."
+msgstr "Ændringsanmodningen er sendt til godkendelse."
+
+msgid "A change request is already awaiting approval."
+msgstr "Der afventer allerede en ændringsanmodning."
+
+msgid "Enter a valid date range."
+msgstr "Indtast en gyldig datoperiode."
+
+msgid "The requested dates overlap another absence."
+msgstr "De ønskede datoer overlapper andet fravær."
+
+msgid "Change awaiting approval"
+msgstr "Ændring afventer godkendelse"
+
+msgid "Request change or cancellation"
+msgstr "Anmod om ændring eller annullering"
+
+msgid "History"
+msgstr "Historik"
+
+msgid "Change requested"
+msgstr "Ændring anmodet"
+
+msgid "Date change approved"
+msgstr "Datoændring godkendt"
+
+msgid "Date change rejected"
+msgstr "Datoændring afvist"
+
+msgid "Cancellation approved"
+msgstr "Annullering godkendt"
+
+msgid "Cancellation rejected"
+msgstr "Annullering afvist"
+
+msgid "Updated"
+msgstr "Opdateret"

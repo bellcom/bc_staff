@@ -51,3 +51,8 @@
 .bc-staff-absence-form select,.bc-staff-absence-form input[type=date],.bc-staff-absence-form input[type=text]{padding:8px 11px;border-radius:7px;min-height:38px}
 .bc-staff-absence-form .form-actions input{padding:9px 14px;font-size:12px;border-radius:7px;background:#1267ad}
 @media(max-width:640px){.bc-absence__head{padding:0}.bc-absence__items{grid-template-columns:1fr}.bc-absence__item{padding:13px}.bc-staff-absence-form{padding:14px}}
+
+.bc-absence__history{margin-top:10px;padding-top:8px;border-top:1px solid #e2e9f0;font-size:11px;color:#48647d}
+.bc-absence__history summary{cursor:pointer;font-weight:700;color:#1366b6}
+.bc-absence__history ul{margin:8px 0 0;padding-left:18px}
+.bc-absence__history li{margin:4px 0;line-height:1.5}
