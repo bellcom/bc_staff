@@ -39,3 +39,25 @@
 .bc-directory__dot--remote{background:#7968bd!important}
 .bc-directory__location{overflow-wrap:anywhere}
 @media(max-width:640px){.bc-directory{padding:12px 4px}.bc-directory .bc-staff__toolbar select{max-width:100%;flex:1 1 180px}.bc-directory .bc-staff__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.bc-directory .bc-staff__card{padding:14px 9px}.bc-directory .bc-staff__card h3{font-size:15px}}
+
+/* Compact directory heading and a single orderly filter bar. */
+.bc-directory{padding:6px 0 12px;max-width:none}
+.bc-directory__header{gap:12px;margin:0 0 12px;align-items:center}
+.bc-directory__header h2{font-size:clamp(23px,2.1vw,30px);line-height:1.14;margin:0 0 3px}
+.bc-directory__header>div:first-child>p:not(.bc-staff__eyebrow){font-size:12px;line-height:1.4}
+.bc-directory .bc-staff__eyebrow{font-size:10px;letter-spacing:.12em;margin-bottom:4px}
+.bc-directory .bc-staff__actions{gap:8px}
+.bc-directory .bc-staff__action{font-size:12px;padding:8px 12px;min-height:35px;border-radius:8px}
+.bc-directory__filters{display:grid;grid-template-columns:minmax(190px,2fr) minmax(0,3fr);gap:10px;align-items:end;padding:12px;background:#fff;border:1px solid #dfe7f1;border-radius:12px;margin-bottom:8px}
+.bc-directory__search{margin:0;min-width:0}
+.bc-directory__search label{font-size:11px;margin:0 0 4px}
+.bc-directory__search input{min-height:37px;padding:8px 11px;font-size:12px}
+.bc-directory .bc-staff__toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:5px 8px;margin:0;align-items:end}
+.bc-directory .bc-staff__toolbar label{display:none}
+.bc-directory .bc-staff__toolbar select{width:100%;max-width:none;min-width:0;min-height:37px;padding:6px 8px;font-size:12px}
+.bc-directory__clear{min-height:37px;padding:7px 9px;font-size:11px;white-space:nowrap}
+.bc-directory__results{margin:6px 0 12px;font-size:12px}
+.bc-directory__view-active{font-size:11px;padding:6px 11px}
+@media(max-width:1200px){.bc-directory__filters{grid-template-columns:1fr}.bc-directory .bc-staff__toolbar{grid-template-columns:repeat(4,minmax(0,1fr)) auto}}
+@media(max-width:800px){.bc-directory .bc-staff__toolbar{grid-template-columns:repeat(2,minmax(0,1fr)) auto}.bc-directory__clear{grid-column:3;grid-row:1/3}}
+@media(max-width:520px){.bc-directory__header{align-items:flex-start}.bc-directory .bc-staff__toolbar{grid-template-columns:repeat(2,minmax(0,1fr))}.bc-directory__clear{grid-column:1/-1;grid-row:auto}.bc-directory__filters{padding:10px}}
