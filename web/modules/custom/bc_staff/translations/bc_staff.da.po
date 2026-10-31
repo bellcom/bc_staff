@@ -846,3 +846,15 @@ msgstr "Ufuldstændig"
 
 msgid "Correction"
 msgstr "Rettelse"
+
+msgid "Download CSV"
+msgstr "Hent CSV"
+
+msgid "Changed by"
+msgstr "Ændret af"
+
+msgid "Changed at"
+msgstr "Ændret den"
+
+msgid "Export attendance"
+msgstr "Eksportér fremmøde"
