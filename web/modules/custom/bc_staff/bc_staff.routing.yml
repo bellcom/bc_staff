@@ -156,3 +156,11 @@ bc_staff.attendance_correction:
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
     attendance: '\d+'
+
+bc_staff.attendance_export:
+  path: '/staff/fremmoede/rapport/csv'
+  defaults:
+    _controller: '\Drupal\bc_staff\Controller\AttendanceReportController::export'
+    _title: 'Export attendance'
+  requirements:
+    _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
