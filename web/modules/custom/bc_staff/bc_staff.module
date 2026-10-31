@@ -28,6 +28,10 @@ function bc_staff_theme($existing, $type, $theme, $path): array {
       ],
       'template' => 'bc-staff-employee-admin',
     ],
+    'bc_staff_attendance_report' => [
+      'variables' => ['entries' => [], 'from' => '', 'to' => '', 'employees' => 0, 'events' => 0],
+      'template' => 'bc-staff-attendance-report',
+    ],
     'bc_staff_attendance_history' => [
       'variables' => ['employees' => [], 'events' => []],
       'template' => 'bc-staff-attendance-history',
