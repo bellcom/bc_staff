@@ -47,6 +47,7 @@ function bc_staff_frontend_preprocess_page(array &$variables): void {
   ];
   if (\Drupal::moduleHandler()->moduleExists('bc_staff_absence')) {
     $links['bc_staff_absence.list'] = t('Absence');
+    $links['bc_staff_absence.notifications'] = t('Notifikationer');
     $links['bc_staff_absence.review'] = t('Absence approvals');
     $links['bc_staff_absence.calendar'] = t('Team calendar');
   }
