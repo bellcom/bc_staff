@@ -44,7 +44,7 @@ final class AbsenceNotifier {
 
   private static function send(UserInterface $recipient, string $event, array $variables, string $route): void {
     $address = trim((string) $recipient->getEmail());
-    if ($address === '' || !\Drupal::service('email.validator')->isValid($address)) {
+    if ($address === '' || str_ends_with(strtolower($address), '@example.invalid') || !\Drupal::service('email.validator')->isValid($address)) {
       return;
     }
     $subjects = [
