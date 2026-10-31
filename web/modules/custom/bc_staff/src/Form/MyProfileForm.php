@@ -48,7 +48,6 @@ final class MyProfileForm extends FormBase {
     $fallback = base_path() . \Drupal::service('extension.list.module')->getPath('bc_staff') . '/assets/avatar.svg';
     $form['#attributes']['class'][] = 'bc-org-form';
     $form['#attached']['library'][] = 'bc_staff/employee_editor';
-    $form['#attached']['library'][] = 'bc_staff/my_profile';
     $form['intro'] = ['#markup' => '<p>' . $this->t('Your employment details are read-only. You can update your profile photo below.') . '</p>'];
     $form['general'] = [
       '#type' => 'details', '#title' => $this->t('Basic information'), '#open' => TRUE,
