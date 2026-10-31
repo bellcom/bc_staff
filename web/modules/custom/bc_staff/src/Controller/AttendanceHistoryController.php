@@ -71,7 +71,10 @@ final class AttendanceHistoryController extends ControllerBase {
         ->condition('uid', $employee_ids, 'IN')
         ->groupBy('uid');
       $latest_ids->addExpression('MAX(id)', 'last_id');
-      $event_ids = array_column($latest_ids->execute()->fetchAllAssoc('uid'), 'last_id');
+      $event_ids = [];
+      foreach ($latest_ids->execute() as $last_row) {
+        $event_ids[] = (int) $last_row->last_id;
+      }
       if ($event_ids) {
         $last_query = $db->select('bc_staff_attendance', 'last');
         foreach ($last_query->fields('last', ['id', 'uid', 'action', 'created'])
