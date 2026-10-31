@@ -119,6 +119,7 @@ final class AttendanceHistoryController extends ControllerBase {
         'status' => (string) ($forgotten ? $this->t('Check-out missing')
           : ($current_status[$uid] === 'present' ? $this->t('Present') : $this->t('Not present'))),
         'forgotten' => (bool) $forgotten,
+        'missing_checkout_url' => $forgotten ? \Drupal\Core\Url::fromRoute('bc_staff.attendance_missing_checkout', ['user' => $uid])->toString() : '',
         'previous_time' => $forgotten ? \Drupal::service('date.formatter')->format((int) $last->created, 'custom', 'd-m-Y H:i') : '',
         'action' => $event?->action ?? '',
         'last_action' => $event ? (string) ($event->action === 'in' ? $this->t('Checked in') : $this->t('Checked out')) : (string) $this->t('No registration today'),
