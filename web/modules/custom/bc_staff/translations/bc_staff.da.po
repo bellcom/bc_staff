@@ -804,3 +804,45 @@ msgstr "Ingen registreringer i perioden."
 
 msgid "Select a valid period of up to 90 days."
 msgstr "Vælg en gyldig periode på højst 90 dage."
+
+msgid "Correct attendance"
+msgstr "Ret fremmøderegistrering"
+
+msgid "Original registration"
+msgstr "Oprindelig registrering"
+
+msgid "Corrected date and time"
+msgstr "Korrigeret dato og tidspunkt"
+
+msgid "Reason for correction"
+msgstr "Begrundelse for rettelsen"
+
+msgid "Save correction"
+msgstr "Gem rettelse"
+
+msgid "Attendance correction saved."
+msgstr "Fremmøderegistreringen er rettet."
+
+msgid "Enter a valid time that is not in the future."
+msgstr "Angiv et gyldigt tidspunkt, som ikke ligger i fremtiden."
+
+msgid "A reason is required."
+msgstr "En begrundelse er påkrævet."
+
+msgid "Correct check-in"
+msgstr "Ret indtjekning"
+
+msgid "Correct check-out"
+msgstr "Ret udtjekning"
+
+msgid "Paired working hours"
+msgstr "Registrerede timer i komplette par"
+
+msgid "Hours"
+msgstr "Timer"
+
+msgid "Incomplete"
+msgstr "Ufuldstændig"
+
+msgid "Correction"
+msgstr "Rettelse"
