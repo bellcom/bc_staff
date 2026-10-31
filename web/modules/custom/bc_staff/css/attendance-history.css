@@ -17,3 +17,5 @@
 .bc-attendance__report-row a{color:#1267ad;font-weight:650}
 .bc-attendance__report-total{margin:0 0 15px;padding:12px 16px;background:#f2f6fa;border:1px solid #dce7f3;border-radius:12px;color:#203753;font-size:13px}
 @media(max-width:800px){.bc-attendance__report-head{display:none}.bc-attendance__report-row{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+.bc-attendance__report-filter .bc-attendance__export{display:inline-flex;align-items:center;min-height:36px;padding:7px 13px;border-radius:8px;background:#1267ad;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
