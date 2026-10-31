@@ -858,3 +858,18 @@ msgstr "Ændret den"
 
 msgid "Export attendance"
 msgstr "Eksportér fremmøde"
+
+msgid "Register missing check-out"
+msgstr "Registrér manglende udtjekning"
+
+msgid "Missing check-out time"
+msgstr "Tidspunkt for manglende udtjekning"
+
+msgid "Last check-in"
+msgstr "Seneste indtjekning"
+
+msgid "Check-out must be after check-in and not in the future."
+msgstr "Udtjekning skal ligge efter indtjekning og må ikke være i fremtiden."
+
+msgid "Missing check-out registered."
+msgstr "Manglende udtjekning er registreret."
