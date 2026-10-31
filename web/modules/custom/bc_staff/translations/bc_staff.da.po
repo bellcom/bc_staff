@@ -654,3 +654,33 @@ msgstr "Seneste indtjekning: @time"
 
 msgid "Not checked out"
 msgstr "Ikke tjekket ud"
+
+msgid "My profile"
+msgstr "Min profil"
+
+msgid "Your employment details are read-only. You can update your profile photo below."
+msgstr "Dine medarbejderoplysninger kan kun læses. Du kan opdatere dit profilbillede nedenfor."
+
+msgid "Save profile photo"
+msgstr "Gem profilbillede"
+
+msgid "Profile photo updated."
+msgstr "Profilbilledet er opdateret."
+
+msgid "Invalid profile photo."
+msgstr "Ugyldigt profilbillede."
+
+msgid "Upload JPG, PNG or WebP, maximum 2 MB."
+msgstr "Upload JPG, PNG eller WebP, højst 2 MB."
+
+msgid "Roles"
+msgstr "Roller"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid "No"
+msgstr "Nej"
+
+msgid "Signed in user"
+msgstr "Indlogget bruger"
