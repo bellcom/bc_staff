@@ -77,3 +77,12 @@ body:has(.bc-app){background:#f3f6fb;color:#193450}
 .bc-app__user-details small{font-size:11px;color:#607891;overflow-wrap:anywhere}
 .bc-app__user-login{font-size:10px!important;color:#8295a8!important}
 @media(max-width:690px){.bc-app__user{max-width:100%;margin-left:auto}.bc-app__header-label{font-size:13px}}
+
+.bc-app__user{text-decoration:none;cursor:pointer}.bc-app__user:hover{background:#eaf4ff;border-color:#b8d8f3}.bc-app__user:focus-visible{outline:3px solid #1267ad}
+.bc-app .bc-directory-admin__shade[hidden],.bc-app .bc-directory-admin__drawer[hidden]{display:none}
+.bc-app .bc-directory-admin__shade{position:fixed;inset:0;background:#0f273f61;z-index:1002}
+.bc-app .bc-directory-admin__drawer{position:fixed;top:0;right:0;width:min(530px,100vw);height:100vh;background:#fff;z-index:1003;box-shadow:-16px 0 38px #102b4b30;display:flex;flex-direction:column}
+.bc-app .bc-directory-admin__drawer>header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid #e2eaf2}
+.bc-app .bc-directory-admin__drawer>header h2{font-size:21px;margin:0}
+.bc-app .bc-directory-admin__drawer>header button{border:0;background:transparent;font-size:26px;cursor:pointer}
+.bc-app .bc-directory-admin__drawer iframe{width:100%;border:0;flex:1;min-height:0}
