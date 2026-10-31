@@ -182,3 +182,13 @@ body:has(.bc-app) [data-drupal-messages] .messages button[aria-label]{
  .bc-app__main :is(.bc-employees__toolbar,.bc-directory__filters){max-width:100%}
  .bc-app__main :is(input,select,textarea){max-width:100%;box-sizing:border-box}
 }
+
+.bc-app__notifications-link{display:inline-flex;position:relative;justify-content:center;align-items:center;width:40px;height:40px;border:1px solid #dce7f3;border-radius:12px;background:#f2f6fa;color:#1267ad;text-decoration:none;margin-left:auto;font-size:24px}
+.bc-app__notifications-count{position:absolute;top:-6px;right:-6px;background:#1267ad;color:#fff;border-radius:12px;min-width:19px;padding:2px 4px;text-align:center;font-size:11px;font-weight:800}
+.bc-app__header-inner .bc-app__user{margin-left:0}
+.bc-notifications{max-width:800px}.bc-notifications header h2{font-size:25px;margin:0 0 4px}.bc-notifications header p{color:#6a7d91;font-size:13px}
+.bc-notifications__list{display:grid;gap:9px;margin-top:18px}
+.bc-notifications__item{display:flex;align-items:center;justify-content:space-between;gap:15px;flex-wrap:wrap;background:#fff;border:1px solid #dce7f3;border-radius:12px;padding:14px 16px;color:#203753;text-decoration:none}
+.bc-notifications__item.is-unread{background:#eef6ff;border-color:#b8d8f3;font-weight:700}
+.bc-notifications__item small{color:#718399;font-size:11px}
+.bc-notifications__item:hover{background:#e5f2ff}
