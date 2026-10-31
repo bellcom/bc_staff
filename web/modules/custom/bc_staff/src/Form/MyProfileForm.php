@@ -67,9 +67,7 @@ final class MyProfileForm extends FormBase {
     ];
     foreach ($values as $key => [$label, $value]) {
       $form['general'][$key] = [
-        '#type' => 'item', '#title' => $label, '#markup' => [
-          '#plain_text' => $value ?: '—',
-        ],
+        '#type' => 'item', '#title' => $label, 'value' => ['#plain_text' => $value ?: '—'],
       ];
     }
     $form['employment'] = [
@@ -125,7 +123,9 @@ final class MyProfileForm extends FormBase {
     $fid = $fids ? (int) reset($fids) : NULL;
     if ($fid) {
       $file = \Drupal::entityTypeManager()->getStorage('file')->load($fid);
-      if (!$file || !str_starts_with($file->getFileUri(), 'public://bc_staff_photos/')) {
+      if (!$file || !str_starts_with($file->getFileUri(), 'public://bc_staff_photos/')
+        || ((int) $file->getOwnerId() !== (int) $account->id()
+          && $fid !== (int) ($account->get('user_picture')->target_id ?? 0))) {
         $this->messenger()->addError($this->t('Invalid profile photo.'));
         return;
       }
