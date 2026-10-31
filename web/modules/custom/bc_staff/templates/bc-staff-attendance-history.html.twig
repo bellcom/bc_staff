@@ -7,6 +7,7 @@
     <div><strong>{{ employees|filter(e => e.present)|length }}</strong><span>{{ 'Present'|t }}</span></div>
     <div><strong>{{ employees|filter(e => e.action == 'in')|length }}</strong><span>{{ 'Checked in today'|t }}</span></div>
     <div><strong>{{ events|length }}</strong><span>{{ 'Recent events'|t }}</span></div>
+    <div class="bc-attendance__stats-alert"><strong>{{ employees|filter(e => e.forgotten)|length }}</strong><span>{{ 'Not checked out'|t }}</span></div>
   </div>
   <div class="bc-directory-admin__search">
     <label for="bc-attendance-search">{{ 'Search employees'|t }}</label>
