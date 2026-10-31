@@ -90,3 +90,11 @@ function bc_staff_demo_update_11002(): string {
   return sprintf('Demo refreshed: %d absences, %d change requests, %d attendance events.',
     $result['absences'], $result['changes'], $result['attendance']);
 }
+
+/**
+ * Add a demonstration correction after the attendance audit table upgrade.
+ */
+function bc_staff_demo_update_11003(): string {
+  $count = \Drupal\bc_staff_demo\Service\DemoAttendanceCorrectionSeeder::seed();
+  return "Added {$count} demonstration attendance corrections.";
+}
