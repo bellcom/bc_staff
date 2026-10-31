@@ -7,6 +7,7 @@ use Drupal\Core\Url;
 use Drupal\bc_staff\Access\EmployeeAccess;
 use Drupal\bc_staff_absence\Access\AbsenceApprovalAccess;
 use Drupal\bc_staff_absence\Form\AbsenceDecisionForm;
+use Drupal\bc_staff_absence\Form\ApprovedVacationDecisionForm;
 use Drupal\Core\Database\Connection;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
@@ -40,6 +41,12 @@ final class AbsenceController extends ControllerBase {
       ->condition('uid', (int) $this->currentUser()->id())
       ->orderBy('start_date', 'DESC')
       ->execute()->fetchAll();
+    $pending_changes = [];
+    if ($this->staffDb->schema()->tableExists('bc_staff_absence_change')) {
+      $changes = $this->staffDb->select('bc_staff_absence_change', 'c')->fields('c', ['absence_id'])
+        ->condition('uid', (int) $this->currentUser()->id())->condition('state', 'pending')->execute();
+      foreach ($changes as $change) { $pending_changes[(int) $change->absence_id] = TRUE; }
+    }
     $items = [];
     foreach ($records as $record) {
       $items[] = [
@@ -48,6 +55,10 @@ final class AbsenceController extends ControllerBase {
         'to' => $record->end_date,
         'status' => $this->statusLabel($record->state),
         'status_key' => $record->state,
+        'change_url' => $record->type === 'vacation' && $record->state === 'approved'
+          && !isset($pending_changes[(int) $record->id])
+          ? Url::fromRoute('bc_staff_absence.approved_change', ['absence' => $record->id])->toString() : '',
+        'change_pending' => isset($pending_changes[(int) $record->id]),
         'edit_url' => $record->state === 'pending' && $record->type === 'vacation' ? Url::fromRoute('bc_staff_absence.edit', ['absence' => $record->id])->toString() : '',
         'cancel_url' => $record->state === 'pending' ? Url::fromRoute('bc_staff_absence.cancel', ['absence' => $record->id])->toString() : '',
       ];
@@ -95,6 +106,29 @@ final class AbsenceController extends ControllerBase {
         'status_key' => 'pending',
         'form' => $this->staffFormBuilder->getForm(AbsenceDecisionForm::class, $record->id),
       ];
+    }
+    if ($this->staffDb->schema()->tableExists('bc_staff_absence_change')) {
+      $changes = $this->staffDb->select('bc_staff_absence_change', 'c')->fields('c')
+        ->condition('state', 'pending')->orderBy('created', 'ASC')->execute();
+      foreach ($changes as $change) {
+        $absence = $this->staffDb->select('bc_staff_absence', 'a')->fields('a')
+          ->condition('id', $change->absence_id)->condition('state', 'approved')
+          ->condition('type', 'vacation')->execute()->fetchObject();
+        $employee = $absence ? $this->staffEntities->getStorage('user')->load($absence->uid) : NULL;
+        if (!$employee || (int) $change->uid !== (int) $absence->uid
+          || !AbsenceApprovalAccess::canReview($account, $manager, $employee)) {
+          continue;
+        }
+        $items[] = [
+          'employee' => $employee->getDisplayName(),
+          'type' => $change->kind === 'cancel' ? $this->t('Cancel approved vacation') : $this->t('Change vacation dates'),
+          'from' => $change->kind === 'dates' ? $change->start_date : $absence->start_date,
+          'to' => $change->kind === 'dates' ? $change->end_date : $absence->end_date,
+          'status' => $this->t('Pending'),
+          'status_key' => 'pending',
+          'form' => $this->staffFormBuilder->getForm(ApprovedVacationDecisionForm::class, (int) $change->id),
+        ];
+      }
     }
     return [
       '#theme' => 'bc_staff_absence_dashboard',
