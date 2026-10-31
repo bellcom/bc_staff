@@ -684,3 +684,30 @@ msgstr "Nej"
 
 msgid "Signed in user"
 msgstr "Indlogget bruger"
+
+msgid "Edit request"
+msgstr "Rediger ansøgning"
+
+msgid "Withdraw request"
+msgstr "Træk ansøgning tilbage"
+
+msgid "Save request"
+msgstr "Gem ansøgning"
+
+msgid "The request was withdrawn."
+msgstr "Ansøgningen er trukket tilbage."
+
+msgid "This request can no longer be withdrawn."
+msgstr "Ansøgningen kan ikke længere trækkes tilbage."
+
+msgid "This request can no longer be edited."
+msgstr "Ansøgningen kan ikke længere redigeres."
+
+msgid "Withdraw this pending absence request?"
+msgstr "Vil du trække denne afventende ansøgning tilbage?"
+
+msgid "You already have an absence covering one or more of these dates."
+msgstr "Du har allerede registreret fravær på en eller flere af disse datoer."
+
+msgid "Request updated."
+msgstr "Ansøgningen er opdateret."

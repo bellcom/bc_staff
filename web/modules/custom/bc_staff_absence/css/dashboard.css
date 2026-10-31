@@ -26,3 +26,28 @@
 .bc-staff-absence-form select,.bc-staff-absence-form input[type=date],.bc-staff-absence-form input[type=text]{border:1px solid #cfdae6;border-radius:10px;padding:12px 14px;background:#fff;color:#203753;max-width:100%}
 .bc-staff-absence-form .form-actions input{background:#184e82;color:#fff;border:0;border-radius:10px;padding:12px 20px;font-weight:700;cursor:pointer}
 @media(max-width:640px){.bc-absence__head{padding:20px}.bc-absence__items{padding:12px}.bc-absence__item{padding:15px}.bc-absence__main{align-items:flex-start}.bc-staff-absence-form{padding:18px}}
+
+/* BC Staff compact directory styling for absence pages. */
+.bc-absence{max-width:none;overflow:visible;border:0;border-radius:0;background:transparent;box-shadow:none}
+.bc-absence__head{padding:0;margin:0 0 16px;border:0;gap:10px}
+.bc-absence__eyebrow{font-size:10px;letter-spacing:.12em;margin:0 0 4px}
+.bc-absence__head h2{font-size:clamp(23px,2.1vw,30px);line-height:1.15;margin:0}
+.bc-absence__head p{font-size:12px;margin:4px 0 0}
+.bc-absence__add{display:inline-flex;align-items:center;justify-content:center;min-height:32px;box-sizing:border-box;padding:7px 11px;font-size:11px;line-height:1.25;border-radius:6px;background:#e9f2fd;color:#1366b6!important;font-weight:700;border:1px solid #dce8f6}
+.bc-absence__add:hover{background:#d9eafe}
+.bc-absence__items{padding:0;grid-template-columns:repeat(auto-fit,minmax(min(100%,310px),1fr));gap:12px}
+.bc-absence__item{padding:14px 16px;border:1px solid #dfe7f1;border-radius:9px;background:#fff;box-shadow:0 3px 10px rgba(31,66,100,.06)}
+.bc-absence__main{gap:10px;align-items:flex-start}
+.bc-absence__item h3{font-size:15px;margin:0 0 5px}
+.bc-absence__employee{font-size:12px;margin:0 0 5px}
+.bc-absence__dates{font-size:12px}
+.bc-absence__state{font-size:10px;padding:5px 8px;border-radius:14px}
+.bc-absence__actions{margin-top:12px;padding-top:9px;display:flex;align-items:center;flex-wrap:wrap;gap:7px}
+.bc-absence__actions form{gap:7px;margin:0}
+.bc-absence__actions input[type=submit],.bc-absence__actions button{box-sizing:border-box;min-height:32px;padding:7px 11px;border:1px solid #dce8f6;border-radius:6px;background:#e9f2fd;color:#1366b6;font-size:11px;font-weight:700}
+.bc-absence__actions input[type=submit]:hover,.bc-absence__actions button:hover{background:#d9eafe}
+.bc-staff-absence-form{max-width:740px;padding:18px 20px;border-radius:10px;box-shadow:0 3px 10px rgba(31,66,100,.06)}
+.bc-staff-absence-form .form-item{margin-bottom:12px}
+.bc-staff-absence-form select,.bc-staff-absence-form input[type=date],.bc-staff-absence-form input[type=text]{padding:8px 11px;border-radius:7px;min-height:38px}
+.bc-staff-absence-form .form-actions input{padding:9px 14px;font-size:12px;border-radius:7px;background:#1267ad}
+@media(max-width:640px){.bc-absence__head{padding:0}.bc-absence__items{grid-template-columns:1fr}.bc-absence__item{padding:13px}.bc-staff-absence-form{padding:14px}}
