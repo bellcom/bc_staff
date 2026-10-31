@@ -164,3 +164,12 @@ bc_staff.attendance_export:
     _title: 'Export attendance'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
+
+bc_staff.attendance_missing_checkout:
+  path: '/staff/fremmoede/manglende-ud/{user}'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\AttendanceMissingCheckoutForm'
+    _title: 'Register missing check-out'
+  requirements:
+    _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
+    user: '\d+'
