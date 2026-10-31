@@ -11,6 +11,7 @@ use Drupal\bc_staff_demo\Service\DemoAbsenceSeeder;
 use Drupal\bc_staff_demo\Service\DemoOrganization;
 use Drupal\bc_staff_demo\Service\DemoPortraits;
 use Drupal\bc_staff_demo\Service\DemoScenarioRefresh;
+use Drupal\bc_staff_demo\Service\DemoAttendanceCorrectionSeeder;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -183,11 +184,13 @@ final class DemoDataForm extends ConfirmFormBase {
       '@updated' => $updated,
     ]));
     $result = DemoScenarioRefresh::refresh();
+    $corrections = DemoAttendanceCorrectionSeeder::seed();
     $this->messenger()->addStatus($this->t('Demo scenarios rebuilt: @absences absences, @changes change requests and @attendance attendance events.', [
       '@absences' => $result['absences'],
       '@changes' => $result['changes'],
       '@attendance' => $result['attendance'],
     ]));
+    $this->messenger()->addStatus($this->t('Demo attendance corrections: @count.', ['@count' => $corrections]));
     $form_state->setRedirect('bc_staff.overview');
   }
 

@@ -804,3 +804,72 @@ msgstr "Ingen registreringer i perioden."
 
 msgid "Select a valid period of up to 90 days."
 msgstr "Vælg en gyldig periode på højst 90 dage."
+
+msgid "Correct attendance"
+msgstr "Ret fremmøderegistrering"
+
+msgid "Original registration"
+msgstr "Oprindelig registrering"
+
+msgid "Corrected date and time"
+msgstr "Korrigeret dato og tidspunkt"
+
+msgid "Reason for correction"
+msgstr "Begrundelse for rettelsen"
+
+msgid "Save correction"
+msgstr "Gem rettelse"
+
+msgid "Attendance correction saved."
+msgstr "Fremmøderegistreringen er rettet."
+
+msgid "Enter a valid time that is not in the future."
+msgstr "Angiv et gyldigt tidspunkt, som ikke ligger i fremtiden."
+
+msgid "A reason is required."
+msgstr "En begrundelse er påkrævet."
+
+msgid "Correct check-in"
+msgstr "Ret indtjekning"
+
+msgid "Correct check-out"
+msgstr "Ret udtjekning"
+
+msgid "Paired working hours"
+msgstr "Registrerede timer i komplette par"
+
+msgid "Hours"
+msgstr "Timer"
+
+msgid "Incomplete"
+msgstr "Ufuldstændig"
+
+msgid "Correction"
+msgstr "Rettelse"
+
+msgid "Download CSV"
+msgstr "Hent CSV"
+
+msgid "Changed by"
+msgstr "Ændret af"
+
+msgid "Changed at"
+msgstr "Ændret den"
+
+msgid "Export attendance"
+msgstr "Eksportér fremmøde"
+
+msgid "Register missing check-out"
+msgstr "Registrér manglende udtjekning"
+
+msgid "Missing check-out time"
+msgstr "Tidspunkt for manglende udtjekning"
+
+msgid "Last check-in"
+msgstr "Seneste indtjekning"
+
+msgid "Check-out must be after check-in and not in the future."
+msgstr "Udtjekning skal ligge efter indtjekning og må ikke være i fremtiden."
+
+msgid "Missing check-out registered."
+msgstr "Manglende udtjekning er registreret."

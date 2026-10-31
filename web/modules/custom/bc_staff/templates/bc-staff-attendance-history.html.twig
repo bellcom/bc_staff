@@ -22,7 +22,7 @@
             <img class="bc-employees__avatar" src="{{ person.photo }}" alt="" width="80" height="80" loading="lazy">
             <span class="bc-directory-admin__presence bc-directory-admin__presence--{{ person.present ? 'present' : 'absent' }}" aria-hidden="true"></span>
           </div>
-          <div class="bc-person__identity"><h3>{{ person.name }}</h3><p class="bc-directory-admin__role">{{ person.department }}</p><span class="bc-person__availability">{{ person.status }}</span>{% if person.forgotten %}<p class="bc-attendance__warning">{{ 'Last check-in: @time'|t({'@time': person.previous_time}) }}</p>{% endif %}</div>
+          <div class="bc-person__identity"><h3>{{ person.name }}</h3><p class="bc-directory-admin__role">{{ person.department }}</p><span class="bc-person__availability">{{ person.status }}</span>{% if person.forgotten %}<p class="bc-attendance__warning">{{ 'Last check-in: @time'|t({'@time': person.previous_time}) }}</p><a class="bc-attendance__missing-link" href="{{ person.missing_checkout_url }}">{{ 'Register missing check-out'|t }}</a>{% endif %}</div>
         </div>
         <div class="bc-person__meta">
           <div class="bc-person__meta-row"><span>{{ 'Location'|t }}</span><strong>{{ person.location ?: '—' }}</strong></div>

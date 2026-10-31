@@ -45,6 +45,9 @@ final class DemoScenarioRefresh {
     // Remove orphan change requests for marked demo owners as well.
     $db->delete('bc_staff_absence_change')->condition('uid', $uids, 'IN')->execute();
     $db->delete('bc_staff_absence')->condition('uid', $uids, 'IN')->execute();
+    if ($db->schema()->tableExists('bc_staff_attendance_correction')) {
+      $db->delete('bc_staff_attendance_correction')->condition('uid', $uids, 'IN')->execute();
+    }
     $db->delete('bc_staff_attendance')->condition('uid', $uids, 'IN')->execute();
 
     $today = new \DateTimeImmutable('today');
