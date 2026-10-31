@@ -81,6 +81,7 @@ final class AbsenceDecisionForm extends FormBase {
         'created' => $this->staffTime->getRequestTime(),
       ])->execute();
     }
+    if ($updated) { \Drupal\bc_staff_absence\Service\AbsenceNotifier::employee((int) $record->uid, $decision); }
     $this->messenger()->addStatus($this->t('Request updated.'));
     $form_state->setRedirect('bc_staff_absence.review');
   }

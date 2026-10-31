@@ -126,6 +126,7 @@ final class AbsenceForm extends FormBase {
         ->condition('type', 'vacation')
         ->condition('state', 'pending')
         ->execute();
+      if ($updated) { \Drupal\bc_staff_absence\Service\AbsenceNotifier::reviewers((int) $this->currentUser()->id(), 'changed'); }
       $this->messenger()->addStatus($updated
         ? $this->t('Request updated.') : $this->t('This request can no longer be edited.'));
       $form_state->setRedirect('bc_staff_absence.list');
@@ -143,6 +144,7 @@ final class AbsenceForm extends FormBase {
         'created' => $now,
         'changed' => $now,
       ])->execute();
+    if ($type === 'vacation') { \Drupal\bc_staff_absence\Service\AbsenceNotifier::reviewers((int) $this->currentUser()->id(), 'new'); }
     $this->messenger()->addStatus($this->t('Absence registered.'));
     $form_state->setRedirect('bc_staff_absence.list');
   }
