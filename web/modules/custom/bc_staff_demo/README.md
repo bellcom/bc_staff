@@ -47,3 +47,30 @@ Scenarios include: pending, approved, rejected vacation; sickness; child's sick 
 Test a vacation approval as a Næstved manager, verify that a Roskilde request cannot be reviewed by that manager, and test self-service history as an employee. Status data and absence reasons are intentionally separated.
 
 **Development-only.** Keep `bc_staff_demo` disabled on production systems.
+
+
+## Refresh all test scenarios (October 2026)
+
+After updating the repository, run Drupal database updates at `/update.php` (or `drush updatedb`).
+Update `bc_staff_demo_update_11002` refreshes records belonging to marked
+`bc_demo_*` accounts: absence registrations, approved-vacation change requests,
+audit events, touch check-ins and check-outs. The original demo users and logins
+remain; other accounts are untouched.
+
+For later repeatable resets, visit `/admin/config/bc-staff/demo` and confirm.
+The generator also creates any missing fictional organization and user fixtures
+before refreshing the scenarios.
+
+View:
+- `/staff` – employee directory and current presence.
+- `/staff/medarbejdere` – employee administration.
+- `/staff/fravaer` – personal absences and change requests.
+- `/staff/fravaer/godkend` – manager approval queue.
+- `/staff/kalender` – weekly/monthly vacation overview.
+- `/staff/touch/team` – team touch check-in/out.
+- `/staff/fremmoede` – attendance cards and audit history.
+- `/staff/fremmoede/rapport` – date-range attendance report.
+- `/staff/min-profil` – read-only employee profile/photo.
+
+Demo accounts have random initial passwords. Set a new password for the
+demo account you want to use before signing in.
