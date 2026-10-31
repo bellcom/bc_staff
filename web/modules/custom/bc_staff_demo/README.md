@@ -74,3 +74,16 @@ View:
 
 Demo accounts have random initial passwords. Set a new password for the
 demo account you want to use before signing in.
+
+## Correcting and reporting attendance
+
+Use `/staff/fremmoede/rapport` to review daily and period totals,
+paired check-in/out durations and export a semicolon-separated CSV.
+Choose 'Correct check-in' or 'Correct check-out' in the report to amend
+timestamps without changing original audit events. A reason is mandatory
+and previous corrections are visible in the correction form.
+Rebuilding demo data seeds a 15-minute correction for
+`bc_demo_employee_naestved_1`.
+
+Only complete same-day in/out pairs count towards hours; missing punches
+remain flagged. This is registered presence time, not payroll-ready work time.
