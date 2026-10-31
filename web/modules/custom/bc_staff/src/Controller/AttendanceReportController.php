@@ -121,7 +121,7 @@ final class AttendanceReportController extends ControllerBase {
       '#employees' => count($names),
       '#hours' => sprintf('%d:%02d', intdiv($total_minutes, 60), $total_minutes % 60),
       '#events' => array_sum(array_map(static fn ($days) => array_sum(array_map(static fn ($v) => $v['in'] + $v['out'], $days)), $counts)),
-      '#attached' => ['library' => ['bc_staff/attendance_history']],
+      '#attached' => ['library' => ['bc_staff/attendance_history', 'bc_staff/attendance_report']],
       '#cache' => ['contexts' => ['user', 'user.permissions', 'url.query_args'], 'max-age' => 0],
     ];
   }
