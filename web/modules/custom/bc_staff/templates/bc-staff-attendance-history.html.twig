@@ -2,6 +2,7 @@
   <header class="bc-employees__header">
     <div><p class="bc-employees__eyebrow">BC STAFF / {{ 'ATTENDANCE'|t }}</p><h2>{{ 'Attendance and history'|t }}</h2><p>{{ 'Daily presence and recent check-ins.'|t }}</p></div>
   </header>
+  <p class="bc-attendance__report-link"><a href="{{ path('bc_staff.attendance_report') }}">{{ 'Daily and period reports'|t }}</a></p>
   <div class="bc-attendance__stats">
     <div><strong>{{ employees|length }}</strong><span>{{ 'Employees'|t }}</span></div>
     <div><strong>{{ employees|filter(e => e.present)|length }}</strong><span>{{ 'Present'|t }}</span></div>

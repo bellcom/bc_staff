@@ -765,3 +765,42 @@ msgstr "Annullering afvist"
 
 msgid "Updated"
 msgstr "Opdateret"
+
+msgid "Attendance report"
+msgstr "Fremmøderapport"
+
+msgid "Daily and period attendance registrations."
+msgstr "Fremmøderegistreringer pr. dag og periode."
+
+msgid "Daily and period reports"
+msgstr "Dags- og perioderapporter"
+
+msgid "From date"
+msgstr "Fra dato"
+
+msgid "To date"
+msgstr "Til dato"
+
+msgid "Show report"
+msgstr "Vis rapport"
+
+msgid "Employee days with registrations"
+msgstr "Medarbejderdage med registreringer"
+
+msgid "Registrations in period"
+msgstr "Registreringer i perioden"
+
+msgid "First check-in"
+msgstr "Første indtjekning"
+
+msgid "Last check-out"
+msgstr "Sidste udtjekning"
+
+msgid "In / Out"
+msgstr "Ind / Ud"
+
+msgid "No registrations during this period."
+msgstr "Ingen registreringer i perioden."
+
+msgid "Select a valid period of up to 90 days."
+msgstr "Vælg en gyldig periode på højst 90 dage."

@@ -137,3 +137,13 @@ bc_staff.my_profile:
     _title: 'My profile'
   requirements:
     _user_is_logged_in: 'TRUE'
+
+bc_staff.attendance_report:
+  path: '/staff/fremmoede/rapport'
+  options:
+    _admin_route: FALSE
+  defaults:
+    _controller: '\Drupal\bc_staff\Controller\AttendanceReportController::listing'
+    _title: 'Attendance report'
+  requirements:
+    _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
