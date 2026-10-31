@@ -3,6 +3,7 @@
   <form method="get" class="bc-attendance__report-filter">
     <label>{{ 'From date'|t }} <input type="date" name="from" value="{{ from }}" required></label>
     <label>{{ 'To date'|t }} <input type="date" name="to" value="{{ to }}" required></label>
+    <a class="bc-attendance__export" href="{{ path('bc_staff.attendance_export', {}, {'query': {'from': from, 'to': to}}) }}">{{ 'Download CSV'|t }}</a>
     <button type="submit">{{ 'Show report'|t }}</button>
     <a href="{{ path('bc_staff.attendance_history') }}">{{ 'Attendance and history'|t }}</a>
   </form>
