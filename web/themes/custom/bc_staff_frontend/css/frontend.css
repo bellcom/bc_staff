@@ -121,3 +121,29 @@ body:has(.bc-app) .messages__list,
 body:has(.bc-app) .messages__item{color:inherit!important}
 body:has(.bc-app) .messages .messages__close,
 body:has(.bc-app) .messages button[aria-label]{color:#43617d!important}
+
+/* Align Drupal notices with BC Staff cards, retaining semantic status icons. */
+body:has(.bc-app) .messages,
+body:has(.bc-app) .messages--status,
+body:has(.bc-app) .messages--warning,
+body:has(.bc-app) .messages--error,
+body:has(.bc-app) [data-drupal-messages] .messages{
+  border:1px solid #dce7f3!important;
+  border-left:1px solid #dce7f3!important;
+  box-shadow:none!important;
+  border-radius:14px!important;
+  padding:14px 46px 14px 52px!important;
+  min-height:60px;
+  display:flex;
+  align-items:center;
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+  font-size:13px!important;
+  font-weight:500;
+  line-height:1.45!important;
+  background-position:16px center!important;
+}
+body:has(.bc-app) .messages--status{--messages-icon-color:#239653}
+body:has(.bc-app) .messages--warning,
+body:has(.bc-app) .messages--error{border-left-color:#dce7f3!important}
+body:has(.bc-app) .messages__content{width:100%}
+body:has(.bc-app) .messages__list{margin-top:0;margin-bottom:0}
