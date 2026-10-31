@@ -56,13 +56,12 @@ final class AttendanceReportController extends ControllerBase {
       $query = $db->select('bc_staff_attendance', 'a');
       $query->fields('a', ['id', 'uid', 'action', 'created', 'source', 'actor_uid'])
         ->condition('uid', array_keys($names), 'IN')
-        ->condition('created', $from, '>=')
-        ->condition('created', $to, '<')
         ->orderBy('created', 'ASC')->orderBy('id', 'ASC');
       foreach ($query->execute() as $event) {
         if (!in_array($event->action, ['in', 'out'], TRUE)) { continue; }
         $event->effective = $corrections[(int) $event->id] ?? (int) $event->created;
         $uid = (int) $event->uid;
+        if ($event->effective < $from || $event->effective >= $to) { continue; }
         $date = (new \DateTimeImmutable('@' . $event->effective))->setTimezone($tz)->format('Y-m-d');
         if (!isset($counts[$uid][$date])) { $counts[$uid][$date] = ['in' => 0, 'out' => 0, 'first' => '', 'last' => '', 'records' => []]; }
         $counts[$uid][$date][$event->action]++;
