@@ -96,6 +96,15 @@ final class AttendanceReportController extends ControllerBase {
         }
         if ($open !== NULL) { $incomplete = TRUE; }
         $total_minutes += $minutes;
+        $first_in = NULL;
+        $last_out = NULL;
+        foreach ($summary['records'] as $event) {
+          $time = (new \DateTimeImmutable('@' . $event->effective))->setTimezone($tz)->format('H:i');
+          if ($event->action === 'in' && $first_in === NULL) { $first_in = $time; }
+          if ($event->action === 'out') { $last_out = $time; }
+        }
+        $summary['first'] = $first_in ?? '';
+        $summary['last'] = $last_out ?? '';
         unset($summary['records']);
         $summary['duration'] = sprintf('%d:%02d', intdiv($minutes, 60), $minutes % 60);
         $summary['incomplete'] = $incomplete;
