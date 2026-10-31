@@ -108,7 +108,8 @@ final class AttendanceHistoryController extends ControllerBase {
     foreach ($names as $uid => $name) {
       $event = $latest[$uid] ?? NULL;
       $last = $last_overall[$uid] ?? NULL;
-      $forgotten = $last && $last->action === 'in' && $last->created < $start;
+      $forgotten = $last && $last->action === 'in' && $last->created < $start
+        && $current_status[$uid] === 'present';
       $employees[] = [
         'name' => $name,
         'photo' => $photos[$uid],
