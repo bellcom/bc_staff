@@ -36,6 +36,7 @@ function bc_staff_frontend_preprocess_page(array &$variables): void {
       }
     }
   }
+  $variables['bc_staff_notifications_enabled'] = \Drupal::moduleHandler()->moduleExists('bc_staff_absence');
   $variables['bc_staff_notification_count'] = 0;
   if ($current_user->isAuthenticated() && \Drupal::moduleHandler()->moduleExists('bc_staff_absence')
     && \Drupal::database()->schema()->tableExists('bc_staff_notification')) {
