@@ -20,6 +20,9 @@
           </div>
           <span class="bc-absence__state bc-absence__state--{{ item.status_key }}">{{ item.status }}</span>
         </div>
+        {% if not review and item.cancel_url %}
+          <div class="bc-absence__actions"><a class="bc-absence__add" href="{{ item.cancel_url }}">{{ 'Withdraw request'|t }}</a></div>
+        {% endif %}
         {% if review and item.form %}
           <div class="bc-absence__actions">{{ item.form }}</div>
         {% endif %}
