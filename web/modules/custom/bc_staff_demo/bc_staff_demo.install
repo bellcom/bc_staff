@@ -79,3 +79,14 @@ function bc_staff_demo_update_11001(): string {
 
   return "Refreshed {$created} demo absence scenarios for " . count($accounts) . ' fictional accounts.';
 }
+
+/**
+ * Refreshes test scenarios for approved vacation workflow and attendance.
+ *
+ * This is intentionally destructive for marked fictional demo users only.
+ */
+function bc_staff_demo_update_11002(): string {
+  $result = \Drupal\bc_staff_demo\Service\DemoScenarioRefresh::refresh();
+  return sprintf('Demo refreshed: %d absences, %d change requests, %d attendance events.',
+    $result['absences'], $result['changes'], $result['attendance']);
+}
