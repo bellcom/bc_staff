@@ -63,7 +63,7 @@ final class AbsenceDecisionForm extends FormBase {
       throw new AccessDeniedHttpException();
     }
     $decision = $form_state->getTriggeringElement()['#name'] === 'approve' ? 'approved' : 'rejected';
-    $this->staffDb->update('bc_staff_absence')
+    $updated = $this->staffDb->update('bc_staff_absence')
       ->fields([
         'state' => $decision,
         'reviewed_by' => (int) $account->id(),
@@ -72,6 +72,15 @@ final class AbsenceDecisionForm extends FormBase {
       ->condition('id', $id)
       ->condition('state', 'pending')
       ->execute();
+    if ($updated && $this->staffDb->schema()->tableExists('bc_staff_absence_audit')) {
+      $this->staffDb->insert('bc_staff_absence_audit')->fields([
+        'absence_id' => $id,
+        'actor_uid' => (int) $account->id(),
+        'action' => 'vacation_' . $decision,
+        'details' => '{}',
+        'created' => $this->staffTime->getRequestTime(),
+      ])->execute();
+    }
     $this->messenger()->addStatus($this->t('Request updated.'));
     $form_state->setRedirect('bc_staff_absence.review');
   }
