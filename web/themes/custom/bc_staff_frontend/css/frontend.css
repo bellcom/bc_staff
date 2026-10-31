@@ -86,3 +86,38 @@ body:has(.bc-app){background:#f3f6fb;color:#193450}
 .bc-app .bc-directory-admin__drawer>header h2{font-size:21px;margin:0}
 .bc-app .bc-directory-admin__drawer>header button{border:0;background:transparent;font-size:26px;cursor:pointer}
 .bc-app .bc-directory-admin__drawer iframe{width:100%;border:0;flex:1;min-height:0}
+
+/* Global BC Staff notices: same soft-blue card language as the identity badge. */
+body:has(.bc-app) .messages,
+body:has(.bc-app) .messages--status,
+body:has(.bc-app) .messages--warning,
+body:has(.bc-app) .messages--error,
+body:has(.bc-app) [data-drupal-messages] .messages{
+  box-sizing:border-box;
+  background:#f2f6fa!important;
+  color:#203753!important;
+  border:1px solid #dce7f3!important;
+  border-left:4px solid #1267ad!important;
+  border-radius:14px!important;
+  box-shadow:0 3px 12px rgba(31,66,100,.055)!important;
+  padding:15px 48px 15px 54px!important;
+  font-size:14px;
+  line-height:1.5;
+}
+body:has(.bc-app) .messages--status{--messages-icon-color:#1267ad}
+body:has(.bc-app) .messages--warning{
+  background:#fff8ea!important;
+  border-left-color:#b87925!important;
+  --messages-icon-color:#b87925;
+}
+body:has(.bc-app) .messages--error{
+  background:#fff1f1!important;
+  border-left-color:#b23b48!important;
+  --messages-icon-color:#b23b48;
+}
+body:has(.bc-app) .messages a{color:#1267ad!important}
+body:has(.bc-app) .messages__content,
+body:has(.bc-app) .messages__list,
+body:has(.bc-app) .messages__item{color:inherit!important}
+body:has(.bc-app) .messages .messages__close,
+body:has(.bc-app) .messages button[aria-label]{color:#43617d!important}
