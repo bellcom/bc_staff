@@ -48,6 +48,7 @@ final class AbsenceController extends ControllerBase {
         'to' => $record->end_date,
         'status' => $this->statusLabel($record->state),
         'status_key' => $record->state,
+        'edit_url' => $record->state === 'pending' && $record->type === 'vacation' ? Url::fromRoute('bc_staff_absence.edit', ['absence' => $record->id])->toString() : '',
         'cancel_url' => $record->state === 'pending' ? Url::fromRoute('bc_staff_absence.cancel', ['absence' => $record->id])->toString() : '',
       ];
     }

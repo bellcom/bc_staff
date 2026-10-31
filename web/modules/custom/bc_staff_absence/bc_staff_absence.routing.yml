@@ -38,3 +38,12 @@ bc_staff_absence.cancel:
   requirements:
     _user_is_logged_in: 'TRUE'
     absence: '\d+'
+
+bc_staff_absence.edit:
+  path: '/staff/fravaer/{absence}/rediger'
+  defaults:
+    _form: '\Drupal\bc_staff_absence\Form\AbsenceForm'
+    _title: 'Edit request'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    absence: '\d+'
