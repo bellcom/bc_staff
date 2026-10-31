@@ -14,7 +14,28 @@ function bc_staff_frontend_preprocess_page(array &$variables): void {
   $route = \Drupal::routeMatch()->getRouteName();
   $variables['bc_staff_panel'] = $route === 'bc_staff.employee_edit'
     && \Drupal::request()->query->get('panel') === '1';
-  $variables['bc_staff_user_name'] = \Drupal::currentUser()->getDisplayName();
+  $current_user = \Drupal::currentUser();
+  $variables['bc_staff_user_name'] = $current_user->getDisplayName();
+  $variables['bc_staff_user_login'] = '';
+  $variables['bc_staff_user_role'] = '';
+  $variables['bc_staff_user_department'] = '';
+  if ($current_user->isAuthenticated()) {
+    $account = \Drupal::entityTypeManager()->getStorage('user')->load($current_user->id());
+    if ($account) {
+      $variables['bc_staff_user_login'] = $account->getAccountName();
+      $variables['bc_staff_user_name'] = $account->hasField('field_bc_staff_display_name')
+        && !$account->get('field_bc_staff_display_name')->isEmpty()
+        ? (string) $account->get('field_bc_staff_display_name')->value
+        : $account->getDisplayName();
+      $variables['bc_staff_user_role'] = $current_user->hasRole('bc_staff_admin')
+        ? t('Administrator') : ($current_user->hasRole('bc_staff_manager')
+          ? t('Manager') : t('Employee'));
+      if ($account->hasField('field_bc_staff_department')
+        && !$account->get('field_bc_staff_department')->isEmpty()) {
+        $variables['bc_staff_user_department'] = $account->get('field_bc_staff_department')->entity?->label() ?? '';
+      }
+    }
+  }
   $links = [
     'bc_staff.overview' => t('Overview'),
     'bc_staff.mobile' => t('My status'),
