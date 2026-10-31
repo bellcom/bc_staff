@@ -40,6 +40,27 @@ final class AttendanceCorrectionForm extends FormBase {
       ->range(0, 1)->execute()->fetchField();
     $timestamp = $latest === FALSE ? (int) $event->created : (int) $latest;
     $form_state->set('attendance_id', (int) $event->id);
+    $previous = $db->select('bc_staff_attendance_correction', 'c')
+      ->fields('c', ['actor_uid', 'corrected_at', 'reason', 'created'])
+      ->condition('event_id', (int) $event->id)->orderBy('id', 'DESC')->execute()->fetchAll();
+    if ($previous) {
+      $users = \Drupal::entityTypeManager()->getStorage('user');
+      $rows = [];
+      foreach ($previous as $entry) {
+        $actor = $users->load($entry->actor_uid);
+        $rows[] = [
+          $actor?->getDisplayName() ?? (string) $this->t('Unknown'),
+          \Drupal::service('date.formatter')->format((int) $entry->created, 'custom', 'd-m-Y H:i'),
+          \Drupal::service('date.formatter')->format((int) $entry->corrected_at, 'custom', 'd-m-Y H:i'),
+          $entry->reason,
+        ];
+      }
+      $form['history'] = [
+        '#type' => 'table',
+        '#header' => [$this->t('Changed by'), $this->t('Changed at'), $this->t('Corrected date and time'), $this->t('Reason for correction')],
+        '#rows' => $rows,
+      ];
+    }
     $form['#attributes']['class'][] = 'bc-staff-absence-form';
     $form['original'] = ['#type' => 'item', '#title' => $this->t('Original registration'),
       '#markup' => \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'd-m-Y H:i')];
