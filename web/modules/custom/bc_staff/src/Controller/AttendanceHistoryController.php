@@ -56,6 +56,7 @@ final class AttendanceHistoryController extends ControllerBase {
     $db = \Drupal::database();
     $latest = [];
     $today_events = [];
+    $last_overall = [];
     if ($employee_ids && $db->schema()->tableExists('bc_staff_attendance')) {
       $query = $db->select('bc_staff_attendance', 'a');
       $query->fields('a', ['id', 'uid', 'actor_uid', 'action', 'created', 'source'])
@@ -63,6 +64,24 @@ final class AttendanceHistoryController extends ControllerBase {
         ->orderBy('created', 'DESC')
         ->orderBy('id', 'DESC')
         ->range(0, 200);
+      // Latest event across all dates, not just today's page of history.
+      // IDs follow insert order; get the last event for each employee.
+      $latest_ids = $db->select('bc_staff_attendance', 'l')
+        ->fields('l', ['uid'])
+        ->condition('uid', $employee_ids, 'IN')
+        ->groupBy('uid');
+      $latest_ids->addExpression('MAX(id)', 'last_id');
+      $event_ids = [];
+      foreach ($latest_ids->execute() as $last_row) {
+        $event_ids[] = (int) $last_row->last_id;
+      }
+      if ($event_ids) {
+        $last_query = $db->select('bc_staff_attendance', 'last');
+        foreach ($last_query->fields('last', ['id', 'uid', 'action', 'created'])
+          ->condition('id', array_values($event_ids), 'IN')->execute() as $last_event) {
+          $last_overall[$last_event->uid] = $last_event;
+        }
+      }
       foreach ($query->execute() as $event) {
         $today_events[] = $event;
         if ($event->created >= $start && $event->created < $end
@@ -88,13 +107,19 @@ final class AttendanceHistoryController extends ControllerBase {
     $employees = [];
     foreach ($names as $uid => $name) {
       $event = $latest[$uid] ?? NULL;
+      $last = $last_overall[$uid] ?? NULL;
+      $forgotten = $last && $last->action === 'in' && $last->created < $start
+        && $current_status[$uid] === 'present';
       $employees[] = [
         'name' => $name,
         'photo' => $photos[$uid],
         'department' => $departments[$uid],
         'location' => $locations[$uid],
         'present' => $current_status[$uid] === 'present',
-        'status' => (string) ($current_status[$uid] === 'present' ? $this->t('Present') : $this->t('Not present')),
+        'status' => (string) ($forgotten ? $this->t('Check-out missing')
+          : ($current_status[$uid] === 'present' ? $this->t('Present') : $this->t('Not present'))),
+        'forgotten' => (bool) $forgotten,
+        'previous_time' => $forgotten ? \Drupal::service('date.formatter')->format((int) $last->created, 'custom', 'd-m-Y H:i') : '',
         'action' => $event?->action ?? '',
         'last_action' => $event ? (string) ($event->action === 'in' ? $this->t('Checked in') : $this->t('Checked out')) : (string) $this->t('No registration today'),
         'last_time' => $event ? \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'H:i') : '',

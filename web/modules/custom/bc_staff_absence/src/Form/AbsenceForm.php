@@ -76,6 +76,17 @@ final class AbsenceForm extends FormBase {
     $end = (string) $form_state->getValue('end_date');
     if ($start > $end) {
       $form_state->setErrorByName('end_date', $this->t('The end date must not precede the start date.'));
+      return;
+    }
+    // Prevent duplicate and conflicting live registrations.
+    $query = $this->staffDb->select('bc_staff_absence', 'a');
+    $conflicts = $query->condition('uid', (int) $this->currentUser()->id())
+      ->condition('state', ['pending', 'approved', 'registered'], 'IN')
+      ->condition('start_date', $end, '<=')
+      ->condition('end_date', $start, '>=')
+      ->countQuery()->execute()->fetchField();
+    if ($conflicts) {
+      $form_state->setErrorByName('start_date', $this->t('You already have an absence covering one or more of these dates.'));
     }
   }
 
