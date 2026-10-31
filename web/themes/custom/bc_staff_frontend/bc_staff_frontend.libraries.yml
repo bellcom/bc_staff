@@ -3,3 +3,8 @@ global:
   css:
     theme:
       css/frontend.css: {}
+  js:
+    js/self-profile.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
