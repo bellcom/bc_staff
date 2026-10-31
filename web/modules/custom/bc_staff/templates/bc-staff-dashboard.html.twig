@@ -10,6 +10,7 @@
       {% if employees_url %}<a class="bc-staff__action" href="{{ employees_url }}">{{ 'Manage employees'|t }}</a>{% endif %}
     </div>
   </header>
+  <div class="bc-directory__filters">
   <div class="bc-directory__search">
     <label for="bc-staff-search">{{ 'Search employees'|t }}</label>
     <input id="bc-staff-search" data-bc-staff-search type="search" placeholder="{{ 'Search by name, department or house'|t }}">
@@ -27,6 +28,7 @@
       {% for status in statuses %}<option value="{{ status.key }}">{{ status.label }}</option>{% endfor %}
     </select>
     <button class="bc-directory__clear" type="button" data-bc-staff-clear>{{ 'Clear filters'|t }}</button>
+  </div>
   </div>
   <div class="bc-directory__results">
     <span aria-live="polite" data-bc-staff-count></span>
