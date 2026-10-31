@@ -147,3 +147,12 @@ bc_staff.attendance_report:
     _title: 'Attendance report'
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
+
+bc_staff.attendance_correction:
+  path: '/staff/fremmoede/ret/{attendance}'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\AttendanceCorrectionForm'
+    _title: 'Correct attendance'
+  requirements:
+    _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
+    attendance: '\d+'
