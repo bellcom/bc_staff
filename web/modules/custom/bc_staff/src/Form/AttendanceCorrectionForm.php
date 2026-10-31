@@ -62,10 +62,11 @@ final class AttendanceCorrectionForm extends FormBase {
       ];
     }
     $form['#attributes']['class'][] = 'bc-staff-absence-form';
+    $form['#attached']['library'][] = 'bc_staff/attendance_history';
     $form['original'] = ['#type' => 'item', '#title' => $this->t('Original registration'),
       '#markup' => \Drupal::service('date.formatter')->format((int) $event->created, 'custom', 'd-m-Y H:i')];
     $form['corrected_at'] = ['#type' => 'datetime', '#title' => $this->t('Corrected date and time'),
-      '#required' => TRUE, '#default_value' => \Drupal\Core\Datetime\DrupalDateTime::createFromTimestamp($timestamp)];
+      '#required' => TRUE, '#default_value' => (new \Drupal\Core\Datetime\DrupalDateTime('now'))->setTimestamp($timestamp)];
     $form['reason'] = ['#type' => 'textarea', '#title' => $this->t('Reason for correction'),
       '#required' => TRUE, '#maxlength' => 500];
     $form['actions']['submit'] = ['#type' => 'submit', '#value' => $this->t('Save correction')];
