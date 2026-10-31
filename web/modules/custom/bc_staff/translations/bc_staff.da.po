@@ -873,3 +873,36 @@ msgstr "Udtjekning skal ligge efter indtjekning og må ikke være i fremtiden."
 
 msgid "Missing check-out registered."
 msgstr "Manglende udtjekning er registreret."
+
+msgid "New vacation request"
+msgstr "Ny ferieansøgning"
+
+msgid "Vacation request updated"
+msgstr "Ferieansøgning opdateret"
+
+msgid "Vacation change awaiting approval"
+msgstr "Ferieændring afventer godkendelse"
+
+msgid "Vacation request approved"
+msgstr "Ferieansøgning godkendt"
+
+msgid "Vacation request rejected"
+msgstr "Ferieansøgning afvist"
+
+msgid "Vacation change approved"
+msgstr "Ferieændring godkendt"
+
+msgid "Vacation change rejected"
+msgstr "Ferieændring afvist"
+
+msgid "Vacation cancellation approved"
+msgstr "Annullering af ferie godkendt"
+
+msgid "Vacation cancellation rejected"
+msgstr "Annullering af ferie afvist"
+
+msgid "A BC Staff vacation request has been updated. Sign in to review the details: @url"
+msgstr "En ferieanmodning i BC Staff er blevet opdateret. Log ind for at se detaljerne: @url"
+
+msgid "A vacation request for @employee requires your review. Sign in: @url"
+msgstr "En ferieanmodning fra @employee afventer din behandling. Log ind: @url"
