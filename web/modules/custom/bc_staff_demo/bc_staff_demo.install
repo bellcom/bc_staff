@@ -98,3 +98,15 @@ function bc_staff_demo_update_11003(): string {
   $count = \Drupal\bc_staff_demo\Service\DemoAttendanceCorrectionSeeder::seed();
   return "Added {$count} demonstration attendance corrections.";
 }
+
+/**
+ * Rebuild current demonstration attendance cases including forgotten check-outs.
+ *
+ * This deliberately resets only marked bc_demo_* accounts' demonstration data.
+ */
+function bc_staff_demo_update_11004(): string {
+  $result = \Drupal\bc_staff_demo\Service\DemoScenarioRefresh::refresh();
+  $corrections = \Drupal\bc_staff_demo\Service\DemoAttendanceCorrectionSeeder::seed();
+  return sprintf('Demo reset: %d attendance events, %d absences, %d change requests, %d corrected check-outs.',
+    $result['attendance'], $result['absences'], $result['changes'], $corrections);
+}

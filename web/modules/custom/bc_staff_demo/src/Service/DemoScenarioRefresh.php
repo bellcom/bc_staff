@@ -117,13 +117,17 @@ final class DemoScenarioRefresh {
     }
 
     $attendance_fixtures = [
+      ['employee_naestved_1', -3, 8, 0, 'in'],
+      ['employee_naestved_1', -3, 16, 0, 'out'],
       ['employee_naestved_1', -2, 8, 5, 'in'],
       ['employee_naestved_1', -2, 16, 10, 'out'],
       ['employee_naestved_2', -1, 8, 10, 'in'],
       ['employee_naestved_2', -1, 15, 35, 'out'],
-      ['employee_naestved_3', 0, 8, 15, 'in'],
+      ['employee_naestved_3', -1, 8, 15, 'in'],
       ['employee_roskilde_1', -1, 8, 0, 'in'],
       ['employee_roskilde_1', -1, 16, 0, 'out'],
+      ['employee_roskilde_2', -3, 8, 30, 'in'],
+      ['employee_roskilde_2', -3, 16, 0, 'out'],
       ['employee_roskilde_2', -1, 8, 30, 'in'],
       ['employee_roskilde_3', 0, 9, 10, 'in'],
       ['employee_roskilde_3', 0, 11, 0, 'out'],
