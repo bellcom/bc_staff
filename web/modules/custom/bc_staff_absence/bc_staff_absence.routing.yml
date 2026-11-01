@@ -72,3 +72,19 @@ bc_staff_absence.notification_open:
   requirements:
     _user_is_logged_in: 'TRUE'
     notification: '\d+'
+
+bc_staff_absence.notification_mark_all:
+  path: '/staff/notifikationer/laest-alle'
+  defaults:
+    _controller: '\Drupal\bc_staff_absence\Controller\NotificationController::markAll'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    _method: 'POST'
+
+bc_staff_absence.notification_status:
+  path: '/staff/notifikationer/status'
+  defaults:
+    _controller: '\Drupal\bc_staff_absence\Controller\NotificationController::status'
+  requirements:
+    _user_is_logged_in: 'TRUE'
+    _method: 'GET'
