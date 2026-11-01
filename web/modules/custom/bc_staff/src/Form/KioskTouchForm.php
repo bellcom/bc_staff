@@ -57,7 +57,7 @@ final class KioskTouchForm extends FormBase {
         'data-bc-touch-card' => '', 'data-bc-touch-name' => mb_strtolower($name)]];
       $card['top']['photo'] = ['#theme' => 'image', '#uri' => StaffPhoto::url($employee, $file_urls, $fallback),
         '#alt' => '', '#attributes' => ['class' => ['bc-employees__avatar']]];
-      $card['top']['name'] = ['#type' => 'html_tag', '#tag' => 'h3', '#value' => $name];
+      $card['top']['name'] = ['#type' => 'html_tag', '#tag' => 'h3', '#value' => htmlspecialchars($name, ENT_QUOTES, 'UTF-8')];
       $card['top']['status'] = ['#type' => 'html_tag', '#tag' => 'p',
         '#value' => $status === 'present' ? $this->t('Present') : $this->t('Not checked in'),
         '#attributes' => ['class' => ['bc-touch-directory__status']]];
