@@ -38,11 +38,24 @@ function bc_staff_frontend_preprocess_page(array &$variables): void {
   }
   $variables['bc_staff_notifications_enabled'] = \Drupal::moduleHandler()->moduleExists('bc_staff_absence');
   $variables['bc_staff_notification_count'] = 0;
+  $variables['bc_staff_notification_preview'] = [];
   if ($current_user->isAuthenticated() && \Drupal::moduleHandler()->moduleExists('bc_staff_absence')
     && \Drupal::database()->schema()->tableExists('bc_staff_notification')) {
     $variables['bc_staff_notification_count'] = (int) \Drupal::database()->select('bc_staff_notification', 'n')
       ->condition('uid', (int) $current_user->id())->isNull('read_at')
       ->countQuery()->execute()->fetchField();
+    $query = \Drupal::database()->select('bc_staff_notification', 'n');
+    $records = $query->fields('n', ['id', 'message', 'created', 'read_at'])
+      ->condition('uid', (int) $current_user->id())
+      ->orderBy('created', 'DESC')->orderBy('id', 'DESC')->range(0, 5)->execute();
+    foreach ($records as $record) {
+      $variables['bc_staff_notification_preview'][] = [
+        'message' => $record->message,
+        'time' => \Drupal::service('date.formatter')->format((int) $record->created, 'short'),
+        'unread' => $record->read_at === NULL,
+        'url' => Url::fromRoute('bc_staff_absence.notification_open', ['notification' => $record->id])->toString(),
+      ];
+    }
   }
   $links = [
     'bc_staff.overview' => t('Overview'),
