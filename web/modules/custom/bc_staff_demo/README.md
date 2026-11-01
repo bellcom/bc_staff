@@ -102,3 +102,13 @@ remain flagged. This is registered presence time, not payroll-ready work time.
 Use a period of at least the last 4 days on `/staff/fremmoede/rapport`.
 Rebuild repeatedly at `/admin/config/bc-staff/demo`; all generated data
 for marked fictional demo accounts is reset.
+
+### Repeatable notification inbox testing
+
+The demo administration refresh now also rebuilds notifications for marked
+`bc_demo_*` accounts. Næstved manager receives five messages (three unread),
+Roskilde manager receives three (two unread), and four demo employees receive
+decision messages with mixed read/unread status. Ordinary accounts are untouched.
+Use `drush updatedb -y` once for update 11006, or refresh repeatedly using
+`/admin/config/bc-staff/demo`. The refreshed inbox intentionally resets read
+state of marked demo accounts.
