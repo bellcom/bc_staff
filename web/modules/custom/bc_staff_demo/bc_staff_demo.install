@@ -146,3 +146,11 @@ function bc_staff_demo_update_11005(): string {
   }
   return "Created {$created} fictional in-app notifications.";
 }
+
+/**
+ * Build richer, repeatable in-app notification fixtures for demo accounts.
+ */
+function bc_staff_demo_update_11006(): string {
+  $count = \Drupal\bc_staff_demo\Service\DemoNotificationSeeder::refresh();
+  return "Refreshed {$count} fictional notifications.";
+}
