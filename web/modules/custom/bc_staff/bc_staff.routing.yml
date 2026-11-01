@@ -173,3 +173,20 @@ bc_staff.attendance_missing_checkout:
   requirements:
     _custom_access: '\Drupal\bc_staff\Access\EmployeeAccess::access'
     user: '\d+'
+
+bc_staff.kiosk_admin:
+  path: '/staff/terminaler'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\KioskAdminForm'
+    _title: 'Touch terminals'
+  requirements:
+    _permission: 'administer bc staff employees'
+
+bc_staff.kiosk:
+  path: '/staff/terminal/{token}'
+  defaults:
+    _form: '\Drupal\bc_staff\Form\KioskTouchForm'
+    _title: 'Check in / Check out'
+  requirements:
+    _access: 'TRUE'
+    token: '[a-f0-9]{64}'

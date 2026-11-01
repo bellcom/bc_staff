@@ -94,3 +94,8 @@ attendance_report:
   dependencies:
     - core/drupal
     - core/once
+
+kiosk:
+  css:
+    theme:
+      css/kiosk.css: {}

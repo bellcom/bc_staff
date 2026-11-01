@@ -1,0 +1,14 @@
+/* Full-screen, tablet-friendly shared attendance terminal. */
+body:has(.bc-app--panel .bc-touch-directory){background:#f2f6fb}
+.bc-app--panel:has(.bc-touch-directory){min-height:100vh;display:block}
+.bc-app--panel:has(.bc-touch-directory) .bc-app__main{padding:24px clamp(14px,3vw,48px);margin:0;max-width:none;width:100%;box-sizing:border-box}
+.bc-app--panel .bc-touch-directory{max-width:1500px}
+.bc-app--panel .bc-touch-directory .bc-employees__header h2{font-size:clamp(23px,3vw,36px)}
+.bc-app--panel .bc-touch-directory .bc-employees__grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:18px}
+.bc-app--panel .bc-touch-directory .bc-touch-directory__card{min-height:235px;display:flex;flex-direction:column;padding:16px;border-radius:15px}
+.bc-app--panel .bc-touch-directory .bc-employees__avatar{width:88px;height:88px;object-fit:cover;border-radius:50%}
+.bc-app--panel .bc-touch-directory .bc-touch-directory__actions{margin-top:auto}
+.bc-app--panel .bc-touch-directory .bc-touch-directory__button{min-height:66px;font-size:20px;touch-action:manipulation}
+.bc-app--panel .bc-touch-directory input[data-bc-touch-search]{min-height:52px;font-size:17px}
+@media(max-width:600px){.bc-app--panel:has(.bc-touch-directory) .bc-app__main{padding:14px}.bc-app--panel .bc-touch-directory .bc-employees__grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.bc-app--panel .bc-touch-directory .bc-touch-directory__card{padding:10px;min-height:200px}.bc-app--panel .bc-touch-directory .bc-touch-directory__button{font-size:18px;min-height:56px}}
+@media(max-width:370px){.bc-app--panel .bc-touch-directory .bc-employees__grid{grid-template-columns:1fr}}

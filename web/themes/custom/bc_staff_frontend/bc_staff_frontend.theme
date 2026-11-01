@@ -12,7 +12,7 @@ use Drupal\Core\Url;
  */
 function bc_staff_frontend_preprocess_page(array &$variables): void {
   $route = \Drupal::routeMatch()->getRouteName();
-  $variables['bc_staff_panel'] = in_array($route, ['bc_staff.employee_edit', 'bc_staff.my_profile'], TRUE)
+  $variables['bc_staff_panel'] = in_array($route, ['bc_staff.employee_edit', 'bc_staff.my_profile', 'bc_staff.kiosk'], TRUE)
     && \Drupal::request()->query->get('panel') === '1';
   $current_user = \Drupal::currentUser();
   $variables['bc_staff_user_name'] = $current_user->getDisplayName();
@@ -58,6 +58,7 @@ function bc_staff_frontend_preprocess_page(array &$variables): void {
     }
   }
   $links = [
+    'bc_staff.kiosk_admin' => t('Touch terminals'),
     'bc_staff.overview' => t('Overview'),
     'bc_staff.mobile' => t('My status'),
     'bc_staff.touch' => t('Check in / Check out'),
