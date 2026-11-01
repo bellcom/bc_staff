@@ -11,7 +11,7 @@
 function bc_staff_absence_theme(): array {
   return [
     'bc_staff_notifications' => [
-      'variables' => ['items' => []],
+      'variables' => ['items' => [], 'unread_only' => FALSE, 'unread_count' => 0, 'mark_all_token' => ''],
       'template' => 'bc-staff-notifications',
     ],
     'bc_staff_absence_dashboard' => [

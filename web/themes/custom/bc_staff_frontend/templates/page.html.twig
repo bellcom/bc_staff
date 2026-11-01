@@ -15,18 +15,20 @@
       <div class="bc-app__header-inner">
         <span class="bc-app__header-label">{{ 'Employee administration'|t }}</span>
         {% if bc_staff_user_login and not bc_staff_panel and bc_staff_notifications_enabled %}
-          <div class="bc-app__notification-menu" data-bc-notification-menu>
+          <div class="bc-app__notification-menu" data-bc-notification-menu data-bc-notification-status-url="{{ path('bc_staff_absence.notification_status') }}">
             <button type="button" class="bc-app__notifications-link" data-bc-notification-toggle aria-expanded="false" aria-controls="bc-staff-notification-popover" aria-label="{{ 'Notifikationer'|t }}">
               <span aria-hidden="true">🔔</span>
-              {% if bc_staff_notification_count %}<span class="bc-app__notifications-count">{{ bc_staff_notification_count }}</span>{% endif %}
+              {% if bc_staff_notification_count %}<span class="bc-app__notifications-count" data-bc-notification-count>{{ bc_staff_notification_count }}</span>{% endif %}
             </button>
             <div id="bc-staff-notification-popover" class="bc-app__notification-popover" data-bc-notification-popover hidden>
               <div class="bc-app__notification-heading"><strong>{{ 'Notifikationer'|t }}</strong><a href="{{ path('bc_staff_absence.notifications') }}">{{ 'Se alle'|t }}</a></div>
+              <div data-bc-notification-items>
               {% for notice in bc_staff_notification_preview %}
                 <a class="bc-app__notification-item{{ notice.unread ? ' is-unread' : '' }}" href="{{ notice.url }}"><span>{{ notice.message }}</span><small>{{ notice.time }}</small></a>
               {% else %}
                 <p class="bc-app__notification-empty">{{ 'Ingen notifikationer endnu.'|t }}</p>
               {% endfor %}
+              </div>
             </div>
           </div>
         {% endif %}
