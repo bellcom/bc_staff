@@ -207,3 +207,10 @@ body:has(.bc-app) [data-drupal-messages] .messages button[aria-label]{
 .bc-app__notification-item small{font-size:10px;color:#6c8096}
 .bc-app__notification-empty{font-size:12px;color:#607891;padding:12px 15px}
 @media(max-width:690px){.bc-app__notification-popover{right:-12px}}
+
+.bc-notifications__controls{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0}
+.bc-notifications__controls nav{display:flex;gap:8px;flex-wrap:wrap}
+.bc-notifications__controls nav a,.bc-notifications__controls button{border:1px solid #dce7f3;border-radius:9px;background:#f2f6fa;padding:9px 12px;color:#1366b6;font-size:12px;font-weight:700;text-decoration:none;cursor:pointer}
+.bc-notifications__controls nav a.is-active{background:#1267ad;border-color:#1267ad;color:#fff}
+.bc-notifications__controls form{margin:0}
+@media(max-width:600px){.bc-notifications__controls{align-items:stretch}.bc-notifications__controls form,.bc-notifications__controls form button{width:100%}}
