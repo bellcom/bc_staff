@@ -1,1 +1,22 @@
-<section class="bc-notifications"><header><h2>{{ 'Notifikationer'|t }}</h2><p>{{ 'Beskeder om ferieansøgninger og godkendelser'|t }}</p></header><div class="bc-notifications__list">{% for item in items %}<a href="{{ item.url }}" class="bc-notifications__item{{ item.unread ? ' is-unread' : '' }}"><span>{{ item.message }}</span><small>{{ item.time }}</small></a>{% else %}<p>{{ 'Ingen notifikationer endnu.'|t }}</p>{% endfor %}</div></section>
+<section class="bc-notifications">
+  <header><h2>{{ 'Notifikationer'|t }}</h2><p>{{ 'Beskeder om ferieansøgninger og godkendelser'|t }}</p></header>
+  <div class="bc-notifications__controls">
+    <nav aria-label="{{ 'Filtrer notifikationer'|t }}">
+      <a href="{{ path('bc_staff_absence.notifications') }}" class="{{ not unread_only ? 'is-active' : '' }}">{{ 'Alle'|t }}</a>
+      <a href="{{ path('bc_staff_absence.notifications', {}, {'query': {'filter': 'unread'}}) }}" class="{{ unread_only ? 'is-active' : '' }}">{{ 'Ulæste'|t }} ({{ unread_count }})</a>
+    </nav>
+    {% if unread_count %}
+      <form method="post" action="{{ path('bc_staff_absence.notification_mark_all') }}">
+        <input type="hidden" name="token" value="{{ mark_all_token }}">
+        <button type="submit">{{ 'Markér alle som læst'|t }}</button>
+      </form>
+    {% endif %}
+  </div>
+  <div class="bc-notifications__list">
+    {% for item in items %}
+      <a href="{{ item.url }}" class="bc-notifications__item{{ item.unread ? ' is-unread' : '' }}"><span>{{ item.message }}</span><small>{{ item.time }}</small></a>
+    {% else %}
+      <p>{{ unread_only ? 'Ingen ulæste notifikationer.'|t : 'Ingen notifikationer endnu.'|t }}</p>
+    {% endfor %}
+  </div>
+</section>
