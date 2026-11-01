@@ -39,6 +39,7 @@ final class NotificationController extends ControllerBase {
     }
     return ['#theme' => 'bc_staff_notifications', '#items' => $items,
       '#unread_only' => $unread_only, '#unread_count' => $unread_count,
+      '#mark_all_token' => \Drupal::service('csrf_token')->get('bc_staff_notification_mark_all:' . $uid),
       '#cache' => ['contexts' => ['user'], 'max-age' => 0]];
   }
 
