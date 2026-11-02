@@ -29,7 +29,6 @@ final class KioskTouchForm extends FormBase {
     $term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($department);
     if (!$term || $term->bundle() !== 'bc_staff_department') { throw new NotFoundHttpException(); }
     $form['#attributes']['class'][] = 'bc-touch-directory';
-    $form['#attributes']['data-bc-kiosk-fetch'] = '';
     $form['#attached']['library'][] = 'bc_staff/employee_admin';
     $form['#attached']['library'][] = 'bc_staff/touch_directory';
     $form['#attached']['library'][] = 'bc_staff/kiosk';
