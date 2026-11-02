@@ -96,6 +96,12 @@ attendance_report:
     - core/once
 
 kiosk:
+  js:
+    js/kiosk-fetch.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
+    - core/drupalSettings
   css:
     theme:
       css/kiosk.css: {}
